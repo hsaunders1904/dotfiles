@@ -1,0 +1,8 @@
+brew "bat"
+brew "coreutils"
+brew "fd"
+brew "grep"
+brew "htop"
+tap "homebrew/bundle"
+tap "homebrew/cask"
+tap "homebrew/core"
