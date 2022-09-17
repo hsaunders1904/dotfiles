@@ -1,0 +1,59 @@
+alias :q=exit
+alias ap=addpath
+alias bk=bak
+alias ca="conda activate"
+alias cg='cd `git rev-parse --show-toplevel`'
+alias cl=cd_and_ls
+alias clc=clear
+alias clip='xclip -selection c'
+alias cpv='rsync -ah --info=progress2'
+alias ii=open
+alias ippub='dig +short myip.opendns.com @resolver1.opendns.com'
+alias la='ls -A'
+alias lsa='ls -AlhF'
+alias md5='openssl md5'
+alias mk=mkdir
+alias mkcd=mkdir_and_cd
+alias op=open
+alias path='echo -e ${PATH//:/\\n}'
+alias quit=exit
+alias sha=sha1
+alias sha1='openssl sha1'
+alias sha256='openssl sha256'
+alias sudo='sudo '
+alias untar='tar -xvf'
+
+# Typo corrections
+## Git
+alias g8t=git
+alias g9t=git
+alias ggit=git
+alias gi5=git
+alias gi6=git
+alias gi=git
+alias gif=git
+alias gig=git
+alias gih=git
+alias giit=git
+alias gir=git
+alias gitt=git
+alias giy=git
+alias gjt=git
+alias gkt=git
+alias glt=git
+alias got=git
+alias gt=git
+alias gti=git
+alias gut=git
+alias igt=git
+alias tit=git
+alias yit=git
+## ls
+alias ks=ls
+alias ld=ls
+alias le=ls
+alias lw=ls
+alias lx=ls
+alias lz=ls
+alias os=ls
+alias sl=ls
