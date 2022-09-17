@@ -10,7 +10,6 @@ if [ -f "${_unixrc}" ]; then
 fi
 unset _unixrc
 
-
 # Custom prompt
 _prompt_path="${DOTFILES_DIR}/scripts/prompt.sh"
 if [ -f "${_prompt_path}" ]; then
