@@ -72,6 +72,7 @@ def download_file(url: str, out_path: str):
 def _download(url: str, out_path: str):
     request.urlretrieve(url, out_path)
 
+
 def read_file_if_exists(file_path: str) -> str:
     try:
         with open(file_path, "r") as f:

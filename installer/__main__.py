@@ -1,6 +1,6 @@
 import shutil
 
-from installer import bash, zsh, git
+from installer import bash, vim, zsh, git
 
 
 def is_executable(exe_name: str) -> bool:
@@ -14,6 +14,8 @@ def install():
         zsh.install()
     if is_executable("git"):
         git.install()
+    if is_executable("vim"):
+        vim.install()
 
 
 if __name__ == "__main__":
