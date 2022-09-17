@@ -1,3 +1,5 @@
+#!/usr/bin/env zsh
+
 DOTFILES_DIR="$(dirname "$(dirname "$(readlink -f "$0")")")"
 export DOTFILES_DIR
 
