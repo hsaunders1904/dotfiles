@@ -1,5 +1,12 @@
 #!/usr/bin/env sh
 
+# ls file/directory colours
+# ow and tw change symlinks, and di changes directory colours
+export LS_COLORS="$LS_COLORS:ow=1;94:tw=1;94:di=1;94:ex=0;32"
+
+# Get 'less' showing UTF-8 characters
+export LESSCHARSET=utf-8
+
 # Path additions
 if [ -d "${HOME}/.local/bin" ]; then
     export PATH="${HOME}/.local/bin:$PATH"
