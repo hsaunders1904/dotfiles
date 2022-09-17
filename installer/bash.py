@@ -1,20 +1,16 @@
 import os
 
 from installer import _lib as lib
-from installer.common import download_z_jump_around
 
 __all__ = ["install"]
 
-EXTERNAL_DIR = os.path.join(lib.REPO_ROOT, "external")
 SH_COMMENT_CHAR = "#"
 HOME_BASHRC_PATH = os.path.join(os.path.expanduser("~"), ".bashrc")
 THIS_BASHRC_PATH = os.path.join(lib.REPO_ROOT, "dotfiles", ".bashrc")
 
 
-
 def install():
     update_bashrc()
-    download_z_jump_around(os.path.join(EXTERNAL_DIR, "z.sh"))
 
 
 def update_bashrc():

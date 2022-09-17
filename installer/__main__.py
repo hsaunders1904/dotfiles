@@ -1,7 +1,11 @@
+import os
 import shutil
 
 from installer import bash, vim, zsh, git
+from installer._lib import REPO_ROOT
+from installer.common import download_z_jump_around
 
+EXTERNAL_DIR = os.path.join(REPO_ROOT, "external")
 
 def is_executable(exe_name: str) -> bool:
     return bool(shutil.which(exe_name))
@@ -12,6 +16,8 @@ def install():
         bash.install()
     if is_executable("zsh"):
         zsh.install()
+    if is_executable("bash") or is_executable("zsh"):
+        download_z_jump_around(os.path.join(EXTERNAL_DIR, "z.sh"))
     if is_executable("git"):
         git.install()
     if is_executable("vim"):
