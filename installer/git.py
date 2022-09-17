@@ -1,12 +1,12 @@
-from genericpath import isfile
 import os
 
 from installer import _lib as lib
-from installer._lib import REPO_ROOT
+
+__all__ = ["install"]
 
 CONFIG_FILE_NAME = ".gitconfig"
 IGNORE_FILE_NAME = ".gitignore_global"
-DOTFILES_DIR = os.path.join(REPO_ROOT, "dotfiles")
+DOTFILES_DIR = os.path.join(lib.REPO_ROOT, "dotfiles")
 
 
 def install():
