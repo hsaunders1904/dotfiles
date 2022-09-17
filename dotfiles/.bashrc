@@ -1,17 +1,16 @@
 #!/usr/bin/env bash
 
-DOTFILES_DIR="$(dirname "$(readlink -f "$0")")"
+DOTFILES_DIR="$(cd "$(dirname "$(dirname "${BASH_SOURCE[0]}")")" &>/dev/null && pwd)"
 export DOTFILES_DIR
 
-# Run everything in the base unix RC file.
-_unixrc="${DOTFILES_DIR}/scripts/unixrc.sh"
-if [ -f "${_unixrc}" ]; then
-    . "${_unixrc}"
+_shrc="${DOTFILES_DIR}/dotfiles/.shrc"
+if [ -f "${_shrc}" ]; then
+    . "${_shrc}"
 fi
-unset _unixrc
+unset _shrc
 
 # Custom prompt
-_prompt_path="${DOTFILES_DIR}/scripts/prompt.sh"
+_prompt_path="${DOTFILES_DIR}/dotfiles/.bash_prompt"
 if [ -f "${_prompt_path}" ]; then
         . "${_prompt_path}"
         PS1=$(get_prompt)

@@ -1,4 +1,6 @@
-function addpath() {
+#!/usr/bin/env sh
+
+addpath() {
     # Add given paths to system path
     _new_path="$("${DOTFILES_DIR}/scripts/sys_path_append" "$@")"
     if [ -n "${_new_path}" ]; then
@@ -6,14 +8,14 @@ function addpath() {
     fi
 }
 
-function bak() {
+bak() {
     # Create backups of the given files
     for path in "$@"; do
         cp "${path}" "${path}.bak"
     done
 }
 
-function cd_and_ls() {
+cd_and_ls() {
     # Change directory and print its contents
     new_dir="$*"
     if [ $# -lt 1 ]; then
@@ -22,7 +24,7 @@ function cd_and_ls() {
     builtin cd "${new_dir}" && ls
 }
 
-function cpath() {
+cpath() {
     # Copy the given file's full path to the clipboard
     if [ "$1" = "" ]; then
         _path="$(pwd)"
@@ -63,7 +65,7 @@ extract() {
     fi
 }
 
-function mkdir_and_cd() {
+mkdir_and_cd() {
     # Make a directory and cd into it
     mkdir "$1"
     cd "$1" || return

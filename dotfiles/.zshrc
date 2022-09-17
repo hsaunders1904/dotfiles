@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-DOTFILES_DIR="$(dirname "$(readlink -f "$0")")"
+DOTFILES_DIR="$(cd "$(dirname "$(dirname "${BASH_SOURCE[0]}")")" &>/dev/null && pwd)"
 export DOTFILES_DIR
 
 # Run everything in the base unix RC file.

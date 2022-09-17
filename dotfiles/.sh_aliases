@@ -1,3 +1,5 @@
+#!/usr/bin/env sh
+
 alias :q=exit
 alias ap=addpath
 alias bk=bak
