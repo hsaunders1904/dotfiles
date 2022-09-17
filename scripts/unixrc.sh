@@ -1,6 +1,3 @@
-DOTFILES_DIR="$(dirname "$(dirname "$(readlink -f "$0")")")"
-export DOTFILES_DIR
-
 # Path additions
 if [ -d "${HOME}/.local/bin" ]; then
     export PATH="${HOME}/.local/bin:$PATH"
@@ -22,14 +19,14 @@ fi
 unset _z_path
 
 # Import some functions - mostly more complex aliases
-_funcs_path="${DOTFILES_DIR}/dotfiles/functions.sh"
+_funcs_path="${DOTFILES_DIR}/scripts/functions.sh"
 if [ -f "${_funcs_path}" ]; then
     . "${_funcs_path}"
 fi
 unset _funcs_path
 
 # Alias definitions
-_aliases_path="${DOTFILES_DIR}/dotfiles/aliases.sh"
+_aliases_path="${DOTFILES_DIR}/scripts/aliases.sh"
 if [ -f "${_aliases_path}" ]; then
     . "${_aliases_path}"
 fi
