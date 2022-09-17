@@ -1,3 +1,4 @@
+from genericpath import isfile
 import os
 import shutil
 
@@ -17,7 +18,9 @@ def install():
     if is_executable("zsh"):
         zsh.install()
     if is_executable("bash") or is_executable("zsh"):
-        download_z_jump_around(os.path.join(EXTERNAL_DIR, "z.sh"))
+        out_path = os.path.join(EXTERNAL_DIR, "z.sh")
+        if not os.path.isfile(out_path):
+            download_z_jump_around(out_path)
     if is_executable("git"):
         git.install()
     if is_executable("vim"):
