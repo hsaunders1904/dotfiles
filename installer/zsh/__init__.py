@@ -1,3 +1,3 @@
-from bash._install import install
+from installer.zsh._install import install
 
 __all__ = ["install"]
