@@ -1,3 +1,4 @@
+import os
 import re
 import subprocess
 from pathlib import Path
@@ -59,8 +60,11 @@ def update_dotfile_region(string: str, new_content: str, comment_char: str):
             return f"{string}\n{new_region}"
 
 
-def download_file(url: str, out_path: str):
-    print(f"[+] Downloading '{url}' -> '{out_path}'")
+def download_file(url: str, out_path: str, log=True, force: bool = False):
+    if log:
+        print(f"[+] Downloading '{url}' -> '{out_path}'")
+    if os.path.isfile(out_path) and not force:
+        return
     if DRY_RUN:
         return
     try:

@@ -1,11 +1,18 @@
 #!/usr/bin/env zsh
 
-DOTFILES_DIR="$(cd "$(dirname "$(dirname "${BASH_SOURCE[0]}")")" &>/dev/null && pwd)"
+DOTFILES_DIR="$(dirname "${0:a:h}")"
 export DOTFILES_DIR
 
-# Run everything in the base unix RC file.
-_unixrc="${DOTFILES_DIR}/scripts/unixrc.sh"
-if [ -f "${_unixrc}" ]; then
-    . "${_unixrc}"
+_shrc="${DOTFILES_DIR}/dotfiles/.shrc"
+if [ -f "${_shrc}" ]; then
+    . "${_shrc}"
 fi
-unset _unixrc
+unset _shrc
+
+# oh-my-zsh settings
+if [ -d "${HOME}/.oh-my-zsh" ]; then
+    export ZSH="${HOME}/.oh-my-zsh"
+    ZSH_THEME="robbyrussell"
+    plugins=(git)
+    source $ZSH/oh-my-zsh.sh
+fi
