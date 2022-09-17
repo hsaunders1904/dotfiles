@@ -6,3 +6,12 @@ if [ -f "${_unixrc}" ]; then
 fi
 unset _unixrc
 unset _THIS_DIR
+
+# Custom prompt
+_prompt_path="${DOTFILES_DIR}/scripts/prompt.sh"
+if [ -f "${_prompt_path}" ]; then
+        . "${_prompt_path}"
+        PS1=$(get_prompt)
+        export PS1
+fi
+unset _prompt_path
