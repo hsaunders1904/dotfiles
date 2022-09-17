@@ -1,0 +1,75 @@
+#!/usr/bin/env python3
+"""
+Pretty print the output of 'git branch'.
+"""
+
+import os
+import subprocess
+import sys
+
+DELIM = "|"
+FORMAT_COLS = [
+    "%(authordate:short)",
+    "%(objectname:short)",
+    "%(refname:short)",
+    "%(committername)",
+    "(%(authordate:relative))",
+]
+
+
+class Format:
+    BLACK = "\u001b[30m"
+    RED = "\u001b[31m"
+    GREEN = "\u001b[32m"
+    YELLOW = "\u001b[33m"
+    BLUE = "\u001b[34m"
+    MAGENTA = "\u001b[35m"
+    CYAN = "\u001b[36m"
+    WHITE = "\u001b[37m"
+    RESET = "\u001b[0m"
+
+
+def add_color(s: str, fmt: Format) -> str:
+    return f"{fmt}{s}{Format.RESET}"
+
+
+if __name__ == "__main__":
+    col_colors = [
+        Format.MAGENTA,
+        Format.YELLOW,
+        Format.WHITE,
+        Format.CYAN,
+        Format.GREEN,
+    ]
+
+    command = [
+        "git",
+        "branch",
+        "--sort=-authordate:iso8601",
+        "--format=" + DELIM.join(FORMAT_COLS),
+        *sys.argv[1:]
+    ]
+    raw_branches = subprocess.check_output(command).decode()
+    branches = [b.strip() for b in raw_branches.split("\n") if b.strip()]
+
+    rows = [branch.split(DELIM) for branch in branches]
+    n_cols = len(rows[0])
+
+    term_size = os.get_terminal_size().columns
+    col_widths = []
+    for col_num in range(n_cols):
+        col_widths.append(max([len(row[col_num]) for row in rows]))
+    if sum(col_widths) + n_cols > term_size:
+        col_widths[2] = col_widths[2] - sum(col_widths) - n_cols + term_size
+
+    out = ""
+    for row in rows:
+        for col_num in range(n_cols):
+            item = row[col_num]
+            if len(item) > col_widths[col_num]:
+                item = item[:col_widths[col_num] - 4] + "..."
+            item = item.ljust(col_widths[col_num] + 1)
+            out += add_color(item, col_colors[col_num])
+        out += "\n"
+
+    print(out, end="")

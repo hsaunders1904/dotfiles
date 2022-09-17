@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+
+# A script that attempts to find the HEAD branch of a repository.
+# If the branch cannot be determined, it just returns a default: 'main'.
+
+readonly DEFAULT_REMOTE="origin"
+readonly FALLBACK_BRANCH="main"
+
+function main() {
+    exit_if_not_in_git_repo
+
+    REMOTE="$(parse_remote_with_default "$1" "${DEFAULT_REMOTE}")"
+    if [ "$(remote_exists "${REMOTE}")" = false ]; then
+        echo "${FALLBACK_BRANCH}" && exit 1
+    fi
+
+    REPO_ROOT="$(git rev-parse --show-toplevel)"
+    HEAD_FILE="${REPO_ROOT}/.git/refs/remotes/${REMOTE}/HEAD"
+    if [ ! -f "${HEAD_FILE}" ]; then
+        HEAD_BRANCH="$(git remote show "${REMOTE}" 2>/dev/null | sed -n '/HEAD branch/s/.*: //p')"
+        return_fallback_if_empty "${HEAD_BRANCH}"
+        # set the remote HEAD for fast lookup next time
+        git remote set-head "${REMOTE}" "${HEAD_BRANCH}"
+    else
+        HEAD_BRANCH="$(sed -e 's/^.*\///' <"${HEAD_FILE}")"
+    fi
+
+    return_fallback_if_empty "${HEAD_BRANCH}"
+    echo "${HEAD_BRANCH}"
+}
+
+function remote_exists() {
+    [[ "$(git remote)" =~ (^|[[:space:]])$1($|[[:space:]]) ]] &&
+        echo true || echo false
+}
+
+function exit_if_not_in_git_repo() {
+    IN_REPO="$(git rev-parse --is-inside-work-tree)" 2>/dev/null
+    if [ ! "${IN_REPO}" = true ]; then
+        exit 1
+    fi
+}
+
+function parse_remote_with_default() {
+    local REMOTE
+    REMOTE=$1
+    if [ -z "${REMOTE}" ]; then
+        echo "${DEFAULT_REMOTE}"
+    else
+        echo "${REMOTE}"
+    fi
+}
+
+function return_fallback_if_empty() {
+    if [ -z "$1" ]; then
+        echo "${FALLBACK_BRANCH}" && exit 1
+    fi
+}
+
+main "$@"

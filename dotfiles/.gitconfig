@@ -1,0 +1,138 @@
+[core]
+    editor = vim
+    pager = less -FRX  # only page if content does not fit on screen
+[branch]
+    # Show most recently changed branches first.
+    sort = -committerdate
+[diff]
+    algorithm = histogram
+[init]
+    defaultBranch = main
+[alias]
+    a          = add
+    aa         = add --all
+    ac         = !"git add $(git diff --name-only --cached)"
+    ai         = add --interactive
+    alias      = config --get-regexp ^alias\\.
+    au         = add --update
+    b          = branch
+    ba         = branch --all
+    backup     = !"f() { \
+            git branch \"$(git branch --show-current)-BACKUP\" \
+            && echo \"Created new branch: $(git branch --show-current)-BACKUP\"; \
+        }; f"
+    bl         = !"python3 ${DOTFILES_DIR}/scripts/git_branch_list $@"
+    brsh       = !"git backup && reset --hard"
+    c          = commit
+    ca         = commit --amend
+    caa        = commit --amend --all
+    caan       = commit --amend --all --no-edit
+    can        = commit --amend --no-edit
+    cf         = commit --fixup
+    chp        = cherry-pick
+    cl         = clean
+    cla        = clean -ixd
+    cln        = clean -n
+    co         = checkout
+    co-        = co -
+    cob        = checkout -b
+    cobgh      = !"f() { \
+            name=\"$(gh issue view $1 --json title --jq '.title' \
+            | awk '{$1=$1;print tolower($0)}' \
+            | sed 's/[^a-zA-Z0-9.-]/_/g')\" \
+            && ! [ -z \"${name}\" ] && git checkout -b \"$1_${name}\"; \
+        }; f"
+    com        = !"git checkout $(git main)"
+    d          = diff
+    dc         = diff --cached
+    dcn        = diff --cached --name-only
+    dm         = !"git diff origin/$(git main)..."
+    dmn        = dnm
+    dn         = diff --name-only
+    dnc        = dcn
+    dnm        = !"git diff --name-only origin/$(git main)..."
+    dnum       = !"git diff --name-only upstream/$(git main)..."
+    ds         = diff --staged
+    dsn        = diff --staged --name-only
+    dum        = !"git diff upstream/$(git main)..."
+    dumn       = !"git diff --name-only upstream/$(git main)..."
+    f          = fetch
+    fa         = fetch --all -p
+    fo         = fetch origin -p
+    fom        = !"git fetch origin $(git main)"
+    fp         = fetch -p
+    ft         = fetch origin --tags
+    fu         = fetch upstream -p
+    fum        = !"git fetch upstream $(git main)"
+    g          = gui
+    gr         = grep
+    issue      = !"f() { gh issue view "$(git rev-parse --abbrev-ref HEAD | sed -rn 's/([0-9]+)_.*/\\1/p')" $*; }; f"
+    l          = log --oneline -n 15
+    la         = log --pretty=full --graph
+    ld         = lgd -n 15
+    lday       = !"f() { git l --after=\"$1 00:00\" --before=\"$1 23:59\"}; }; f"
+    ldday      = !"f() { git ld --after=\"$1 00:00\" --before=\"$1 23:59\"; }; f"
+    lfp        = log --oneline --first-parent
+    lg         = log
+    lgd        = log --pretty=format:'%C(yellow)%h %Cblue%>(12)%ad %Cgreen%<(7)%aN %Creset%s' --date=short
+    lgday      = !"f() { git lg --after=\"$1 00:00\" --before=\"$1 23:59\"}; }; f"
+    ll         = log --oneline -n 30
+    lld        = lgd -n 30
+    llday      = !"f() { git ll --after=\"$1 00:00\" --before=\"$1 23:59\"}; }; f"
+    lldday     = !"f() { git lgd --after=\"$1 00:00\" --before=\"$1 23:59\"}; }; f"
+    lldn       = lgd -n
+    lll        = log --oneline
+    lln        = log -n
+    llnd       = lgd -n
+    ln         = log --oneline -n
+    m          = merge
+    ma         = merge --abort
+    main       = !"bash ${DOTFILES_DIR}/scripts/git_main"
+    mc         = merge --continue
+    no-assume-changed-all = !"f() { git update-index --no-assume-unchanged $(git ls-files $(git rev-parse --show-toplevel)) }"
+    pl         = pull
+    plo        = pull origin
+    plu        = pull upstream
+    pr         = !"gh pr create --web"
+    ps         = push
+    psfl       = push --force-with-lease
+    psu        = push --set-upstream
+    psuoc      = !"git push --set-upstream origin \"$(git rev-parse --abbrev-ref HEAD)\""
+    psuuc      = !"git push --set-upstream upstream \"$(git rev-parse --abbrev-ref HEAD)\""
+    pull-req   = !"gh pr create --web"
+    rb         = rebase
+    rba        = rebase --abort
+    rbc        = rebase --continue
+    rbi        = rebase --interactive
+    rbis       = rebase --autostash --interactive
+    rbm        = !"git rebase $(git main)"
+    rbom       = !"git fetch origin $(git main) && git rebase origin/$(git main)"
+    rbs        = rebase --autostash
+    rbsi       = rebase --autostash --interactive
+    rbum       = !"git fetch upstream $(git main) && git rebase upstream/$(git main)"
+    repo       = !"gh repo view --web"
+    rev        = revert
+    reva       = revert --abort
+    revc       = revert --continue
+    rl         = reflog
+    rs         = reset
+    rs1        = reset "HEAD@{1}"
+    rsa        = reset --all
+    rsh        = reset --hard
+    rshb       = "git backup && reset --hard"
+    rss        = reset --soft
+    s          = status --short -b
+    sh         = show
+    sha        = rev-parse HEAD
+    shn        = show --name-only
+    shp        = show --patch
+    ss         = status
+    st         = stash
+    sta        = stash apply
+    stash-save = "!git aa && git stash -k && git reset"
+    sti        = stash --keep-index
+    stl        = "!git stash list --pretty=format:\"%C(magenta)%>(10)%gd%C(yellow)%>(8)%h%C(reset) %<(80,trunc)%s %C(green)(%cr)%C(reset)\""
+    stp        = stash push
+    strip-whitespace = "!sed -bi 's/[[:space:]]*$//' $(git diff --name-only --cached)"
+    sts        = stash-save
+    test-pr    = !"f() { git fetch $1 pull/$2/merge:pr/$2-merged && git checkout pr/$2-merged && git merge $1/$(git main $1) --no-edit; }; f"
