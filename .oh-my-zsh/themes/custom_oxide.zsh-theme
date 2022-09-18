@@ -69,5 +69,13 @@ zstyle ':vcs_info:git*+set-message:*' hooks git-untracked
 # Executed before each prompt.
 add-zsh-hook precmd vcs_info
 
+function _get_conda_env() {
+    conda_prompt="${CONDA_DEFAULT_ENV}"
+    if [ "${conda_prompt}" != "" ] && [ "${conda_prompt}" != "base" ]; then
+        conda_prompt="(${conda_prompt})"
+        echo "${conda_prompt}"
+    fi
+}
+
 # Oxide prompt style.
-PROMPT=$'\n%{$oxide_limegreen%}%/%{$oxide_reset_color%} ${vcs_info_msg_0_}\n%(?.%{%F{white}%}.%{$oxide_red%})%(!.#.»)%{$oxide_reset_color%} '
+PROMPT=$'\n$(_get_conda_env)%{$oxide_limegreen%}%/%{$oxide_reset_color%} ${vcs_info_msg_0_}\n%(?.%{%F{white}%}.%{$oxide_red%})%(!.#.»)%{$oxide_reset_color%} '

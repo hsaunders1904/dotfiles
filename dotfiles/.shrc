@@ -3,6 +3,10 @@
 # Get 'less' showing UTF-8 characters
 export LESSCHARSET=utf-8
 
+if [ -n "$(command -v conda)" ]; then
+    conda config --set changeps1 False
+fi
+
 # Path additions
 if [ -d "${HOME}/.local/bin" ]; then
     export PATH="${HOME}/.local/bin:$PATH"
