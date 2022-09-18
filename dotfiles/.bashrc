@@ -12,9 +12,9 @@ unset _shrc
 # Custom prompt
 _prompt_path="${DOTFILES_DIR}/dotfiles/.bash_prompt"
 if [ -f "${_prompt_path}" ]; then
-        . "${_prompt_path}"
-        PS1=$(get_prompt)
-        export PS1
+    . "${_prompt_path}"
+    PS1=$(get_prompt)
+    export PS1
 fi
 unset _prompt_path
 
