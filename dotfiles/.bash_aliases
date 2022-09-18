@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # bash specific aliases
 alias apt='sudo apt'
 alias apt-get='sudo apt-get'
