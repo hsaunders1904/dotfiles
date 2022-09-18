@@ -2,7 +2,7 @@ import os
 
 from installer.lib import update_dotfile, REPO_ROOT
 
-COMMENT_CHAR = "\""
+COMMENT_CHAR = '"'
 RC_FILE = ".vimrc"
 HOME_RC_PATH = os.path.join(os.path.expanduser("~"), RC_FILE)
 THIS_RC_PATH = os.path.join(REPO_ROOT, "dotfiles", RC_FILE)
@@ -19,7 +19,7 @@ def update_rc_file():
 
 def build_import_str(file_path: str) -> str:
     return (
-        f"if filereadable(\"{file_path}\")\n"
+        f'if filereadable("{file_path}")\n'
         f"    exe 'source' \"{file_path}\"\n"
         "endif\n"
     )

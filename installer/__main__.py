@@ -1,4 +1,3 @@
-from genericpath import isfile
 import os
 import shutil
 
@@ -7,6 +6,7 @@ from installer.lib import REPO_ROOT
 from installer.common import download_z_jump_around
 
 EXTERNAL_DIR = os.path.join(REPO_ROOT, "external")
+
 
 def is_executable(exe_name: str) -> bool:
     return bool(shutil.which(exe_name))

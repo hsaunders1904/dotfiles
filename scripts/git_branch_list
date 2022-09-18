@@ -47,7 +47,7 @@ if __name__ == "__main__":
         "branch",
         "--sort=-authordate:iso8601",
         "--format=" + DELIM.join(FORMAT_COLS),
-        *sys.argv[1:]
+        *sys.argv[1:],
     ]
     raw_branches = subprocess.check_output(command).decode()
     branches = [b.strip() for b in raw_branches.split("\n") if b.strip()]
@@ -67,7 +67,7 @@ if __name__ == "__main__":
         for col_num in range(n_cols):
             item = row[col_num]
             if len(item) > col_widths[col_num]:
-                item = item[:col_widths[col_num] - 4] + "..."
+                item = item[: col_widths[col_num] - 4] + "..."
             item = item.ljust(col_widths[col_num] + 1)
             out += add_color(item, col_colors[col_num])
         out += "\n"

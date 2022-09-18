@@ -28,9 +28,7 @@ def update_dotfile(file_path: str, new_region_content: str, comment_char: str):
     if DRY_RUN:
         return
     file_content = read_file_if_exists(file_path)
-    new_content = update_dotfile_region(
-        file_content, new_region_content, comment_char
-    )
+    new_content = update_dotfile_region(file_content, new_region_content, comment_char)
     with open(file_path, "w") as f_writer:
         f_writer.write(new_content)
 

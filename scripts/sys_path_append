@@ -9,12 +9,13 @@ import os
 from argparse import ArgumentParser
 
 parser = ArgumentParser()
-parser.add_argument("new_paths",
-                    nargs="+",
-                    help="Paths to add to the system path")
-parser.add_argument("-p", "--prepend",
-                    action="store_true",
-                    help="Prepend to system path instead of appending")
+parser.add_argument("new_paths", nargs="+", help="Paths to add to the system path")
+parser.add_argument(
+    "-p",
+    "--prepend",
+    action="store_true",
+    help="Prepend to system path instead of appending",
+)
 args = parser.parse_args()
 
 if os.name == "posix":

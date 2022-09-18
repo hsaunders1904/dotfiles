@@ -37,8 +37,4 @@ def install_ohmyzsh():
 
 
 def build_file_import_str(file_path: str):
-    return (
-        f"if [ -f \"{file_path}\" ]; then\n"
-        f"    . \"{file_path}\"\n"
-        f"fi"
-    )
+    return f'if [ -f "{file_path}" ]; then\n' f'    . "{file_path}"\n' f"fi"
