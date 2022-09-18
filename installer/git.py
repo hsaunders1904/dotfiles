@@ -1,6 +1,6 @@
 import os
 
-from installer import _lib as lib
+from installer import lib
 
 __all__ = ["install"]
 

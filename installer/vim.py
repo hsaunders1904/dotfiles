@@ -1,6 +1,6 @@
 import os
 
-from installer._lib import update_dotfile, REPO_ROOT
+from installer.lib import update_dotfile, REPO_ROOT
 
 COMMENT_CHAR = "\""
 RC_FILE = ".vimrc"

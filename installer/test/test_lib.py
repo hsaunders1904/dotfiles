@@ -1,4 +1,4 @@
-from installer import _lib as lib
+from installer import lib as lib
 
 
 class TestUpdateDotfileRegion:

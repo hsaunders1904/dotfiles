@@ -1,4 +1,4 @@
-from installer import _lib as lib
+from installer import lib
 
 Z_JUMP_AROUND_URL = "https://raw.githubusercontent.com/rupa/z/master/z.sh"
 
