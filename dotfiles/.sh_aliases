@@ -1,5 +1,10 @@
 #!/usr/bin/env sh
 
+if [ -n "$(command -v lsd)" ]; then
+    export DISABLE_LS_COLORS="true"  # stop oh-my-zsh from overriding ls alias
+    alias ls=lsd
+fi
+
 alias :q=exit
 alias ap=addpath
 alias bk=bak
@@ -12,7 +17,9 @@ alias cpv='rsync -ah --info=progress2'
 alias ii=open
 alias ippub='dig +short myip.opendns.com @resolver1.opendns.com'
 alias la='ls -A'
+alias lla='ls -lA'
 alias lsa='ls -AlhF'
+alias lt='ls --tree'
 alias md5='openssl md5'
 alias mk=mkdir
 alias mkcd=mkdir_and_cd

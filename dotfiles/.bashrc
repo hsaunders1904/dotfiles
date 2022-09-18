@@ -9,6 +9,10 @@ if [ -f "${_shrc}" ]; then
 fi
 unset _shrc
 
+# ls file/directory colours
+# ow and tw change symlinks, and di changes directory colours
+export LS_COLORS="$LS_COLORS:ow=1;94:tw=1;94:di=1;94:ex=0;32"
+
 # Custom prompt
 _prompt_path="${DOTFILES_DIR}/dotfiles/.bash_prompt"
 if [ -f "${_prompt_path}" ]; then
