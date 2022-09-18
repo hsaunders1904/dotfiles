@@ -14,7 +14,7 @@ if [ -d "${HOME}/.oh-my-zsh" ]; then
     export ZSH="${HOME}/.oh-my-zsh"
     export ZSH_CUSTOM="${DOTFILES_DIR}/.oh-my-zsh"
     ZSH_THEME="custom_oxide"
-    plugins=(git copyfile)
+    plugins=(git copyfile extract)
     source ${ZSH}/oh-my-zsh.sh
 fi
 
