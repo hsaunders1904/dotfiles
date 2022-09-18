@@ -15,4 +15,7 @@ repos:
   hooks:
     - id: shellcheck
       args: ["--exclude=SC1090"]
+      exclude: ".*zsh.*"
     - id: shfmt
+      args: ["--indent", "4"]
+      exclude: ".*zsh.*"
