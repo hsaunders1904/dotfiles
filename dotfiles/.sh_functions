@@ -33,10 +33,10 @@ cpath() {
     fi
 
     if [ -n "$(command -v xclip)" ]; then
-        echo -n "${_path}" | xclip -selection c && \
+        echo -n "${_path}" | xclip -selection c &&
             echo "'${_path}' copied to clipboard"
     elif [ -n "$(command -v pbcopy)" ]; then
-        echo -n "${_path}" | pbcopy && \
+        echo -n "${_path}" | pbcopy &&
             echo "'${_path}' copied to clipboard"
     else
         echo "Could not find 'xlcip' or 'pbcopy' to copy path."
