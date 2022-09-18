@@ -3,6 +3,7 @@ brew "coreutils"
 brew "fd"
 brew "grep"
 brew "htop"
+brew "lsd"s
 tap "homebrew/bundle"
 tap "homebrew/cask"
 tap "homebrew/core"
