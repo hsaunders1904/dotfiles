@@ -1,9 +1,9 @@
 import os
 import shutil
 
-from installer import bash, vim, zsh, git
-from installer.lib import REPO_ROOT
+from installer import bash, git, vim, zsh
 from installer.common import download_z_jump_around
+from installer.lib import REPO_ROOT
 
 EXTERNAL_DIR = os.path.join(REPO_ROOT, "external")
 
