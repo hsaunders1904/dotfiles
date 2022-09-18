@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 
 # A script that attempts to find the HEAD branch of a repository.
-# If the branch cannot be determined, it just returns a default: 'main'.
+# It does this by:
+#  1. checking for the branch name in 'refs/remotes/<REMOTE>/HEAD'
+#  2. checking the HEAD branch for the remote using 'git remote show'
+# If the branch cannot be determined by these methods, return a default: 'main'
 
 readonly DEFAULT_REMOTE="origin"
 readonly FALLBACK_BRANCH="main"
