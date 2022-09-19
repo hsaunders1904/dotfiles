@@ -10,9 +10,9 @@ Set-PSReadLineOption -BellStyle None
 $env:DOTFILES_DIR = Split-Path "${PSScriptRoot}"
 
 # Configure aliases and the prompt
-Import-Module "${env:DOTFILES_DIR}/._pwsh_aliases.psm1"
-Import-Module "${env:DOTFILES_DIR}/._pwsh_functions.psm1"
-Import-Module "${env:DOTFILES_DIR}/.pwsh_prompt.psm1"
+Import-Module "${env:DOTFILES_DIR}/dotfiles/.pwsh_aliases.psm1"
+Import-Module "${env:DOTFILES_DIR}/dotfiles/.pwsh_functions.psm1"
+Import-Module "${env:DOTFILES_DIR}/dotfiles/.pwsh_prompt.psm1"
 
 # Import external modules
 Import-Module posh-git
