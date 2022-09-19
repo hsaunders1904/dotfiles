@@ -52,7 +52,8 @@ def update_dotfile_region(string: str, new_content: str, comment_char: str):
         f"{comment_char} {REGION_END}\n"
     )
     if match:
-        return re_pattern.sub(new_region, string)
+        # escape backlashes, particularly for Windows paths
+        return re_pattern.sub(new_region.replace("\\", "\\\\"), string)
     else:
         if string == "":
             return new_region
