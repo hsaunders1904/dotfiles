@@ -1,0 +1,5 @@
+Git.Git
+GitHub.cli
+Microsoft.PowerShell
+Microsoft.WindowsTerminal
+Python.Python.3
