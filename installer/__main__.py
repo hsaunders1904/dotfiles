@@ -1,7 +1,8 @@
 import os
 import shutil
 
-from installer import bash, git, vim, zsh
+from installer import bash, git, pwsh, vim, zsh
+from installer.lib import REPO_ROOT
 from installer.common import download_z_jump_around
 from installer.lib import REPO_ROOT
 
@@ -25,6 +26,8 @@ def install():
         git.install()
     if is_executable("vim"):
         vim.install()
+    if is_executable("pwsh"):
+        pwsh.install()
 
 
 if __name__ == "__main__":

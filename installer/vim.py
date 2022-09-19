@@ -14,7 +14,7 @@ def install():
 
 def update_rc_file():
     import_str = build_import_str(THIS_RC_PATH)
-    update_dotfile(HOME_RC_PATH, import_str, COMMENT_CHAR)
+    update_dotfile(HOME_RC_PATH, import_str, COMMENT_CHAR, new_line="\n")
 
 
 def build_import_str(file_path: str) -> str:

@@ -18,7 +18,7 @@ def install():
 
 def update_zshrc():
     import_str = build_file_import_str(THIS_ZSH_PATH)
-    lib.update_dotfile(HOME_ZSH_PATH, import_str, SH_COMMENT_CHAR)
+    lib.update_dotfile(HOME_ZSH_PATH, import_str, SH_COMMENT_CHAR, new_line="\n")
 
 
 def install_ohmyzsh():

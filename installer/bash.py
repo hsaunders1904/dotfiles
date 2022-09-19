@@ -15,7 +15,7 @@ def install():
 
 def update_bashrc():
     import_str = build_file_import_str(THIS_BASHRC_PATH)
-    lib.update_dotfile(HOME_BASHRC_PATH, import_str, SH_COMMENT_CHAR)
+    lib.update_dotfile(HOME_BASHRC_PATH, import_str, SH_COMMENT_CHAR, new_line="\n")
 
 
 def build_file_import_str(file_path: str):
