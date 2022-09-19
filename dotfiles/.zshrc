@@ -20,4 +20,4 @@ fi
 
 # ls file/directory colours
 # ow and tw change symlinks, and di changes directory colours
-export LS_COLORS="$LS_COLORS:ow=1;94:tw=1;94:38;5;213:ex=0;32"
+export LS_COLORS="$LS_COLORS:ow=1;94:tw=1;94:di=38;5;213:ex=0;32"
