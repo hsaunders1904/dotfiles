@@ -1,0 +1,10 @@
+bat
+fd-find
+gh
+git
+gpg
+rsync
+trash-cli
+unzip
+xclip
+wget
