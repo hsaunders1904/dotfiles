@@ -49,7 +49,10 @@ if __name__ == "__main__":
         "--format=" + DELIM.join(FORMAT_COLS),
         *sys.argv[1:],
     ]
-    raw_branches = subprocess.check_output(command).decode()
+    try:
+        raw_branches = subprocess.check_output(command).decode()
+    except subprocess.CalledProcessError:
+        sys.exit(1)
     branches = [b.strip() for b in raw_branches.split("\n") if b.strip()]
 
     rows = [branch.split(DELIM) for branch in branches]
