@@ -23,13 +23,15 @@ def run_command(args: List[str]):
     subprocess.run(args, check=True)
 
 
-def update_dotfile(file_path: str, new_region_content: str, comment_char: str):
+def update_dotfile(
+    file_path: str, new_region_content: str, comment_char: str, new_line: str = ""
+):
     print(f"[+] Updating file '{file_path}'")
     if DRY_RUN:
         return
     file_content = read_file_if_exists(file_path)
     new_content = update_dotfile_region(file_content, new_region_content, comment_char)
-    with open(file_path, "w") as f_writer:
+    with open(file_path, "w", newline=new_line) as f_writer:
         f_writer.write(new_content)
 
 

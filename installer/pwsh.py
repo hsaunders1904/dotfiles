@@ -4,7 +4,7 @@ import subprocess
 from installer import lib
 
 PWSH_COMMENT_CHAR = "#"
-THIS_DIR = os.dirname(__file__)
+THIS_DIR = os.path.dirname(__file__)
 THIS_PWSH_PROFILE = os.path.join(lib.REPO_ROOT, "dotfiles", ".pwsh_profile.ps1")
 
 
