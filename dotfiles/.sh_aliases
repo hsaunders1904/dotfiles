@@ -4,6 +4,12 @@ if [ -n "$(command -v lsd)" ]; then
     export DISABLE_LS_COLORS="true"  # stop oh-my-zsh from overriding ls alias
     alias ls=lsd
 fi
+if [ -n "$(command -v apt)" ]; then
+    alias apt='sudo apt'
+fi
+if [ -n "$(command -v apt-get)" ]; then
+    alias apt-get='sudo apt-get'
+fi
 
 alias :q=exit
 alias ap=addpath
@@ -13,8 +19,10 @@ alias cg='cd `git rev-parse --show-toplevel`'
 alias cl=cd_and_ls
 alias clc=clear
 alias clip='xclip -selection c'
+alias clip='xclip -selection c'
 alias cpv='rsync -ah --info=progress2'
 alias ii=open
+alias ii=xdg-open
 alias ippub='dig +short myip.opendns.com @resolver1.opendns.com'
 alias la='ls -A'
 alias lla='ls -lA'
@@ -24,6 +32,7 @@ alias md5='openssl md5'
 alias mk=mkdir
 alias mkcd=mkdir_and_cd
 alias op=open
+alias op=xdg-open
 alias path='echo -e ${PATH//:/\\n}'
 alias quit=exit
 alias sha=sha1
@@ -31,6 +40,7 @@ alias sha1='openssl sha1'
 alias sha256='openssl sha256'
 alias sudo='sudo '
 alias untar='tar -xvf'
+alias xclipr='xclip -rmlastnl'
 
 # Typo corrections
 ## Git

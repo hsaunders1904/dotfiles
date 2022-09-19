@@ -24,12 +24,6 @@ if [ -f "${_funcs_path}" ]; then
 fi
 unset _funcs_path
 
-_aliases_path="${DOTFILES_DIR}/dotfiles/.bash_aliases"
-if [ -f "${_aliases_path}" ]; then
-    . "${_aliases_path}"
-fi
-unset _aliases_path
-
 # ls file/directory colours
 # ow and tw change symlinks, and di changes directory colours
 export LS_COLORS="$LS_COLORS:ow=1;94:tw=1;94:di=1;94:ex=0;32"
