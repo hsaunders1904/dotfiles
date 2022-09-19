@@ -10,6 +10,9 @@ fi
 if [ -n "$(command -v apt-get)" ]; then
     alias apt-get='sudo apt-get'
 fi
+if [ -z "$(command -v bat)" ] && [ -n "$(command -v batcat)" ]; then
+    alias bat=batcat
+fi
 
 alias :q=exit
 alias ap=addpath
