@@ -21,7 +21,7 @@
             git branch \"$(git branch --show-current)-BACKUP\" \
             && echo \"Created new branch: $(git branch --show-current)-BACKUP\"; \
         }; f"
-    bl         = !"python3 ${DOTFILES_DIR}/scripts/git_branch_list $@"
+    bl         = !"python \"${DOTFILES_DIR}/scripts/git_branch_list\" $@"
     brsh       = !"git backup && reset --hard"
     c          = commit
     ca         = commit --amend
