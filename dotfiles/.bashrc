@@ -23,7 +23,3 @@ if [ -f "${_funcs_path}" ]; then
     . "${_funcs_path}"
 fi
 unset _funcs_path
-
-# ls file/directory colours
-# ow and tw change symlinks, and di changes directory colours
-export LS_COLORS="$LS_COLORS:ow=1;94:tw=1;94:di=1;94:ex=0;32"

@@ -3,6 +3,10 @@
 # Get 'less' showing UTF-8 characters
 export LESSCHARSET=utf-8
 
+# ls file/directory colours
+# ow and tw change symlinks, and di changes directory colours
+export LS_COLORS="${LS_COLORS}:ow=1;94:tw=1;94:di=36;0:ex=0;32"
+
 if [ -n "$(command -v conda)" ]; then
     conda config --set changeps1 False
 fi
