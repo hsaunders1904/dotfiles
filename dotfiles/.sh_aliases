@@ -22,6 +22,7 @@ fi
 alias :q=exit
 alias ap=addpath
 alias bk=bak
+alias bs=bselect
 alias ca="conda activate"
 alias cg='cd `git rev-parse --show-toplevel`'
 alias cl=cd_and_ls
