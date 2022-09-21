@@ -16,7 +16,7 @@ Install requires Python (>=3.6).
 - If using Ubuntu, install dependencies using `apt`.
 
     ```console
-    sudo apt install ./apt-list.txt
+    sudo apt install $(cat ./apt-list.txt)
     ```
 
     If using some other Linux flavour,
