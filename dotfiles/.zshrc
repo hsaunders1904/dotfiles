@@ -3,12 +3,6 @@
 DOTFILES_DIR="$(dirname "${0:a:h}")"
 export DOTFILES_DIR
 
-_shrc="${DOTFILES_DIR}/dotfiles/.shrc"
-if [ -f "${_shrc}" ]; then
-    . "${_shrc}"
-fi
-unset _shrc
-
 # oh-my-zsh settings
 if [ -d "${HOME}/.oh-my-zsh" ]; then
     export ZSH="${HOME}/.oh-my-zsh"
@@ -17,6 +11,12 @@ if [ -d "${HOME}/.oh-my-zsh" ]; then
     plugins=(git copyfile extract)
     source ${ZSH}/oh-my-zsh.sh
 fi
+
+_shrc="${DOTFILES_DIR}/dotfiles/.shrc"
+if [ -f "${_shrc}" ]; then
+    . "${_shrc}"
+fi
+unset _shrc
 
 # ls file/directory colours
 # ow and tw change symlinks, and di changes directory colours
