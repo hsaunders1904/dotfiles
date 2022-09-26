@@ -31,6 +31,7 @@ alias clip='xclip -selection c'
 alias clip='xclip -selection c'
 alias cpv='rsync -ah --info=progress2'
 alias ippub='dig +short myip.opendns.com @resolver1.opendns.com'
+alias ipy=ipython
 alias l='ls -1'
 alias la='ls -A'
 alias lla='ls -lA'
@@ -42,6 +43,7 @@ alias mkcd=mkdir_and_cd
 alias op=open
 alias op=xdg-open
 alias path='echo -e ${PATH//:/\\n}'
+alias py=python
 alias quit=exit
 alias sha=sha1
 alias sha1='openssl sha1'
