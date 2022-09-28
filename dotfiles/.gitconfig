@@ -131,7 +131,7 @@
     sta        = stash apply
     stash-save = "!git aa && git stash -k && git reset"
     sti        = stash --keep-index
-    stl        = "!git stash list --pretty=format:\"%C(magenta)%>(10)%gd%C(yellow)%>(8)%h%C(reset) %<(80,trunc)%s %C(green)(%cr)%C(reset)\""
+    stl        = "!git stash list --pretty=format:\"%C(magenta)%>(10)%gd %C(yellow)%>(8)%h%C(reset) %<(80,trunc)%s %C(green)(%cr)%C(reset)\""
     stp        = stash push
     strip-whitespace = "!sed -bi 's/[[:space:]]*$//' $(git diff --name-only --cached)"
     sts        = stash-save
