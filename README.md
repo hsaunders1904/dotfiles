@@ -16,7 +16,7 @@ Install requires Python (>=3.6).
 - If using Ubuntu, install dependencies using `apt`.
 
     ```console
-    sudo apt install $(cat ./apt-list.txt)
+    sudo apt install $(cat ./apps/apt-list.txt)
     ```
 
     If using some other Linux flavour,
@@ -33,7 +33,7 @@ Install requires Python (>=3.6).
 - Install dependencies using `Brewfile`.
 
     ```console
-    brew bundle
+    brew bundle --file ./apps/Brewfile
     ```
 
 - Run the installer module.
@@ -48,7 +48,7 @@ Install requires Python (>=3.6).
 - Install required packages.
 
     ```console
-    powershell.exe -Command "foreach($line in Get-Content .\winget-list.txt) { winget install $line }"
+    powershell.exe -Command "foreach($line in Get-Content .\apps\winget-list.txt) { winget install $line }"
     ```
 
 - Run installer module.
