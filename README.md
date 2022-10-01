@@ -42,15 +42,15 @@ Install requires Python (>=3.6).
     python3 -m installer
     ```
 
-
 ### Windows
 
 - Install [winget](https://learn.microsoft.com/en-us/windows/package-manager/winget/).
 - Install required packages.
 
     ```console
-    powershell.exe -Command "winget install $(Get-Content ./winget-list.txt)"
+    powershell.exe -Command "foreach($line in Get-Content .\winget-list.txt) { winget install $line }"
     ```
+
 - Run installer module.
 
     ```console
