@@ -2,3 +2,7 @@
 	path = apps/oh-my-zsh/plugins/zsh-autosuggestions
 	url = https://github.com/zsh-users/zsh-autosuggestions
 	branch = master
+[submodule "apps/oh-my-zsh/plugins/autoupdate"]
+	path = apps/oh-my-zsh/plugins/autoupdate
+	url = https://github.com/TamCore/autoupdate-oh-my-zsh-plugins
+	branch = master
