@@ -32,7 +32,7 @@ def ohmyzsh_installed():
 
 
 def install_ohmyzsh():
-    installer_path = os.path.join(lib.REPO_ROOT, "external", "zsh_install.sh")
+    installer_path = os.path.join(lib.REPO_ROOT, "external", "ohmyzsh_install.sh")
     lib.download_file(OHMYZSH_URL, installer_path, log=False)
     install_cmd = [
         "sh",
