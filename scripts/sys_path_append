@@ -5,7 +5,6 @@ and return the new string.
 """
 
 import os
-
 from argparse import ArgumentParser
 
 parser = ArgumentParser()

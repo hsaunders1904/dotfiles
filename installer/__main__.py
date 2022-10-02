@@ -2,7 +2,6 @@ import os
 import shutil
 
 from installer import bash, git, pwsh, vim, zsh
-from installer.lib import REPO_ROOT
 from installer.common import download_z_jump_around
 from installer.lib import REPO_ROOT
 
