@@ -20,3 +20,16 @@ extract() {
         echo "'$1' is not a valid file"
     fi
 }
+
+noglob() {
+    # Prevent globbing for the executed command; attempts to replicate the
+    # equivalent zsh command.
+    local noglob_set="${-//[^f]/}"
+    if [ -n "${noglob_set}" ]; then
+        set -f
+    fi
+    $@
+    if [ -n "${noglob_set}" ]; then
+        set +f
+    fi
+}
