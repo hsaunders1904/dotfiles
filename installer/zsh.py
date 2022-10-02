@@ -13,12 +13,22 @@ OHMYZSH_URL = "https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh"
 
 def install():
     update_zshrc()
-    install_ohmyzsh()
+    if not ohmyzsh_installed():
+        install_ohmyzsh()
+    else:
+        print("[-] oh-my-zsh already installed")
 
 
 def update_zshrc():
     import_str = build_file_import_str(THIS_ZSH_PATH)
     lib.update_dotfile(HOME_ZSH_PATH, import_str, SH_COMMENT_CHAR, new_line="\n")
+
+
+def ohmyzsh_installed():
+    path = os.environ.get("ZSH", None)
+    if path is not None:
+        return os.path.isdir(path)
+    return False
 
 
 def install_ohmyzsh():
