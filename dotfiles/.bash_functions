@@ -33,3 +33,6 @@ noglob() {
         set +f
     fi
 }
+
+# shellcheck disable=SC2275
+=() { noglob "${DOTFILES_DIR}/scripts/calc" "$@"; }

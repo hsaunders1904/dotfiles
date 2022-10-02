@@ -24,6 +24,7 @@ alias ap=addpath
 alias bk=bak
 alias bs=bselect
 alias ca="conda activate"
+alias calc='noglob "${DOTFILES_DIR}/scripts/calc"'
 alias cg='cd `git rev-parse --show-toplevel`'
 alias cl=cd_and_ls
 alias clc=clear

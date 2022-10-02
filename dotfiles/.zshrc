@@ -26,3 +26,9 @@ if [ -f "${_shrc}" ]; then
     . "${_shrc}"
 fi
 unset _shrc
+
+_aliases="${DOTFILES_DIR}/dotfiles/.zsh_aliases"
+if [ -f "${_aliases}" ]; then
+    . "${_aliases}"
+fi
+unset _aliases
