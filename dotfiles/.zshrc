@@ -16,6 +16,7 @@ if [ -d "${HOME}/.oh-my-zsh" ]; then
         copyfile
         extract
         poetry
+        rust
         zsh-autosuggestions
     )
     source ${ZSH}/oh-my-zsh.sh
