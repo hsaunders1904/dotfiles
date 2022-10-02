@@ -48,7 +48,7 @@ Install requires Python (>=3.6).
 - Install required packages.
 
     ```console
-    powershell.exe -Command "foreach($line in Get-Content .\apps\winget-list.txt) { winget install $line }"
+    powershell.exe -Command 'foreach($App in Get-Content .\apps\winget-list.txt) { winget install "${App}" }'
     ```
 
 - Run installer module.
