@@ -19,7 +19,7 @@ if [ -d "${HOME}/.oh-my-zsh" ]; then
         rust
         zsh-autosuggestions
     )
-    source ${ZSH}/oh-my-zsh.sh
+    source "${ZSH}/oh-my-zsh.sh"
 fi
 
 _shrc="${DOTFILES_DIR}/dotfiles/.shrc"
