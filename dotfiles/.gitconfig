@@ -95,7 +95,7 @@
     ldday      = !"f() { git ld --after=\"$1 00:00\" --before=\"$1 23:59\"; }; f"
     lfp        = log --oneline --first-parent
     lg         = log
-    lgd        = log --pretty=format:'%C(yellow)%h %Cblue%>(12)%ad %Cgreen%<(7)%aN %Creset%s' --date=short
+    lgd        = log --pretty=format:'%C(yellow)%h  %Cblue%ad  %Cgreen%<(7)%aN  %Creset%s' --date=short
     lgday      = !"f() { git lg --after=\"$1 00:00\" --before=\"$1 23:59\"}; }; f"
     ll         = log --oneline -n 30
     lld        = lgd -n 30
