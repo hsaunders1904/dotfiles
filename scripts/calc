@@ -3,8 +3,8 @@
 Script used as a command line calculator.
 
 Really, this can be used to execute arbitrary Python code, but the
-intention is that it's aliased as 'noglob calc' and used as a CLI for
-quick calculations.
+intention is that it's aliased as "calc='noglob calc'" and used as a CLI
+for quick calculations.
 """
 
 import argparse
