@@ -156,4 +156,4 @@
     stp        = stash push
     strip-whitespace = "!sed -bi 's/[[:space:]]*$//' $(git diff --name-only --cached)"
     sts        = stash-save
-    test-pr    = !"f() { git fetch $1 pull/$2/merge:pr/$2-merged && git checkout pr/$2-merged && git merge $1/$(git main $1) --no-edit; }; f"
+    test-pr    = !"${DOTFILES_DIR}/scripts/git_checkout_pr"

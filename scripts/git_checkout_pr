@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+# Checkout a PR from GitHub generating a sensible branch name.
+# You must input as the first argument, the number of the PR.
+# The second input is the remote to pull the PR from, default is 'origin'.
+
+if [ -z "$1" ]; then
+    echo 'fatal: must give PR number' && exit 1
+else
+    pr_num="$1"
+fi
+if [ -z "$2" ]; then
+    remote="origin"
+else
+    remote="$2"
+fi
+
+pr_branch_name="$(\
+    gh pr view "${pr_num}" --json headRefName --jq .headRefName |
+        awk '{$1=$1;print tolower($0)}' |
+        sed 's/[^a-zA-Z0-9.-/]/_/g'
+)"
+base_name="$(dirname "${pr_branch_name}")"
+if [ "${base_name}" = "." ]; then
+    base_name=""
+else
+    base_name="/${base_name}"
+fi
+leaf_name="$(basename "${pr_branch_name}")"
+new_branch_name="pull_request${base_name}/${pr_num}-${leaf_name}"
+
+git fetch "${remote}" "pull/${pr_num}/merge:${new_branch_name}"
+git checkout "${new_branch_name}"
