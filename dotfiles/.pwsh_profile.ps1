@@ -20,4 +20,4 @@ if (${PSVersionTable}.PSEdition -Eq 'Core') {
     Import-Module ZLocation  # ZLocation doesn't work in normal PowerShell
 }
 
-${env:PATH} = Remove-PathDuplicates ${env:PATH}
+$env:PATH = Remove-PathDuplicates "${env:PATH}"
