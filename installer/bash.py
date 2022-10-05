@@ -5,7 +5,7 @@ from installer import lib
 __all__ = ["install"]
 
 SH_COMMENT_CHAR = "#"
-HOME_BASHRC_PATH = os.path.join(os.path.expanduser("~"), ".bashrc")
+HOME_BASHRC_PATH = os.path.expanduser("~/.bashrc")
 THIS_BASHRC_PATH = os.path.join(lib.REPO_ROOT, "dotfiles", ".bashrc")
 
 

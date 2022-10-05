@@ -1,11 +1,6 @@
-import os
 import shutil
 
 from installer import bash, diff_so_fancy, git, pwsh, vim, z, zsh
-from installer.common import download_z_jump_around
-from installer.lib import REPO_ROOT
-
-EXTERNAL_DIR = os.path.join(REPO_ROOT, "external")
 
 
 def is_executable(exe_name: str) -> bool:
@@ -18,9 +13,7 @@ def install():
     if is_executable("zsh"):
         zsh.install()
     if is_executable("bash") or is_executable("zsh"):
-        out_path = os.path.join(EXTERNAL_DIR, "z.sh")
-        if not os.path.isfile(out_path):
-            download_z_jump_around(out_path)
+        z.install()
     if is_executable("git"):
         git.install()
         diff_so_fancy.install()

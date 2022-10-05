@@ -7,6 +7,7 @@ from urllib import request
 
 DRY_RUN = False
 REPO_ROOT = Path(__file__).parent.parent
+EXTERNAL_DIR = os.path.join(REPO_ROOT, "external")
 REGION_START = ">>> hsaunders1904/dotfiles >>>"
 REGION_END = "<<< hsaunders1904/dotfiles <<<"
 
@@ -31,8 +32,9 @@ def update_dotfile(
         return
     file_content = read_file_if_exists(file_path)
     new_content = update_dotfile_region(file_content, new_region_content, comment_char)
-    with open(file_path, "w", newline=new_line) as f_writer:
-        f_writer.write(new_content)
+    if new_content is not None:
+        with open(file_path, "w", newline=new_line) as f_writer:
+            f_writer.write(new_content)
 
 
 def update_dotfile_region(string: str, new_content: str, comment_char: str):
@@ -52,7 +54,7 @@ def update_dotfile_region(string: str, new_content: str, comment_char: str):
         f"{comment_char} {REGION_END}\n"
     )
     if match:
-        # escape backlashes, particularly for Windows paths
+        # escape backlashes, particularly important for Windows paths
         return re_pattern.sub(new_region.replace("\\", "\\\\"), string)
     else:
         if string == "":

@@ -2,6 +2,8 @@ import os
 
 from installer.lib import REPO_ROOT, update_dotfile
 
+__all__ = ["install"]
+
 COMMENT_CHAR = '"'
 RC_FILE = ".vimrc"
 HOME_RC_PATH = os.path.join(os.path.expanduser("~"), RC_FILE)
