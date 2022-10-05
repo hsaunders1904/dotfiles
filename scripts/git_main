@@ -4,32 +4,56 @@
 # It does this by:
 #  1. checking for the branch name in 'refs/remotes/<REMOTE>/HEAD'
 #  2. checking the HEAD branch for the remote using 'git remote show'
+#  3. return value from config option 'init.defaultBranch', if it's not empty
 # If the branch cannot be determined by these methods, return a default: 'main'
+# and exit with error code 2. If there are any uncrecoverable errors (e.g.,
+# you're not in a git repo), this returns error code 1.
 
 readonly DEFAULT_REMOTE="origin"
-readonly FALLBACK_BRANCH="main"
+readonly DEFAULT_FALLBACK="main"
 
 function main() {
     exit_if_not_in_git_repo
 
-    REMOTE="$(parse_remote_with_default "$1" "${DEFAULT_REMOTE}")"
-    if [ "$(remote_exists "${REMOTE}")" = false ]; then
-        echo "${FALLBACK_BRANCH}" && exit 1
+    # Deal with inputs
+    INPUT_REMOTE=$1
+
+    # The fallback is the local setting for the default branch
+    FALLBACK="$(git config --get init.defaultBranch)"
+    if [ -n "${FALLBACK}" ]; then
+        FALLBACK="${DEFAULT_FALLBACK}"
     fi
 
+    # Check the remote exists; if it does not and a remote is given on the
+    # command line error out, if no remote inputted, return our fallback
+    REMOTE="$(parse_remote_with_default "${INPUT_REMOTE}")"
+    if [ "$(remote_exists "${REMOTE}")" = false ]; then
+        if [ -n "${INPUT_REMOTE}" ]; then
+            echo "fatal: remote '${REMOTE}' not known" >&2
+            exit 1
+        fi
+        echo "${FALLBACK}" && exit 2
+    fi
+
+    # Try getting the head branch from '.git/refs/remotes/<REMOTE>/HEAD'
     REPO_ROOT="$(git rev-parse --show-toplevel)"
     HEAD_FILE="${REPO_ROOT}/.git/refs/remotes/${REMOTE}/HEAD"
-    if [ ! -f "${HEAD_FILE}" ]; then
-        HEAD_BRANCH="$(git remote show "${REMOTE}" 2>/dev/null | sed -n '/HEAD branch/s/.*: //p')"
-        return_fallback_if_empty "${HEAD_BRANCH}"
-        # set the remote HEAD for fast lookup next time
-        git remote set-head "${REMOTE}" "${HEAD_BRANCH}"
-    else
+    if [ -f "${HEAD_FILE}" ]; then
         HEAD_BRANCH="$(sed -e 's/^.*\///' <"${HEAD_FILE}")"
+        if [ -n "${HEAD_BRANCH}" ]; then
+            echo "${HEAD_BRANCH}" && exit 0
+        fi
     fi
 
-    return_fallback_if_empty "${HEAD_BRANCH}"
-    echo "${HEAD_BRANCH}"
+    # Get the head branch using 'git remote show'
+    HEAD_BRANCH="$(git remote show "${REMOTE}" 2>/dev/null | sed -n '/HEAD branch/s/.*: //p')"
+    if [ -n "${HEAD_BRANCH}" ]; then
+        # Set the remote HEAD file for fast lookup next time
+        git remote set-head "${REMOTE}" "${HEAD_BRANCH}"
+        echo "${HEAD_BRANCH}" && exit 0
+    fi
+
+    echo "${FALLBACK}" && exit 2
 }
 
 function remote_exists() {
@@ -51,12 +75,6 @@ function parse_remote_with_default() {
         echo "${DEFAULT_REMOTE}"
     else
         echo "${REMOTE}"
-    fi
-}
-
-function return_fallback_if_empty() {
-    if [ -z "$1" ]; then
-        echo "${FALLBACK_BRANCH}" && exit 1
     fi
 }
 
