@@ -15,3 +15,7 @@ set tabstop=4
 set term=xterm-256color
 
 syntax on
+
+" Make misspelled words red and italic
+hi clear SpellBad
+hi SpellBad cterm=italic ctermfg=red
