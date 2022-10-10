@@ -31,7 +31,7 @@ if [ -f "${_z_path}" ]; then
 fi
 unset _z_path
 
-# Import some functions - mostly more complex aliases
+# Function definitions
 _funcs_path="${DOTFILES_DIR}/dotfiles/.sh_functions"
 if [ -f "${_funcs_path}" ]; then
     . "${_funcs_path}"
