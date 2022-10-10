@@ -33,15 +33,14 @@ cpath() {
     fi
 
     if [ -n "$(command -v xclip)" ]; then
-        echo -n "${_path}" | xclip -selection c &&
-            echo "'${_path}' copied to clipboard"
+        printf '%s' "${_path}" | xclip -selection c
     elif [ -n "$(command -v pbcopy)" ]; then
-        echo -n "${_path}" | pbcopy &&
-            echo "'${_path}' copied to clipboard"
+        printf '%s' "${_path}" | pbcopy
     else
-        echo "Could not find 'xlcip' or 'pbcopy' to copy path."
+        echo "Could not find 'xclip' or 'pbcopy' to copy path."
         return
     fi
+    echo "'${_path}' copied to clipboard"
 }
 
 mkdir_and_cd() {
