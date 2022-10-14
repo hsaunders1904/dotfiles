@@ -6,10 +6,13 @@ Set-Alias cg Set-LocationGitRoot
 Set-Alias cpath Copy-Path
 Set-Alias IM Import-Module
 Set-Alias IVS Import-VisualStudio
+Set-Alias ipy ipython
 Set-Alias notepad++ ${Env:ProgramFiles}\Notepad++\notepad++.exe
 Set-Alias npp ${Env:ProgramFiles}\Notepad++\notepad++.exe
 Set-Alias op Invoke-Item
 Set-Alias print Write-Output
+Set-Alias py python
+Set-Alias pyt pytest
 Set-Alias pycharm Invoke-PyCharm
 Set-Alias sha sha1
 Set-Alias shutdown-in Invoke-ShutdownIn
