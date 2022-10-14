@@ -69,6 +69,7 @@ alias sha1='openssl sha1'
 alias sha256='openssl sha256'
 alias sudo='sudo '
 alias untar='tar -xvf'
+alias vs-init='bash ${DOTFILES_DIR}/scripts/vscode-init.sh'
 
 # Typo corrections
 ## Git
