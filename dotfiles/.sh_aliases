@@ -28,6 +28,9 @@ if [ -n "$(command -v xclip)" ]; then
 elif [ -n "$(command -v pbcopy)" ]; then
     alias clipr="perl -pe 'chomp if eof' | pbcopy"
 fi
+if [ -n "$(command -v fdfind)" ]; then
+    alias fd=fdfind
+fi
 _diff_so_fancy="${DOTFILES_DIR}/external/diff-so-fancy/diff-so-fancy"
 if [ -f "${_diff_so_fancy}" ]; then
     # shellcheck disable=SC2139
