@@ -5,7 +5,7 @@
 
 make_file_with_content() {
     if [ ! -f "$1" ]; then
-        echo "$2" > "$1"
+        echo "$2" >"$1"
     fi
 }
 
