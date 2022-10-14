@@ -15,11 +15,17 @@ else
     remote="$2"
 fi
 
-pr_branch_name="$(\
-    gh pr view "${pr_num}" --json headRefName --jq .headRefName |
-        awk '{$1=$1;print tolower($0)}' |
-        sed 's/[^a-zA-Z0-9.-/]/_/g'
-)"
+remote_url="$(git remote get-url "${remote}")"
+if [[ "${remote_url}" == git@github* ]]; then
+    pr_branch_name="$(
+        gh pr view "${pr_num}" --json headRefName --jq .headRefName |
+            awk '{$1=$1;print tolower($0)}' |
+            sed 's/[^a-zA-Z0-9.-/]/_/g'
+    )"
+else
+    echo "unsupported remote host: '${remote_url}'"
+    exit 1
+fi
 base_name="$(dirname "${pr_branch_name}")"
 if [ "${base_name}" = "." ]; then
     base_name=""
