@@ -17,10 +17,10 @@ parser.add_argument(
 )
 args = parser.parse_args()
 
-if os.name == "posix":
-    PATH_SEP = ":"
-elif os.name == "nt":
+if os.name == "nt":
     PATH_SEP = ";"
+else:
+    PATH_SEP = ":"
 
 sys_paths = os.environ["PATH"].strip(PATH_SEP).split(PATH_SEP)
 new_paths = [os.path.realpath(path) for path in args.new_paths]
