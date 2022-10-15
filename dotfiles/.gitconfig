@@ -54,7 +54,9 @@
     cl         = clean
     cla        = clean -ixd
     cln        = clean -n
+    cloner     = clone --recurse-submodules
     co         = checkout
+    cor        = checkout --recurse-submodules
     co-        = co -
     copr       = !"${DOTFILES_DIR}/scripts/git_checkout_pr"
     cob        = checkout -b
