@@ -66,10 +66,11 @@
     co-        = co -
     copr       = !"${DOTFILES_DIR}/scripts/git_checkout_pr"
     cob        = checkout -b
-    cobgh      = !"f() { \
+    cobgh      = !"\
+        f() { \
             name=\"$(gh issue view $1 --json title --jq '.title' \
-            | awk '{$1=$1;print tolower($0)}' \
-            | sed 's/[^a-zA-Z0-9.-]/_/g')\" \
+                | awk '{$1=$1;print tolower($0)}' \
+                | sed 's/[^a-zA-Z0-9.-]/_/g')\" \
             && ! [ -z \"${name}\" ] && git checkout -b \"$1_${name}\"; \
         }; f"
     com        = !"git checkout $(git main)"
