@@ -1,6 +1,6 @@
 import shutil
 
-from installer import bash, diff_so_fancy, git, pwsh, vim, z, zsh
+from installer import bash, diff_so_fancy, git, pwsh, vim, wsl, z, zsh
 
 
 def is_executable(exe_name: str) -> bool:
@@ -10,6 +10,8 @@ def is_executable(exe_name: str) -> bool:
 def install():
     if is_executable("bash"):
         bash.install()
+        if wsl.is_wsl():
+            wsl.install()
     if is_executable("zsh"):
         zsh.install()
     if is_executable("bash") or is_executable("zsh"):
