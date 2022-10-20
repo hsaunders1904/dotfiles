@@ -46,14 +46,8 @@ function Get-HistoryFull() {
 }
 
 function Import-VisualStudio() {
-    param(
-        [string][ValidateSet("x64", "x86")][Alias("A")] $Arch = "x64",
-        [int][ValidateSet(2017, 2019)][Alias("R")] $Release = 2019
-    )
-    $VsRoot = "${Env:ProgramFiles(x86)}\Microsoft Visual Studio"
-    $ToolsDir = Join-Path "${VsRoot}" "${Release}\Community\Common7\Tools"
-    $DevShellPath = Join-Path "${ToolsDir}" "VsDevCmd.bat"
-    Invoke-BatchFile "${DevShellPath}" -Parameters "-arch=${Arch}"
+    param([string] $Arch = "${Env:PROCESSOR_ARCHITECTURE}")
+    Import-VisualStudioVars -Architecture "${Arch}"
 }
 
 function Invoke-PyCharm() {
