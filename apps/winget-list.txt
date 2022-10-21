@@ -2,4 +2,5 @@ Git.Git
 GitHub.cli
 Microsoft.PowerShell
 Microsoft.WindowsTerminal
+JanDeDobbeleer.OhMyPosh
 Python.Python.3.9
