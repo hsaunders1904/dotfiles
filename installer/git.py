@@ -16,7 +16,7 @@ def install():
 
 def get_config_option_values(option):
     args = ["git", "config", "--global", "--get-all", option]
-    return lib.run_command_get_output(args).strip().split("\n")
+    return lib.run_command_get_output(args, log=False).strip().split("\n")
 
 
 def set_config_option_value(option, value):

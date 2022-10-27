@@ -12,7 +12,11 @@ REGION_START = ">>> hsaunders1904/dotfiles >>>"
 REGION_END = "<<< hsaunders1904/dotfiles <<<"
 
 
-def run_command_get_output(args: List[str]) -> str:
+def run_command_get_output(args: List[str], log=True) -> str:
+    if log:
+        print(f"[+] {' '.join(args)}")
+    if DRY_RUN:
+        return
     result = subprocess.run(args, stdout=subprocess.PIPE)
     return result.stdout.decode()
 
@@ -31,13 +35,13 @@ def update_dotfile(
     if DRY_RUN:
         return
     file_content = read_file_if_exists(file_path)
-    new_content = update_dotfile_region(file_content, new_region_content, comment_char)
+    new_content = _update_dotfile_region(file_content, new_region_content, comment_char)
     if new_content is not None:
         with open(file_path, "w", newline=new_line) as f_writer:
             f_writer.write(new_content)
 
 
-def update_dotfile_region(string: str, new_content: str, comment_char: str):
+def _update_dotfile_region(string: str, new_content: str, comment_char: str):
     region_re = (
         f"{comment_char} *{REGION_START}\n"
         r"([\s\S]*)\n"
@@ -63,11 +67,11 @@ def update_dotfile_region(string: str, new_content: str, comment_char: str):
             return f"{string}\n{new_region}"
 
 
-def download_file(url: str, out_path: str, log=True, force: bool = False):
-    if log:
-        print(f"[+] Downloading '{url}' -> '{out_path}'")
+def download_file(url: str, out_path: str, log: bool = True, force: bool = False):
     if os.path.isfile(out_path) and not force:
         return
+    if log:
+        print(f"[+] Downloading '{url}' -> '{out_path}'")
     if DRY_RUN:
         return
     try:

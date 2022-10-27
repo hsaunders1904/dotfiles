@@ -9,19 +9,25 @@ def is_executable(exe_name: str) -> bool:
 
 def install():
     if is_executable("bash"):
+        print("Bash...")
         bash.install()
         if wsl.is_wsl():
+            print("WSL...")
             wsl.install()
     if is_executable("zsh"):
+        print("ZSH...")
         zsh.install()
     if is_executable("bash") or is_executable("zsh"):
         z.install()
     if is_executable("git"):
+        print("Git...")
         git.install()
         diff_so_fancy.install()
     if is_executable("vim"):
+        print("Vim...")
         vim.install()
     if is_executable("pwsh"):
+        print("PowerShell...")
         pwsh.install()
 
 

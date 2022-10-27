@@ -13,12 +13,12 @@ OHMYZSH_URL = "https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh"
 
 
 def install():
-    pull_plugins()
-    update_zshrc()
     if not ohmyzsh_installed():
         install_ohmyzsh()
     else:
         print("[-] oh-my-zsh already installed")
+    pull_plugins()
+    update_zshrc()
 
 
 def update_zshrc():
