@@ -15,6 +15,7 @@ if [ -z "$(command -v bat)" ] && [ -n "$(command -v batcat)" ]; then
 fi
 if [ -n "$(command -v xdg-open)" ]; then
     alias ii=xdg-open
+    alias open=xdg-open
 elif [ -n "$(command -v open)" ]; then
     alias ii=open
 fi
@@ -59,7 +60,6 @@ alias md5='openssl md5'
 alias mk=mkdir
 alias mkcd=mkdir_and_cd
 alias op=open
-alias open=xdg-open
 alias path='echo -e ${PATH//:/\\n}'
 alias py=python
 alias pyt=pytest
