@@ -21,12 +21,9 @@ elif [ -n "$(command -v open)" ]; then
 fi
 if [ -n "$(command -v xclip)" ]; then
     alias clip='xclip -selection c'
-elif [ -n "$(command -v pbcopy)" ]; then
-    alias clip='pbcopy'
-fi
-if [ -n "$(command -v xclip)" ]; then
     alias clipr='xclip -rmlastnl'
 elif [ -n "$(command -v pbcopy)" ]; then
+    alias clip='pbcopy'
     alias clipr="perl -pe 'chomp if eof' | pbcopy"
 fi
 if [ -n "$(command -v fdfind)" ]; then
