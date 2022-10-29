@@ -12,7 +12,15 @@ $env:DOTFILES_DIR = Split-Path "${PSScriptRoot}"
 # Configure aliases and the prompt
 Import-Module "${env:DOTFILES_DIR}/dotfiles/.pwsh_aliases.psm1"
 Import-Module "${env:DOTFILES_DIR}/dotfiles/.pwsh_functions.psm1"
-Import-Module "${env:DOTFILES_DIR}/dotfiles/.pwsh_prompt.psm1"
+if (Get-Command oh-my-posh) {
+    $env:POSH_GIT_ENABLED = $true
+    $ThemesDir = "${env:DOTFILES_DIR}/apps/oh-my-posh/themes"
+    $ThemeName = "multiverse-neon-custom"
+    oh-my-posh init pwsh --config "${ThemesDir}\${ThemeName}.omp.json" `
+        | Invoke-Expression
+} else {
+    Import-Module "${env:DOTFILES_DIR}/dotfiles/.pwsh_prompt.psm1"
+}
 
 # Import external modules
 Import-Module posh-git
@@ -21,3 +29,4 @@ if (${PSVersionTable}.PSEdition -Eq 'Core') {
 }
 
 $env:PATH = Remove-PathDuplicates "${env:PATH}"
+
