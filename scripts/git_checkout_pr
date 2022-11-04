@@ -4,6 +4,8 @@
 # You must input as the first argument, the number of the PR.
 # The second input is the remote to pull the PR from, default is 'origin'.
 
+set -e
+
 if [ -z "$1" ]; then
     echo 'fatal: must give PR number' && exit 1
 else
