@@ -74,7 +74,7 @@ add-zsh-hook precmd vcs_info
 function _get_conda_env() {
     conda_prompt="${CONDA_DEFAULT_ENV}"
     if [ "${conda_prompt}" != "" ] && [ "${conda_prompt}" != "base" ]; then
-        conda_prompt="\uf81f ${conda_prompt} "
+        conda_prompt="\ue235${conda_prompt} "
         echo "%{$oxide_yellow%}${conda_prompt}%{$oxide_reset_color%}"
     fi
 }
