@@ -72,16 +72,23 @@ zstyle ':vcs_info:git*+set-message:*' hooks git-untracked
 # Executed before each prompt.
 add-zsh-hook precmd vcs_info
 
-function _get_conda_env() {
-    conda_prompt="${CONDA_DEFAULT_ENV}"
-    if [ "${conda_prompt}" != "" ] && [ "${conda_prompt}" != "base" ]; then
-        conda_prompt="\ue235${conda_prompt} "
-        echo "%{$oxide_yellow%}${conda_prompt}%{$oxide_reset_color%} "
+function _get_python_env() {
+    # Prioritise venvs over conda, as we could be in a venv within conda
+    if [ -n "${VIRTUAL_ENV}" ]; then
+        _py_env="$(basename "${VIRTUAL_ENV}")"
+    elif [ -n "${CONDA_DEFAULT_ENV}" ] && [ "${CONDA_DEFAULT_ENV}" != "base" ]; then
+        _py_env="${CONDA_DEFAULT_ENV}"
+    fi
+    if [ -n "${_py_env}" ]; then
+        echo "(\ue235 ${_py_env}) "
     fi
 }
 
+# Stop Python virtual environments from editing prompt
+export VIRTUAL_ENV_DISABLE_PROMPT=1
+
 PROMPT=$'\n'
 PROMPT+=$'%{$oxide_limegreen%}%/%{$oxide_reset_color%} '
-PROMPT+=$'%{$oxide_yellow%}$(_get_conda_env)%{$oxide_reset_color%}'
+PROMPT+=$'%{$oxide_yellow%}$(_get_python_env)%{$oxide_reset_color%}'
 PROMPT+=$'${vcs_info_msg_0_}\n'
 PROMPT+=$'%(?.%{$oxide_white%}.%{$oxide_red%})%(!.#.»)%{$oxide_reset_color%} '
