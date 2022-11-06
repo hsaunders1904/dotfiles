@@ -28,6 +28,7 @@ autoload -U add-zsh-hook
 autoload -Uz vcs_info
 
 # Use True color (24-bit) if available.
+oxide_white="%F{white}"
 if [[ "${terminfo[colors]}" -ge 256 ]]; then
     oxide_turquoise="%F{73}"
     oxide_orange="%F{179}"
@@ -75,9 +76,12 @@ function _get_conda_env() {
     conda_prompt="${CONDA_DEFAULT_ENV}"
     if [ "${conda_prompt}" != "" ] && [ "${conda_prompt}" != "base" ]; then
         conda_prompt="\ue235${conda_prompt} "
-        echo "%{$oxide_yellow%}${conda_prompt}%{$oxide_reset_color%}"
+        echo "%{$oxide_yellow%}${conda_prompt}%{$oxide_reset_color%} "
     fi
 }
 
-# Oxide prompt style.
-PROMPT=$'\n%{$oxide_limegreen%}%/%{$oxide_reset_color%} $(_get_conda_env)${vcs_info_msg_0_}\n%(?.%{%F{white}%}.%{$oxide_red%})%(!.#.»)%{$oxide_reset_color%} '
+PROMPT=$'\n'
+PROMPT+=$'%{$oxide_limegreen%}%/%{$oxide_reset_color%} '
+PROMPT+=$'%{$oxide_yellow%}$(_get_conda_env)%{$oxide_reset_color%}'
+PROMPT+=$'${vcs_info_msg_0_}\n'
+PROMPT+=$'%(?.%{$oxide_white%}.%{$oxide_red%})%(!.#.»)%{$oxide_reset_color%} '
