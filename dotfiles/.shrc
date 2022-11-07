@@ -17,9 +17,6 @@ if [ -d "${HOME}/.local/bin" ]; then
 fi
 
 # Tab-completion
-if [ -x "$(command -v conda)" ]; then
-    eval "$(register-python-argcomplete conda)"
-fi
 if [ -x "$(command -v gh)" ]; then
     eval "$(gh completion -s "$(basename "${SHELL}")")"
 fi
