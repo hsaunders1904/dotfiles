@@ -29,6 +29,8 @@
     [diff-so-fancy]
         markEmptyLines = false
         stripLeadingSymbols = false
+[rebase]
+    autosquash = true
 [alias]
     a          = add
     aa         = add --all
