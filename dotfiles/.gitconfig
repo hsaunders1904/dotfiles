@@ -139,6 +139,7 @@
     rbom       = !"git fetch origin $(git main) && git rebase origin/$(git main)"
     rbs        = rebase --autostash
     rbsi       = rebase --autostash --interactive
+    rbsq       = -c sequence.editor=: rebase --autosquash --interactive
     rbum       = !"git fetch upstream $(git main) && git rebase upstream/$(git main)"
     repo       = !"gh repo view --web"
     rev        = revert
