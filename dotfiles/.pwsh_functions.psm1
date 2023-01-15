@@ -11,6 +11,7 @@ function path { ${Env:PATH}.split(";") }
 function sha1($File) { (Get-FileHash -Algorithm SHA1 ${File}).Hash.ToLower() }
 function sha256($File) { (Get-FileHash -Algorithm SHA256 ${File}).Hash.ToLower() }
 function vim($File) { ${File} = ${File} -replace "\\", "/"; bash -c "vi ${File}" }
+function vs-init() { python Join-Path ${Env:DOTFILES_DIR} scripts vs_init.py }
 function which($Command) { (Get-Command ${Command} -ErrorAction SilentlyContinue).Path }
 
 function Add-Path {
