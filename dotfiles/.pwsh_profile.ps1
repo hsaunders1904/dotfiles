@@ -29,4 +29,3 @@ if (${PSVersionTable}.PSEdition -Eq 'Core') {
 }
 
 $env:PATH = Remove-PathDuplicates "${env:PATH}"
-
