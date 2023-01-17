@@ -1,3 +1,9 @@
+if (Test-Path alias:ls) {
+    Remove-Alias ls
+}
+Set-Alias lsa Get-ChildItem
+function ls() { Get-ChildItem -Exclude '.*' ${Args} }
+
 Set-Alias addpath add-path
 Set-Alias apath add-path
 Set-Alias bak New-Backup
@@ -10,6 +16,7 @@ Set-Alias ipy ipython
 Set-Alias notepad++ ${Env:ProgramFiles}\Notepad++\notepad++.exe
 Set-Alias npp ${Env:ProgramFiles}\Notepad++\notepad++.exe
 Set-Alias op Invoke-Item
+Set-Alias open Invoke-Item
 Set-Alias print Write-Output
 Set-Alias py python
 Set-Alias pyt pytest
