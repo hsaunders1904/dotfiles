@@ -70,16 +70,12 @@ function Invoke-ShutdownIn($Mins) {
 }
 
 function Invoke-VisualStudio() {
-    [CmdletBinding(PositionalBinding = $false)]
-    param([string]$MinVersion = "13.0", [string]$MaxVersion = "17.0")
     if (-Not (Test-Command Get-VSSetupInstance)) {
         throw "Command 'Get-VSSetupInstance' does not exist. " `
             + "Is the VSSetup module installed?"
     }
-    $VersionFilter = "[${MinVersion}, ${MaxVersion}]"
-    $VsRoot = Get-VSSetupInstance -All | `
-        Select-VSSetupInstance -Version ${VersionFilter} -Latest
-    $DevEnvPath = Join-Path ${VsRoot}.InstallationPath "Common7\IDE\devenv.exe"
+    $VsInstance = Get-VSSetupInstance -All | Select-VSSetupInstance -Latest
+    $DevEnvPath = Join-Path ${VsInstance}.InstallationPath "Common7\IDE\devenv.exe"
     . "${DevEnvPath}" ${Args}
 }
 
