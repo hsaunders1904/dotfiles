@@ -99,6 +99,7 @@
     fum        = !"git fetch upstream $(git main)"
     g          = gui
     gr         = grep
+    ignore     = !"cd -- ${GIT_PREFIX:-.}; if [ ! -f .gitignore ]; then echo '*' > .gitignore; fi"
     issue      = !"f() { gh issue view "$(git rev-parse --abbrev-ref HEAD | sed -rn 's/([0-9]+)_.*/\\1/p')" $*; }; f"
     l          = log --oneline -n 15
     la         = log --pretty=full --graph
