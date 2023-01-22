@@ -23,6 +23,7 @@ if (Get-Command oh-my-posh) {
 }
 
 # Import external modules
+Import-Module Color
 Import-Module posh-git
 if (${PSVersionTable}.PSEdition -Eq 'Core') {
     Import-Module ZLocation  # ZLocation doesn't work in normal PowerShell

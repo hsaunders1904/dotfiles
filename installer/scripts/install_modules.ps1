@@ -1,4 +1,5 @@
 $MODULES = @(
+    "Color"
     "PSReadLine",
     "PowerShellGet",
     "VSSetup",
