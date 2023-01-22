@@ -20,7 +20,7 @@ Set-Alias shred sdelete
 Set-Alias touch ni
 Set-Alias tp Test-Path
 Set-Alias VisualStudio Invoke-VisualStudio
-Set-Alias vs Invoke-VisualStudio
+Set-Alias vs-init New-VSCodeDir
 Set-Alias zip Compress-Archive
 
 # Typos
