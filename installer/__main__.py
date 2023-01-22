@@ -1,6 +1,6 @@
 import shutil
 
-from installer import bash, diff_so_fancy, git, pwsh, vim, wsl, z, zsh
+from installer import bash, diff_so_fancy, fd, git, pwsh, vim, wsl, z, zsh
 
 
 def is_executable(exe_name: str) -> bool:
@@ -29,6 +29,8 @@ def install():
     if is_executable("pwsh"):
         print("PowerShell...")
         pwsh.install()
+    if not is_executable("fd"):
+        fd.install()
 
 
 if __name__ == "__main__":

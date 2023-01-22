@@ -30,3 +30,9 @@ if (${PSVersionTable}.PSEdition -Eq 'Core') {
 }
 
 $env:PATH = Remove-PathDuplicates "${env:PATH}"
+if (Test-Path $env:LocalAppData\Programs\fd) {
+    Add-PathVariable $env:LocalAppData\Programs\fd
+    if (Test-Path $env:LocalAppData\Programs\fd\autocomplete\fd.ps1) {
+        . $env:LocalAppData\Programs\fd\autocomplete\fd.ps1
+    }
+}
