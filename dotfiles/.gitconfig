@@ -44,6 +44,8 @@
             git branch \"$(git branch --show-current)-BACKUP\" \
             && echo \"Created new branch: $(git branch --show-current)-BACKUP\"; \
         }; f"
+    bDi = !"git branch -D $(bselect)"
+    bdi = !"git branch -d $(bselect)"
     bl         = !"\
         if [ -n \"$(command -v python3)\" ]; then \
             _py=python3; \
