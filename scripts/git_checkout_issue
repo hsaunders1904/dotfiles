@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+
+# Create a new branch for an issue on GitHub or GitLab, generating a sensible
+# branch name
+#
+# You must input as the first argument, the number of the issue.
+# The second argument is the remote in which to look for the issue, the default
+# is origin.
+
+set -e
+
+if [ -z "$1" ]; then
+    echo 'fatal: must give issue number' && exit 1
+else
+    issue_num="$1"
+fi
+if [ -z "$2" ]; then
+    remote="origin"
+else
+    remote="$2"
+fi
+
+remote_url="$(git remote get-url "${remote}")"
+
+is_gh=0
+[[ "${remote_url}" == git@github* ]] && is_gh=1
+if ((is_gh)); then
+    user="$(gh api user --jq '.login')"
+    name="$(gh issue view "${issue_num}" --json title --jq '.title')"
+fi
+is_glab=0
+[ -n "$(command -v glab)" ] && glab repo view "${remote_url}" &>/dev/null && is_glab=1
+if ((is_glab)); then
+    user="$(glab config get user)"
+    info="$(glab issue view "${issue_num}")"
+    name="$(echo "${info}" | sed -En 's/title:\W+(.*)/\1/p')"
+else
+    echo "unsupported remote host: '${remote_url}'"
+    exit 1
+fi
+
+name="$(echo "${name}" | awk '{$1=$1;print tolower($0)}' | sed 's/[^a-zA-Z0-9.-]/_/g')"
+if [ -z "${name}" ]; then
+    echo "could not create branch name for issue: '${issue_num}'"
+    exit 1
+fi
+
+if [ -n "${user}" ]; then
+    branch_name="${user}/"
+fi
+branch_name="${branch_name}${issue_num}_${name}"
+
+git checkout -b "${branch_name}"

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-# Checkout a PR from GitHub generating a sensible branch name.
-# You must input as the first argument, the number of the PR.
+# Checkout a PR from GitHub or GitLab generating a sensible branch name.
+# You must input as the first argument, the number of the PR/MR.
 # The second input is the remote to pull the PR from, default is 'origin'.
 
 set -e
@@ -18,16 +18,30 @@ else
 fi
 
 remote_url="$(git remote get-url "${remote}")"
-if [[ "${remote_url}" == git@github* ]]; then
+
+is_gh=0
+[[ "${remote_url}" == git@github* ]] && is_gh=1
+if ((is_gh)); then
     pr_branch_name="$(
-        gh pr view "${pr_num}" --json headRefName --jq .headRefName |
-            awk '{$1=$1;print tolower($0)}' |
-            sed 's/[^a-zA-Z0-9.-/]/_/g'
+        gh pr view "${pr_num}" --json headRefName --jq .headRefName
     )"
-else
+fi
+is_glab=0
+[ -n "$(command -v glab)" ] && glab repo view "${remote_url}" &>/dev/null && is_glab=1
+if ((is_glab)); then
+    info="$(glab mr view "${pr_num}")"
+    title="$(echo "${info}" | sed -En 's/title:\W+(.*)/\1/p')"
+    author="$(echo "${info}" | sed -En 's/author:\W+(.*)/\1/p')"
+    pr_branch_name="${author}/${title}"
+fi
+if [ ${is_gh} -eq 0 ] && [ ${is_glab} -eq 0 ]; then
     echo "unsupported remote host: '${remote_url}'"
     exit 1
 fi
+pr_branch_name="$(
+    echo "${pr_branch_name}" | awk '{$1=$1;print tolower($0)}' |
+        sed 's/[^a-zA-Z0-9.-/]/_/g'
+)"
 base_name="$(dirname "${pr_branch_name}")"
 if [ "${base_name}" = "." ]; then
     base_name=""
@@ -37,5 +51,10 @@ fi
 leaf_name="$(basename "${pr_branch_name}")"
 new_branch_name="pull_request${base_name}/${pr_num}-${leaf_name}"
 
-git fetch "${remote}" "pull/${pr_num}/merge:${new_branch_name}"
+if ((is_gh)); then
+    remote_branch="pull/${pr_num}/merge"
+elif ((is_glab)); then
+    remote_branch="merge-requests/${pr_num}/merge"
+fi
+git fetch "${remote}" "${remote_branch}:${new_branch_name}"
 git checkout "${new_branch_name}"

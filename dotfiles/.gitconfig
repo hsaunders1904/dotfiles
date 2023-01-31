@@ -44,8 +44,8 @@
             git branch \"$(git branch --show-current)-BACKUP\" \
             && echo \"Created new branch: $(git branch --show-current)-BACKUP\"; \
         }; f"
-    bDi = !"git branch -D $(bselect)"
     bdi = !"git branch -d $(bselect)"
+    bDi = !"git branch -D $(bselect)"
     bl         = !"\
         if [ -n \"$(command -v python3)\" ]; then \
             _py=python3; \
@@ -53,7 +53,7 @@
             _py=python; \
         fi && \
         ${_py} \"${DOTFILES_DIR}/scripts/git_branch_list\" $@"
-    brsh       = !"git backup && reset --hard"
+    brsh       = !"git backup && git reset --hard"
     c          = commit
     ca         = commit --amend
     caa        = commit --amend --all
@@ -70,13 +70,7 @@
     co-        = co -
     copr       = !"${DOTFILES_DIR}/scripts/git_checkout_pr"
     cob        = checkout -b
-    cobgh      = !"\
-        f() { \
-            name=\"$(gh issue view $1 --json title --jq '.title' \
-                | awk '{$1=$1;print tolower($0)}' \
-                | sed 's/[^a-zA-Z0-9.-]/_/g')\" \
-            && ! [ -z \"${name}\" ] && git checkout -b \"$1_${name}\"; \
-        }; f"
+    cobi       = !"${DOTFILES_DIR}/scripts/git_checkout_issue"
     com        = !"git checkout $(git main)"
     d          = diff
     dc         = diff --cached
