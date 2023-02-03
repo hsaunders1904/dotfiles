@@ -7,19 +7,19 @@ Set-PSReadLineKeyHandler -Key Tab -Function Complete
 Set-PSReadLineOption -BellStyle None
 
 # Set the config directory environment variable
-$env:DOTFILES_DIR = Split-Path "${PSScriptRoot}"
+$Env:DOTFILES_DIR = Split-Path "${PSScriptRoot}"
 
 # Configure aliases and the prompt
-Import-Module "${env:DOTFILES_DIR}/dotfiles/.pwsh_aliases.psm1"
-Import-Module "${env:DOTFILES_DIR}/dotfiles/.pwsh_functions.psm1"
+Import-Module "${Env:DOTFILES_DIR}/dotfiles/.pwsh_aliases.psm1"
+Import-Module "${Env:DOTFILES_DIR}/dotfiles/.pwsh_functions.psm1"
 if (Get-Command oh-my-posh) {
-    $env:POSH_GIT_ENABLED = $true
-    $ThemesDir = "${env:DOTFILES_DIR}/apps/oh-my-posh/themes"
+    $Env:POSH_GIT_ENABLED = $true
+    $ThemesDir = "${Env:DOTFILES_DIR}/apps/oh-my-posh/themes"
     $ThemeName = "multiverse-neon-custom"
     oh-my-posh init pwsh --config "${ThemesDir}\${ThemeName}.omp.json" `
         | Invoke-Expression
 } else {
-    Import-Module "${env:DOTFILES_DIR}/dotfiles/.pwsh_prompt.psm1"
+    Import-Module "${Env:DOTFILES_DIR}/dotfiles/.pwsh_prompt.psm1"
 }
 
 # Import external modules
@@ -36,3 +36,5 @@ if (Test-Path $env:LocalAppData\Programs\fd) {
         . $env:LocalAppData\Programs\fd\autocomplete\fd.ps1
     }
 }
+
+. ${Env:DOTFILES_DIR}\scripts\Set-LsColors.ps1
