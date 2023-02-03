@@ -4,8 +4,8 @@ if (Test-Path alias:ls) {
 Set-Alias lsa Get-ChildItem
 function ls() { Get-ChildItem -Exclude '.*' ${Args} }
 
-Set-Alias addpath add-path
-Set-Alias apath add-path
+Set-Alias addpath Add-PathVariable
+Set-Alias apath Add-PathVariable
 Set-Alias bak New-Backup
 Set-Alias cdg Set-LocationGitRoot
 Set-Alias cg Set-LocationGitRoot

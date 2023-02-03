@@ -14,15 +14,10 @@ function vim($File) { ${File} = ${File} -replace "\\", "/"; bash -c "vi ${File}"
 function New-VSCodeDir() { python $(Join-Path ${Env:DOTFILES_DIR} scripts vscode_init.py) }
 function which($Command) { (Get-Command ${Command} -ErrorAction SilentlyContinue).Path }
 
-function Add-Path {
-    param([switch][Alias("p")] ${Prepend})
-    for ($i = 0; $i -lt ${Args}.length; $i++) {
-        $NewPath = Resolve-Path "$(${Args}[$i])"
-        if (${Prepend}) {
-            $Env:PATH = "${NewPath};${Env:PATH}"
-        } else {
-            $Env:PATH = ${Env:PATH}.trim(";") + ";${NewPath}"
-        }
+function Add-PathVariableIfExists() {
+    param([string] $Path)
+    if (Test-Path "${Path}" -PathType Container) {
+        Add-PathVariable "${Path}"
     }
 }
 
