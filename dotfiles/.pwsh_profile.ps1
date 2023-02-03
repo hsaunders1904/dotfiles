@@ -29,12 +29,8 @@ if (${PSVersionTable}.PSEdition -Eq 'Core') {
     Import-Module ZLocation  # ZLocation doesn't work in normal PowerShell
 }
 
-$env:PATH = Remove-PathDuplicates "${env:PATH}"
-if (Test-Path $env:LocalAppData\Programs\fd) {
-    Add-PathVariable $env:LocalAppData\Programs\fd
-    if (Test-Path $env:LocalAppData\Programs\fd\autocomplete\fd.ps1) {
-        . $env:LocalAppData\Programs\fd\autocomplete\fd.ps1
-    }
-}
+# System path additions
+Add-PathVariableIfExists "${Env:LocalAppData}\Programs\fd"
+$Env:PATH = Remove-PathDuplicates "${Env:PATH}"
 
 . ${Env:DOTFILES_DIR}\scripts\Set-LsColors.ps1
