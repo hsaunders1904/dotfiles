@@ -32,15 +32,14 @@ cpath() {
         _path="$(realpath "$1")"
     fi
 
-    if [ -n "$(command -v xclip)" ]; then
-        printf '%s' "${_path}" | xclip -selection c
-    elif [ -n "$(command -v pbcopy)" ]; then
-        printf '%s' "${_path}" | pbcopy
+    # Note 'clipr' is defined in '.sh_aliases'
+    if command -v clipr >/dev/null 2>&1; then
+        printf '%s' "${_path}" | clipr
+        echo "'${_path}' copied to clipboard"
     else
-        echo "Could not find 'xclip' or 'pbcopy' to copy path."
-        return
+        >&2 echo "dotfiles: could not find executable to copy with"
+        return 1
     fi
-    echo "'${_path}' copied to clipboard"
 }
 
 mkdir_and_cd() {

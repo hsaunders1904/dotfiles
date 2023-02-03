@@ -28,16 +28,16 @@ if [ -f "${_z_path}" ]; then
 fi
 unset _z_path
 
+# Alias definitions (must come before functions)
+_aliases_path="${DOTFILES_DIR}/dotfiles/.sh_aliases"
+if [ -f "${_aliases_path}" ]; then
+    . "${_aliases_path}"
+fi
+unset _aliases_path
+
 # Function definitions
 _funcs_path="${DOTFILES_DIR}/dotfiles/.sh_functions"
 if [ -f "${_funcs_path}" ]; then
     . "${_funcs_path}"
 fi
 unset _funcs_path
-
-# Alias definitions
-_aliases_path="${DOTFILES_DIR}/dotfiles/.sh_aliases"
-if [ -f "${_aliases_path}" ]; then
-    . "${_aliases_path}"
-fi
-unset _aliases_path

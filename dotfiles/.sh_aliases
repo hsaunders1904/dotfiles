@@ -52,7 +52,10 @@ if [ -n "$(command -v xdg-open)" ]; then
 elif [ -n "$(command -v open)" ]; then
     alias ii=open
 fi
-if [ -n "$(command -v xclip)" ]; then
+if is_wsl; then
+    alias clip=clip.exe
+    alias clipr="perl -pe 'chomp if eof' | clip.exe"
+elif [ -n "$(command -v xclip)" ]; then
     alias clip='xclip -selection c'
     alias clipr='xclip -rmlastnl'
 elif [ -n "$(command -v pbcopy)" ]; then
