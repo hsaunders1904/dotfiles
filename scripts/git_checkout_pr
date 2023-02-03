@@ -39,7 +39,9 @@ if [ ${is_gh} -eq 0 ] && [ ${is_glab} -eq 0 ]; then
     exit 1
 fi
 pr_branch_name="$(
-    echo "${pr_branch_name}" | awk '{$1=$1;print tolower($0)}' |
+    echo "${pr_branch_name}" |
+        awk '{$1=$1;print tolower($0)}' |
+        sed 's/['\''"]//g' |
         sed 's/[^a-zA-Z0-9.-/]/_/g'
 )"
 base_name="$(dirname "${pr_branch_name}")"
