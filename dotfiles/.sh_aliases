@@ -57,7 +57,7 @@ if is_wsl; then
     alias clipr="perl -pe 'chomp if eof' | clip.exe"
 elif [ -n "$(command -v xclip)" ]; then
     alias clip='xclip -selection c'
-    alias clipr='xclip -rmlastnl'
+    alias clipr='xclip -selection c -rmlastnl'
 elif [ -n "$(command -v pbcopy)" ]; then
     alias clip='pbcopy'
     alias clipr="perl -pe 'chomp if eof' | pbcopy"
