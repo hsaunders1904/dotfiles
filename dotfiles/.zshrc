@@ -33,3 +33,9 @@ if [ -f "${_aliases}" ]; then
     . "${_aliases}"
 fi
 unset _aliases
+
+_fzf_bindings="/usr/share/doc/fzf/examples/key-bindings.zsh"
+if [ -f "${_fzf_bindings}" ]; then
+    source "${_fzf_bindings}"
+fi
+unset _fzf_bindings

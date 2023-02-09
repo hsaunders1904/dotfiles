@@ -23,3 +23,9 @@ if [ -f "${_funcs_path}" ]; then
     . "${_funcs_path}"
 fi
 unset _funcs_path
+
+_fzf_bindings="/usr/share/doc/fzf/examples/key-bindings.bash"
+if [ -f "${_fzf_bindings}" ]; then
+    source "${_fzf_bindings}"
+fi
+unset _fzf_bindings
