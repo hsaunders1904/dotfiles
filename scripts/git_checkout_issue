@@ -28,20 +28,22 @@ if ((is_gh)); then
     user="$(gh api user --jq '.login')"
     name="$(gh issue view "${issue_num}" --json title --jq '.title')"
 fi
+
 is_glab=0
 [ -n "$(command -v glab)" ] && glab repo view "${remote_url}" &>/dev/null && is_glab=1
 if ((is_glab)); then
     user="$(glab config get user)"
-    info="$(glab issue view "${issue_num}")"
-    name="$(echo "${info}" | sed -En 's/title:\W+(.*)/\1/p')"
-else
-    echo "unsupported remote host: '${remote_url}'"
+    name="$(glab issue view "${issue_num}" | sed -En 's/title:\W+(.*)/\1/p')"
+fi
+
+if [ ${is_gh} -eq 0 ] && [ ${is_glab} -eq 0 ]; then
+    echo "git_checkout_issue: unsupported remote host: '${remote_url}'"
     exit 1
 fi
 
 name="$(echo "${name}" | awk '{$1=$1;print tolower($0)}' | sed 's/[^a-zA-Z0-9.-]/_/g')"
 if [ -z "${name}" ]; then
-    echo "could not create branch name for issue: '${issue_num}'"
+    echo "git_checkout_issue: could not create branch name for issue: '${issue_num}'"
     exit 1
 fi
 

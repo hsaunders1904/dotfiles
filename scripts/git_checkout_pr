@@ -26,6 +26,7 @@ if ((is_gh)); then
         gh pr view "${pr_num}" --json headRefName --jq .headRefName
     )"
 fi
+
 is_glab=0
 [ -n "$(command -v glab)" ] && glab repo view "${remote_url}" &>/dev/null && is_glab=1
 if ((is_glab)); then
@@ -34,10 +35,12 @@ if ((is_glab)); then
     author="$(echo "${info}" | sed -En 's/author:\W+(.*)/\1/p')"
     pr_branch_name="${author}/${title}"
 fi
+
 if [ ${is_gh} -eq 0 ] && [ ${is_glab} -eq 0 ]; then
-    echo "unsupported remote host: '${remote_url}'"
+    echo "git_checkout_pr: unsupported remote host: '${remote_url}'"
     exit 1
 fi
+
 pr_branch_name="$(
     echo "${pr_branch_name}" |
         awk '{$1=$1;print tolower($0)}' |
