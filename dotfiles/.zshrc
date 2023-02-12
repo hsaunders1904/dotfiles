@@ -10,11 +10,11 @@ if [ -d "${HOME}/.oh-my-zsh" ]; then
     ZSH_THEME="custom_oxide"
     plugins=(
         autoupdate
-        fd
-        git
         copybuffer
         copyfile
         extract
+        fd
+        git
         poetry
         rust
         zsh-autosuggestions
@@ -34,8 +34,8 @@ if [ -f "${_aliases}" ]; then
 fi
 unset _aliases
 
-_fzf_bindings="/usr/share/doc/fzf/examples/key-bindings.zsh"
-if [ -f "${_fzf_bindings}" ]; then
-    source "${_fzf_bindings}"
+if [ -f "/usr/share/doc/fzf/examples/key-bindings.zsh" ]; then
+    source "/usr/share/doc/fzf/examples/key-bindings.zsh"
+elif [ -f "/opt/homebrew/opt/fzf/shell/key-bindings.zsh" ]; then
+    source "/opt/homebrew/opt/fzf/shell/key-bindings.zsh"
 fi
-unset _fzf_bindings
