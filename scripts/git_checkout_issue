@@ -9,6 +9,8 @@
 
 set -e
 
+readonly SCRIPT_NAME="git_checkout_issue"
+
 if [ -z "$1" ]; then
     echo 'fatal: must give issue number' && exit 1
 else
@@ -22,28 +24,31 @@ fi
 
 remote_url="$(git remote get-url "${remote}")"
 
-is_gh=0
-[[ "${remote_url}" == git@github* ]] && is_gh=1
-if ((is_gh)); then
+is_github=0
+is_gitlab=0
+if [[ "${remote_url}" == git@github* ]]; then
     user="$(gh api user --jq '.login')"
     name="$(gh issue view "${issue_num}" --json title --jq '.title')"
-fi
-
-is_glab=0
-[ -n "$(command -v glab)" ] && glab repo view "${remote_url}" &>/dev/null && is_glab=1
-if ((is_glab)); then
+    is_github=1
+elif [ -n "$(command -v glab)" ] && glab repo view "${remote_url}" &>/dev/null; then
     user="$(glab config get user)"
     name="$(glab issue view "${issue_num}" | sed -En 's/title:\W+(.*)/\1/p')"
+    is_gitlab=1
 fi
 
-if [ ${is_gh} -eq 0 ] && [ ${is_glab} -eq 0 ]; then
-    echo "git_checkout_issue: unsupported remote host: '${remote_url}'"
+if [ ${is_github} -eq 0 ] && [ ${is_gitlab} -eq 0 ]; then
+    echo >&2 "${SCRIPT_NAME}: unsupported remote host: '${remote_url}'"
     exit 1
 fi
 
-name="$(echo "${name}" | awk '{$1=$1;print tolower($0)}' | sed 's/[^a-zA-Z0-9.-]/_/g')"
+name="$(
+    echo "${name}" |
+        awk '{$1=$1;print tolower($0)}' |
+        sed 's/['\''"`]//g' |
+        sed 's/[^a-zA-Z0-9.-]/_/g'
+)"
 if [ -z "${name}" ]; then
-    echo "git_checkout_issue: could not create branch name for issue: '${issue_num}'"
+    echo >&2 "${SCRIPT_NAME}: could not create branch name for issue: '${issue_num}'"
     exit 1
 fi
 
