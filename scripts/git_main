@@ -13,7 +13,10 @@ readonly DEFAULT_REMOTE="origin"
 readonly DEFAULT_FALLBACK="main"
 
 function main() {
-    exit_if_not_in_git_repo
+    if ! in_git_repo; then
+        echo >&2 "git_main: fatal: not a git repository"
+        exit 1
+    fi
 
     # Deal with inputs
     INPUT_REMOTE=$1
@@ -27,9 +30,9 @@ function main() {
     # Check the remote exists; if it does not and a remote is given on the
     # command line error out, if no remote inputted, return our fallback
     REMOTE="$(parse_remote_with_default "${INPUT_REMOTE}")"
-    if [ "$(remote_exists "${REMOTE}")" = false ]; then
+    if ! remote_exists "${REMOTE}"; then
         if [ -n "${INPUT_REMOTE}" ]; then
-            echo "fatal: remote '${REMOTE}' not known" >&2
+            echo "git_main: fatal: remote '${REMOTE}' not known" >&2
             exit 1
         fi
         echo "${FALLBACK}" && exit 2
@@ -57,15 +60,11 @@ function main() {
 }
 
 function remote_exists() {
-    [[ "$(git remote)" =~ (^|[[:space:]])$1($|[[:space:]]) ]] &&
-        echo true || echo false
+    [[ "$(git remote)" =~ (^|[[:space:]])$1($|[[:space:]]) ]]
 }
 
-function exit_if_not_in_git_repo() {
-    IN_REPO="$(git rev-parse --is-inside-work-tree)" 2>/dev/null
-    if [ ! "${IN_REPO}" = true ]; then
-        exit 1
-    fi
+function in_git_repo() {
+    git rev-parse --is-inside-work-tree >/dev/null 2>&1
 }
 
 function parse_remote_with_default() {
