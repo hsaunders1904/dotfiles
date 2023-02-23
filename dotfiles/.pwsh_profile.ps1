@@ -30,7 +30,7 @@ if (${PSVersionTable}.PSEdition -Eq 'Core') {
 }
 
 # System path additions
-Add-PathVariableIfExists "${Env:LocalAppData}\Programs\fd"
+Add-PathVariableIfExists "${Env:LocalAppData}/Programs/fd"
 $Env:PATH = Remove-PathDuplicates "${Env:PATH}"
 
-. ${Env:DOTFILES_DIR}\scripts\Set-LsColors.ps1
+. "${Env:DOTFILES_DIR}/scripts/Set-LsColors.ps1"
