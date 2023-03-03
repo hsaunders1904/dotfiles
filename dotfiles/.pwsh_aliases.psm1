@@ -2,7 +2,10 @@ if (Test-Path alias:ls) {
     Remove-Alias ls
 }
 Set-Alias lsa Get-ChildItem
-function ls() { Get-ChildItem -Exclude '.*' ${Args} }
+function ls() {
+    Get-ChildItem ${Args} | `
+        Where-Object { !(Split-Path $_ -Leaf).StartsWith(".") }
+}
 
 Set-Alias addpath Add-PathVariable
 Set-Alias apath Add-PathVariable
