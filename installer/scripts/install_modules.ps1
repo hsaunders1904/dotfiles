@@ -1,12 +1,12 @@
 $MODULES = @(
-    "Color"
-    "PSReadLine",
+    "posh-git",
     "PowerShellGet",
+    "pscx",
+    "PSFzf",
+    "PSReadLine",
+    "Terminal-Icons"
     "VSSetup",
     "ZLocation",
-    "posh-git",
-    "pscx",
-    "PSFzf"
 )
 
 foreach ($Req in ${MODULES}) {

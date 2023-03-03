@@ -1,11 +1,3 @@
-# Console options
-$Colors = @{}
-$Colors['String'] = [System.ConsoleColor]::DarkGreen
-$Colors['Parameter'] = [System.ConsoleColor]::DarkCyan
-Set-PSReadLineOption -Colors ${Colors}
-Set-PSReadLineKeyHandler -Key Tab -Function Complete
-Set-PSReadLineOption -BellStyle None
-
 # Set the config directory environment variable
 $Env:DOTFILES_DIR = Split-Path "${PSScriptRoot}"
 
@@ -23,7 +15,8 @@ if (Get-Command oh-my-posh) {
 }
 
 # Import external modules
-Import-Module Color
+Import-Module Terminal-Icons
+Import-Module PsFzf
 Import-Module posh-git
 if (${PSVersionTable}.PSEdition -Eq 'Core') {
     Import-Module ZLocation  # ZLocation doesn't work in normal PowerShell
@@ -33,4 +26,11 @@ if (${PSVersionTable}.PSEdition -Eq 'Core') {
 Add-PathVariableIfExists "${Env:LocalAppData}/Programs/fd"
 $Env:PATH = Remove-PathDuplicates "${Env:PATH}"
 
-. "${Env:DOTFILES_DIR}/scripts/Set-LsColors.ps1"
+# Console options
+$Colors = @{}
+$Colors['String'] = [System.ConsoleColor]::DarkGreen
+$Colors['Parameter'] = [System.ConsoleColor]::DarkCyan
+Set-PSReadLineOption -Colors ${Colors}
+Set-PSReadLineKeyHandler -Key Tab -Function Complete
+Set-PSReadLineOption -BellStyle None
+Set-PsFzfOption -PSReadLineChordProvider 'Ctrl+f' -PSReadLineChordReverseHistory 'Ctrl+r'
