@@ -5,8 +5,6 @@ function ctestR { ctest -C Release ${Args} --output-on-failure }
 function l { Get-ChildItem ${Args} -Exclude ".*" }
 function md5($File) { (Get-FileHash -Algorithm MD5 ${File}).Hash.ToLower() }
 function mkcd($Dir) { New-Item -ItemType Directory "${Dir}"; Set-Location "${Dir}" }
-# Create a symlink from $target -> $name
-function mklink($Target, $Name) { New-Item -ItemType SymbolicLink -Name ${Name} -Target ${Target} }
 function path { ${Env:PATH}.split(";") }
 function sha1($File) { (Get-FileHash -Algorithm SHA1 ${File}).Hash.ToLower() }
 function sha256($File) { (Get-FileHash -Algorithm SHA256 ${File}).Hash.ToLower() }
