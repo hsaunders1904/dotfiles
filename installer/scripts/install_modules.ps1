@@ -5,7 +5,8 @@ $MODULES = @(
     "VSSetup",
     "ZLocation",
     "posh-git",
-    "pscx"
+    "pscx",
+    "PSFzf"
 )
 
 foreach ($Req in ${MODULES}) {
