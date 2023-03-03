@@ -18,9 +18,7 @@ if (Get-Command oh-my-posh) {
 Import-Module Terminal-Icons
 Import-Module PsFzf
 Import-Module posh-git
-if (${PSVersionTable}.PSEdition -Eq 'Core') {
-    Import-Module ZLocation  # ZLocation doesn't work in normal PowerShell
-}
+Import-Module ZLocation
 
 # System path additions
 Add-PathVariableIfExists "${Env:LocalAppData}/Programs/fd"
