@@ -6,7 +6,7 @@ $MODULES = @(
     "PSReadLine",
     "Terminal-Icons"
     "VSSetup",
-    "ZLocation",
+    "ZLocation"
 )
 
 foreach ($Req in ${MODULES}) {
