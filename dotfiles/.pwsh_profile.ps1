@@ -1,5 +1,6 @@
-# Set the config directory environment variable
+# Environment variables
 $Env:DOTFILES_DIR = Split-Path "${PSScriptRoot}"
+$Env:VIRTUAL_ENV_DISABLE_PROMPT = 1  # oh-my-posh deals with venv display
 
 # Configure aliases and the prompt
 Import-Module "${Env:DOTFILES_DIR}/dotfiles/.pwsh_aliases.psm1"
@@ -24,7 +25,6 @@ if (Test-Command zoxide) {
 }
 
 # System path additions
-Add-PathVariableIfExists "${Env:LocalAppData}/Programs/fd"
 $Env:PATH = Remove-PathDuplicates "${Env:PATH}"
 
 # Console options
