@@ -40,12 +40,15 @@
     au         = add --update
     b          = branch
     ba         = branch --all
-    backup     = !"f() { \
+    backup     = !"\
+        f() { \
             git branch \"$(git branch --show-current)-BACKUP\" \
             && echo \"Created new branch: $(git branch --show-current)-BACKUP\"; \
-        }; f"
-    bdi = !"f() { git branch -d $(bselect $@); }; f"
-    bDi = !"f() { git branch -D $(bselect $@); }; f"
+        }; \
+        f"
+    bdi        = !"f() { git branch -d $(bselect $@); }; f"
+    bDi        = !"f() { git branch -D $(bselect $@); }; f"
+    bi         = !"f() { git branch --format='%(refname:short)' $@ | fzf --no-sort --tac; }; f"
     bl         = !"\
         if [ -n \"$(command -v python3)\" ]; then \
             _py=python3; \
@@ -154,6 +157,7 @@
     rss        = reset --soft
     s          = status --short -b
     sh         = show
+    si         = !"b=\"$(git bi)\"; if [ -n \"$b\" ]; then git switch $b; fi"
     sha        = rev-parse HEAD
     shn        = show --name-only
     shp        = show --patch
