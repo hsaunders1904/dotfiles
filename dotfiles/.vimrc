@@ -3,7 +3,12 @@ filetype on
 filetype plugin on
 
 set expandtab
+
+set hlsearch
+set ignorecase
+set incsearch
 set nocompatible
+set noswapfile
 set number
 set ruler
 set shiftwidth=4
@@ -19,3 +24,7 @@ syntax on
 " Make misspelled words red and italic
 hi clear SpellBad
 hi SpellBad cterm=italic ctermfg=red
+
+let mapleader = "'"
+
+nmap <C-d> mzyyp`z
