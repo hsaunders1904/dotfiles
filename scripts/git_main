@@ -5,9 +5,9 @@
 #  1. checking for the branch name in 'refs/remotes/<REMOTE>/HEAD'
 #  2. checking the HEAD branch for the remote using 'git remote show'
 #  3. return value from config option 'init.defaultBranch', if it's not empty
-# If the branch cannot be determined by these methods, return a default: 'main'
-# and exit with error code 2. If there are any uncrecoverable errors (e.g.,
-# you're not in a git repo), this returns error code 1.
+#  4. return default: 'main' and exit with error code 2.
+# If there are any unrecoverable errors (e.g., you're not in a git repo), this
+# returns error code 1.
 
 readonly DEFAULT_REMOTE="origin"
 readonly DEFAULT_FALLBACK="main"

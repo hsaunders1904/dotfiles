@@ -7,7 +7,7 @@
 set -e
 
 if [ -z "$1" ]; then
-    echo 'fatal: must give PR number' && exit 1
+    echo 'git_checkout_pr: must give PR number' && exit 1
 else
     pr_num="$1"
 fi
@@ -32,7 +32,7 @@ elif [ -n "$(command -v glab)" ] && glab repo view "${remote_url}" &>/dev/null; 
     is_gitlab=1
 fi
 
-if [ ${is_github} -eq 0 ] && [ ${is_gitlab} -eq 0 ]; then
+if ! ((is_github)) && ! ((is_gitlab)); then
     echo >&2 "git_checkout_pr: unsupported remote host: '${remote_url}'"
     exit 1
 fi
