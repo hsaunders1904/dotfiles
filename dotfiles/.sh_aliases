@@ -6,6 +6,7 @@ alias bk=bak
 alias bs=bselect
 alias ca="conda activate"
 alias calc='noglob "${DOTFILES_DIR}/scripts/calc"'
+alias cdf='cd "$(fd -t d | fzf)"'
 alias cg='cd `git rev-parse --show-toplevel`'
 alias cl=cd_and_ls
 alias clc=clear
