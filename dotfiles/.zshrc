@@ -16,6 +16,7 @@ if [ -d "${HOME}/.oh-my-zsh" ]; then
         fd
         git
         poetry
+        pyautoenv
         rust
         zsh-autosuggestions
     )
