@@ -10,6 +10,7 @@ if (Get-Command oh-my-posh) {
     $ThemeName = "agnoster-custom"
     oh-my-posh init pwsh --config "${ThemesDir}\${ThemeName}.omp.json" `
         | Invoke-Expression
+    $env:VIRTUAL_ENV_DISABLE_PROMPT = 1
 } else {
     Import-Module "${Env:DOTFILES_DIR}/dotfiles/.pwsh_prompt.psm1"
 }
