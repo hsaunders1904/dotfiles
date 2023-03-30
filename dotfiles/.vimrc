@@ -1,3 +1,5 @@
+colorscheme slate
+
 filetype indent on
 filetype on
 filetype plugin on
