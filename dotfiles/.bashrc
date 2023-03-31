@@ -29,3 +29,7 @@ if [ -f "${_fzf_bindings}" ]; then
     source "${_fzf_bindings}"
 fi
 unset _fzf_bindings
+
+if [ -n "$(command -v zoxide)" ]; then
+    eval "$(zoxide init bash)"
+fi

@@ -10,3 +10,4 @@ trash-cli
 unzip
 xclip
 wget
+zoxide

@@ -21,13 +21,6 @@ if [ -x "$(command -v gh)" ]; then
     eval "$(gh completion -s "$(basename "${SHELL}")")"
 fi
 
-# Setup z.sh
-_z_path="${DOTFILES_DIR}/external/z.sh"
-if [ -f "${_z_path}" ]; then
-    . "${_z_path}"
-fi
-unset _z_path
-
 # Alias definitions (must come before functions)
 _aliases_path="${DOTFILES_DIR}/dotfiles/.sh_aliases"
 if [ -f "${_aliases_path}" ]; then

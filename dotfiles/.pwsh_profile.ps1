@@ -18,7 +18,9 @@ if (Get-Command oh-my-posh) {
 Import-Module Terminal-Icons
 Import-Module PsFzf
 Import-Module posh-git
-Import-Module ZLocation
+if (Test-Command zoxide) {
+    Invoke-Expression (& { (zoxide init --hook pwd powershell | Out-String) })
+}
 
 # System path additions
 Add-PathVariableIfExists "${Env:LocalAppData}/Programs/fd"

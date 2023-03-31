@@ -1,3 +1,4 @@
+ajeetdsouza.zoxide
 BurntSushi.ripgrep.MSVC
 Git.Git
 GitHub.cli

@@ -40,3 +40,6 @@ if [ -f "/usr/share/doc/fzf/examples/key-bindings.zsh" ]; then
 elif [ -f "/opt/homebrew/opt/fzf/shell/key-bindings.zsh" ]; then
     source "/opt/homebrew/opt/fzf/shell/key-bindings.zsh"
 fi
+if [ -n "$(command -v zoxide)" ]; then
+    eval "$(zoxide init zsh)"
+fi
