@@ -6,9 +6,7 @@ from installer import lib
 
 PROC_VERSION = "/proc/version"
 WSL_OPEN = "wsl-open"
-WSL_OPEN_URL = (
-    "https://raw.githubusercontent.com/hsaunders1904/wsl-open/master/wsl-open.sh"
-)
+WSL_OPEN_URL = "https://gitlab.com/4U6U57/wsl-open/-/raw/master/wsl-open.sh"
 XDG_OPEN = "xdg-open"
 
 
