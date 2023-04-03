@@ -8,4 +8,5 @@ JanDeDobbeleer.OhMyPosh
 jftuga.less
 junegunn.fzf
 Python.Python.3.9
+sharkdp.bat
 sharkdp.fd
