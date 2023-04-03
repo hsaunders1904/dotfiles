@@ -1,0 +1,238 @@
+#!/usr/bin/env python3
+"""
+Download release artifacts from GitHub.
+
+The first argument must be the GitHub repository name with the form
+'<owner>/<repository>'.
+
+A list of releases available from that repository will be shown.
+Enter the corresponding number to select a release, or choose multiple releases
+using ',' as a delimiter.
+
+A list of available downloads (assets) for the selected releases will be shown.
+Select one or more assets to download them.
+"""
+
+import argparse
+import json
+import sys
+from dataclasses import dataclass
+from datetime import datetime
+from pathlib import Path
+from typing import Any, Dict, List, TextIO, Tuple
+from urllib import request
+
+DATETIME_FMT = "%Y-%m-%dT%H:%M:%SZ"
+
+
+@dataclass
+class CliArgs:
+    """Command line arguments."""
+
+    repository: str
+
+
+@dataclass
+class Asset:
+    """Data related to a release asset."""
+
+    name: str
+    download_url: str
+    size: int
+
+    def __str__(self) -> str:
+        """Return the string representation of the asset."""
+        size, unit = human_readable_size(self.size)
+        return f"{self.name} ({size} {unit})"
+
+
+@dataclass
+class Release:
+    """Data related to a release."""
+
+    assets: List[Asset]
+    name: str
+    published: datetime
+    tag: str
+
+    def __str__(self) -> str:
+        """Return the string representation of the asset."""
+        s = self.name
+        if self.name != self.tag:
+            s += f" (tag: {self.tag})"
+        s += f" - {self.published.date()}"
+        return s
+
+
+def main(argv: List[str], stdout: TextIO) -> int:
+    """Download release artifacts from GitHub."""
+    args = parse_args(argv)
+    releases = get_release_list(args.repository)
+    selected_releases = select_release(releases, stdout)
+    all_assets = []
+    for release in selected_releases:
+        all_assets.extend(release.assets)
+    selected_assets = select_asset(all_assets, stdout)
+    error = False
+    for asset in selected_assets:
+        error |= download_asset(asset, Path.cwd(), sys.stdout)
+    return 1 if error else 0
+
+
+def select_release(releases: List[Release], stdout: TextIO) -> List[Release]:
+    """Get user to select from a list of releases."""
+    for i, release in enumerate(releases):
+        stdout.write(f"[{i}] {release}\n")
+    while True:
+        selection = get_input("pick a release: ", stdout)
+        selections = [s.strip() for s in selection.split(",")]
+        if not all(s.isdigit() for s in selections):
+            continue
+        try:
+            out = [releases[int(s)] for s in selections]
+            stdout.write("\n")
+            return out
+        except IndexError:
+            continue
+
+
+def select_asset(assets: List[Asset], stdout: TextIO) -> List[Asset]:
+    """Get user to select from a list of assets."""
+    for i, asset in enumerate(assets):
+        stdout.write(f"[{i}] {asset}\n")
+    while True:
+        selection = get_input("pick an asset: ", stdout)
+        selections = [s.strip() for s in selection.split(",")]
+        if not all(s.isdigit() for s in selections):
+            continue
+        try:
+            out = [assets[int(s)] for s in selections]
+            stdout.write("\n")
+            return out
+        except IndexError:
+            continue
+
+
+def get_input(prompt: str, stdout: TextIO) -> str:
+    """Get input, but fail gracefully given EOFError or KeyboardInterrupt."""
+    try:
+        return input(prompt)
+    except (EOFError, KeyboardInterrupt):
+        stdout.write("\n")
+        sys.exit(1)
+
+
+def parse_args(argv: List[str]) -> CliArgs:
+    """Parse command line arguments."""
+    parser = argparse.ArgumentParser(
+        description=__doc__,
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
+    parser.add_argument(
+        "repository",
+        type=str,
+        help="the GitHub repository, format <owner>/<repo>",
+    )
+    return CliArgs(**vars(parser.parse_args(argv)))
+
+
+def gh_release_request(repo: str) -> List[Dict[str, Any]]:
+    """Request releases data from GitHub for the given repository."""
+    url = f"https://api.github.com/repos/{repo}/releases"
+    try:
+        with request.urlopen(url) as response:
+            return json.loads(response.read())
+    except Exception as exc:
+        sys.stderr.write(
+            f"gh_release_download: could not retrieve releases for '{repo}': {exc}\n"
+        )
+        sys.exit(1)
+
+
+def get_release_list(repo: str) -> List[Release]:
+    """Retrieve a list of release for the given GitHub repository."""
+    releases_data = gh_release_request(repo)
+    releases = []
+    for release_data in releases_data:
+        releases.append(
+            Release(
+                name=release_data["name"],
+                tag=release_data["tag_name"],
+                assets=parse_assets(release_data["assets"]),
+                published=datetime.strptime(release_data["published_at"], DATETIME_FMT),
+            )
+        )
+    return releases
+
+
+def parse_assets(assets_data: List[Dict[str, Any]]) -> List[Asset]:
+    """Parse an asset from the data retrieved in a GitHub API request."""
+    assets = []
+    for asset_data in assets_data:
+        assets.append(
+            Asset(
+                name=asset_data["name"],
+                download_url=asset_data["browser_download_url"],
+                size=asset_data["size"],
+            )
+        )
+    return assets
+
+
+def download_asset(asset: Asset, out_dir: Path, stdout: TextIO) -> bool:
+    """Download the given asset from GitHub."""
+    progress_bar = DownloadProgressBar(asset.name, stdout)
+    err = False
+    try:
+        request.urlretrieve(
+            asset.download_url, out_dir / asset.name, reporthook=progress_bar
+        )
+        stdout.write("\n")
+    except Exception as exc:
+        err = True
+        sys.stderr.write(
+            f"gh_release_download: could not download asset '{asset.name}': {exc}\n"
+        )
+    return err
+
+
+class DownloadProgressBar:
+    """Simple progress bar."""
+
+    def __init__(self, prefix: str, stdout: TextIO = sys.stdout) -> None:
+        self.prefix = prefix
+        self.stdout = stdout
+
+    def __call__(self, block_num: int, block_size: int, total_size: int) -> None:
+        """Callback function for urlretrieve's 'reporthook."""
+        bar_len = 38
+        num_blocks = max(total_size / block_size, 1)
+        percentage = float(block_num) / num_blocks
+        num_full = int(bar_len * percentage)
+        sys.stdout.write("\r")
+        sys.stdout.write(
+            f"{self.prefix} [{'#'*num_full}{' '*(bar_len - num_full)}] "
+            f"{max(int(percentage*100), 100)}%"
+        )
+        sys.stdout.flush()
+
+
+def human_readable_size(num: int) -> Tuple[str, str]:
+    """
+    Return the given number of bytes in a human readable form.
+
+    https://stackoverflow.com/a/1094933.
+    """
+    for unit in ["B", "KiB", "MiB", "GiB", "TiB", "PiB", "EiB", "ZiB"]:
+        if abs(num) < 1024.0:
+            break
+        num /= 1024.0
+    return f"{num:.0f}", unit
+
+
+if __name__ == "__main__":
+    try:
+        sys.exit(main(sys.argv[1:], sys.stdout))
+    except Exception as exc:
+        sys.stderr.write(f"gh_release_download: error: {exc}\n")
+        sys.exit(1)
