@@ -182,18 +182,17 @@ def parse_assets(assets_data: List[Dict[str, Any]]) -> List[Asset]:
 def download_asset(asset: Asset, out_dir: Path, stdout: TextIO) -> bool:
     """Download the given asset from GitHub."""
     progress_bar = DownloadProgressBar(asset.name, stdout)
-    err = False
     try:
         request.urlretrieve(
             asset.download_url, out_dir / asset.name, reporthook=progress_bar
         )
         stdout.write("\n")
     except Exception as exc:
-        err = True
         sys.stderr.write(
-            f"gh_release_download: could not download asset '{asset.name}': {exc}\n"
+            f"\ngh_release_download: could not download asset '{asset.name}': {exc}\n"
         )
-    return err
+        return True
+    return False
 
 
 class DownloadProgressBar:
