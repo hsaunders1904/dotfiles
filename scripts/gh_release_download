@@ -19,7 +19,7 @@ import sys
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, TextIO, Tuple
+from typing import Any, Dict, List, Optional, TextIO, Tuple
 from urllib import request
 
 from pkg_resources import parse_version
@@ -32,6 +32,7 @@ class CliArgs:
     """Command line arguments."""
 
     repository: str
+    tag: Optional[List[str]]
     latest: bool
 
 
@@ -71,7 +72,7 @@ def main(argv: List[str], stdout: TextIO) -> int:
     """Download release artifacts from GitHub."""
     args = parse_args(argv)
     releases = get_release_list(args.repository)
-    selected_releases = select_releases(releases, args.latest, stdout)
+    selected_releases = select_releases(releases, args.latest, args.tag, stdout)
     all_assets = []
     for release in selected_releases:
         all_assets.extend(release.assets)
@@ -93,27 +94,48 @@ def parse_args(argv: List[str]) -> CliArgs:
         type=str,
         help="the GitHub repository, format <owner>/<repo>",
     )
-    parser.add_argument(
+    release_select_group = parser.add_mutually_exclusive_group()
+    release_select_group.add_argument(
         "--latest",
         action="store_true",
         help=(
-            "select the latest release. Note that this selects the latest release "
-            "according to Python's PEP 440, which means it may not work effectively "
-            "for all versioning systems"
+            "select the latest release by comparing releases' tags. "
+            "Note that this selects the latest release according to Python's "
+            "PEP 440, which means it may not work effectively for all "
+            "versioning systems"
         ),
+    )
+    release_select_group.add_argument(
+        "-t",
+        "--tag",
+        nargs="+",
+        default=None,
+        help="download assets from a release, or releases, with a specific tag or tags",
     )
     return CliArgs(**vars(parser.parse_args(argv)))
 
 
 def select_releases(
-    releases: List[Release], latest: bool, stdout: TextIO
+    releases: List[Release], latest: bool, tags: Optional[List[str]], stdout: TextIO
 ) -> List[Release]:
     """Select the release or releases to download assets from."""
     if latest:
         release = select_releases_latest(releases)
         stdout.write(f"latest release: {release.tag}\n")
         return [release]
+    if tags:
+        releases = select_releases_tag(releases, tags)
+        stdout.write(f"releases: {', '.join([r.tag for r in releases])}\n")
+        return releases
     return select_releases_interactive(releases, stdout)
+
+
+def select_releases_tag(releases: List[Release], tags: List[str]) -> List[Release]:
+    """Select the releases in the given list that match any of the given tags."""
+    selected = [release for release in releases if release.tag in tags]
+    if not selected:
+        raise ValueError(f"no tags matching any of {str(tags)[1:-1]}")
+    return selected
 
 
 def select_releases_interactive(
