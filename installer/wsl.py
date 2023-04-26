@@ -27,22 +27,11 @@ def install_wsl_open():
     if not os.path.isfile(out_path):
         return
     _make_executable(out_path)
-    local_bin = _make_local_bin_dir()
-    _make_symlink_if_not_exist(out_path, os.path.join(local_bin, WSL_OPEN))
-    _make_symlink_if_not_exist(out_path, os.path.join(local_bin, XDG_OPEN))
-
-
-def _make_local_bin_dir() -> str:
-    local_bin = os.path.expanduser("~/.local/bin")
-    os.makedirs(local_bin, exist_ok=True)
-    return local_bin
+    local_bin = lib.make_local_bin_dir()
+    lib.make_symlink_if_not_exist(out_path, os.path.join(local_bin, WSL_OPEN))
+    lib.make_symlink_if_not_exist(out_path, os.path.join(local_bin, XDG_OPEN))
 
 
 def _make_executable(file_path: str):
     st = os.stat(file_path)
     os.chmod(file_path, st.st_mode | stat.S_IEXEC)
-
-
-def _make_symlink_if_not_exist(origin: str, link: str):
-    if not os.path.isfile(link):
-        lib.run_command(["ln", "-s", origin, link])

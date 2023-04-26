@@ -35,11 +35,15 @@ if [ -f "${_aliases}" ]; then
 fi
 unset _aliases
 
-if [ -f "/usr/share/doc/fzf/examples/key-bindings.zsh" ]; then
-    source "/usr/share/doc/fzf/examples/key-bindings.zsh"
-elif [ -f "/opt/homebrew/opt/fzf/shell/key-bindings.zsh" ]; then
+if [ -f "/opt/homebrew/opt/fzf/shell/key-bindings.zsh" ]; then
     source "/opt/homebrew/opt/fzf/shell/key-bindings.zsh"
+elif [ -d "${DOTFILES_DIR}/external/fzf" ]; then
+    if [[ $- == *i* ]]; then
+        source "${DOTFILES_DIR}/external/fzf/shell/completion.zsh" 2> /dev/null
+    fi
+    source "${DOTFILES_DIR}/external/fzf/shell/key-bindings.zsh"
 fi
+
 if [ -n "$(command -v zoxide)" ]; then
     eval "$(zoxide init zsh)"
 fi

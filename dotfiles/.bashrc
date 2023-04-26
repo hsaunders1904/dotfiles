@@ -24,11 +24,14 @@ if [ -f "${_funcs_path}" ]; then
 fi
 unset _funcs_path
 
-_fzf_bindings="/usr/share/doc/fzf/examples/key-bindings.bash"
-if [ -f "${_fzf_bindings}" ]; then
-    source "${_fzf_bindings}"
+if [ -f "/opt/homebrew/opt/fzf/shell/key-bindings.bash" ]; then
+    source "/opt/homebrew/opt/fzf/shell/key-bindings.bash"
+elif [ -d "${DOTFILES_DIR}/external/fzf" ]; then
+    if [[ $- == *i* ]]; then
+        source "${DOTFILES_DIR}/external/fzf/shell/completion.bash" 2>/dev/null
+    fi
+    source "${DOTFILES_DIR}/external/fzf/shell/key-bindings.bash"
 fi
-unset _fzf_bindings
 
 if [ -n "$(command -v zoxide)" ]; then
     eval "$(zoxide init bash)"

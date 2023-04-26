@@ -21,11 +21,11 @@ def run_command_get_output(args: List[str], log=True) -> str:
     return result.stdout.decode()
 
 
-def run_command(args: List[str]):
+def run_command(args: List[str], **kwargs):
     print(f"[+] {' '.join(args)}")
     if DRY_RUN:
         return
-    subprocess.run(args, check=True)
+    subprocess.run(args, check=True, **kwargs)
 
 
 def update_dotfile(
@@ -92,3 +92,14 @@ def read_file_if_exists(file_path: str) -> str:
         return ""
     except OSError as os_error:
         print(f"could not read file '{file_path}': {os_error}.")
+
+
+def make_symlink_if_not_exist(origin: str, link: str):
+    if not os.path.isfile(link):
+        run_command(["ln", "-s", origin, link])
+
+
+def make_local_bin_dir() -> str:
+    local_bin = os.path.expanduser("~/.local/bin")
+    os.makedirs(local_bin, exist_ok=True)
+    return local_bin

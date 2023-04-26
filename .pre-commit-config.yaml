@@ -16,7 +16,7 @@ repos:
   hooks:
     - id: shellcheck
       # disable 'Can't follow non-constant source'
-      args: ["--exclude=SC1090"]
+      args: ["--exclude=SC1090,SC1091"]
       exclude: ".*zsh.*"
     - id: shfmt
       args: ["--indent", "4"]

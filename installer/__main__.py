@@ -1,6 +1,7 @@
+import platform
 import shutil
 
-from installer import bash, diff_so_fancy, git, pwsh, vim, wsl, zsh
+from installer import bash, diff_so_fancy, fzf, git, pwsh, vim, wsl, zsh
 
 
 def is_executable(exe_name: str) -> bool:
@@ -15,11 +16,12 @@ def install():
             print("WSL...")
             wsl.install()
     if is_executable("zsh"):
-        print("ZSH...")
+        print("Zsh...")
         zsh.install()
     if is_executable("git"):
         print("Git...")
         git.install()
+        print("diff-so-fancy")
         diff_so_fancy.install()
     if is_executable("vim"):
         print("Vim...")
@@ -27,6 +29,11 @@ def install():
     if is_executable("pwsh"):
         print("PowerShell...")
         pwsh.install()
+    if platform.system() == "Linux":
+        # The apt package for fzf on Debian is really old, so lacks a
+        # lot of features. So install manually here instead.
+        print("fzf...")
+        fzf.install()
 
 
 if __name__ == "__main__":
