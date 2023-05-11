@@ -75,12 +75,16 @@ add-zsh-hook precmd vcs_info
 function _get_python_env() {
     # Prioritise venvs over conda, as we could be in a venv within conda
     if [ -n "${VIRTUAL_ENV}" ]; then
-        _py_env="$(basename "${VIRTUAL_ENV}")"
+        py_env="$(basename "${VIRTUAL_ENV}")"
+        is_poetry=$(! [[ "$(dirname "${VIRTUAL_ENV}")" = */pypoetry/virtualenvs ]]; echo $?)
+        if ! ((is_poetry)); then
+            py_env="$(basename "$(dirname "${VIRTUAL_ENV}")")/${py_env}"
+        fi
     elif [ -n "${CONDA_DEFAULT_ENV}" ] && [ "${CONDA_DEFAULT_ENV}" != "base" ]; then
-        _py_env="${CONDA_DEFAULT_ENV}"
+        py_env="${CONDA_DEFAULT_ENV}"
     fi
-    if [ -n "${_py_env}" ]; then
-        echo "(\ue235 ${_py_env}) "
+    if [ -n "${py_env}" ]; then
+        echo "(\ue235 ${py_env}) "
     fi
 }
 
