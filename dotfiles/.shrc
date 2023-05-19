@@ -34,3 +34,7 @@ if [ -f "${_funcs_path}" ]; then
     . "${_funcs_path}"
 fi
 unset _funcs_path
+
+if [ -x "$(command -v ninja)" ]; then
+    export CMAKE_GENERATOR=Ninja
+fi
