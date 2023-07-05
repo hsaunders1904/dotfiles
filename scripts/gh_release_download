@@ -31,17 +31,18 @@ DATETIME_FMT = "%Y-%m-%dT%H:%M:%SZ"
 class CliArgs:
     """Command line arguments."""
 
-    repository: str
-    tag: Optional[List[str]]
+    asset: Optional[List[str]]
     latest: bool
+    repository: Optional[str]
+    tag: Optional[List[str]]
 
 
 @dataclass
 class Asset:
     """Data related to a release asset."""
 
-    name: str
     download_url: str
+    name: str
     size: int
 
     def __str__(self) -> str:
@@ -71,12 +72,16 @@ class Release:
 def main(argv: List[str], stdout: TextIO) -> int:
     """Download release artifacts from GitHub."""
     args = parse_args(argv)
-    releases = get_release_list(args.repository)
+    if args.repository is None:
+        repository = prompt_repo_name(stdout)
+    else:
+        repository = args.repository
+    releases = fetch_release_list(repository)
     selected_releases = select_releases(releases, args.latest, args.tag, stdout)
     all_assets = []
     for release in selected_releases:
         all_assets.extend(release.assets)
-    selected_assets = select_asset(all_assets, stdout)
+    selected_assets = select_asset(all_assets, stdout, args.asset)
     error = False
     for asset in selected_assets:
         error |= download_asset(asset, Path.cwd(), sys.stdout)
@@ -93,6 +98,8 @@ def parse_args(argv: List[str]) -> CliArgs:
         "repository",
         type=str,
         help="the GitHub repository, format <owner>/<repo>",
+        default=None,
+        nargs="?",
     )
     release_select_group = parser.add_mutually_exclusive_group()
     release_select_group.add_argument(
@@ -112,7 +119,21 @@ def parse_args(argv: List[str]) -> CliArgs:
         default=None,
         help="download assets from a release, or releases, with a specific tag or tags",
     )
+    parser.add_argument(
+        "-a",
+        "--asset",
+        nargs="+",
+        default=None,
+        help="download assets matching at least on of the given regex patterns",
+    )
     return CliArgs(**vars(parser.parse_args(argv)))
+
+
+def prompt_repo_name(stdout: TextIO) -> str:
+    """Prompt the user to enter a repository's owner and name."""
+    repo_owner = get_input("Repository owner: ", stdout)
+    repo_name = get_input("Repository name:  ", stdout)
+    return f"{repo_owner}/{repo_name}"
 
 
 def select_releases(
@@ -145,7 +166,7 @@ def select_releases_interactive(
     for i, release in enumerate(releases):
         stdout.write(f"[{i}] {release}\n")
     while True:
-        selection = get_input("pick a release: ", stdout)
+        selection = get_input("Pick a release: ", stdout)
         selections = [s.strip() for s in selection.split(",")]
         if not all(s.isdigit() for s in selections):
             continue
@@ -183,12 +204,30 @@ def select_releases_latest(releases: List[Release]) -> Release:
     return latest
 
 
-def select_asset(assets: List[Asset], stdout: TextIO) -> List[Asset]:
+def select_asset(
+    assets: List[Asset], stdout: TextIO, patterns: Optional[List[str]]
+) -> List[Asset]:
     """Get user to select from a list of assets."""
+    if patterns:
+        return match_select_asset(assets, patterns)
+    else:
+        return prompt_select_asset(assets, stdout)
+
+
+def match_select_asset(assets: List[Asset], patterns: List[str]) -> List[Asset]:
+    """Return the assets that match one of the given regex patterns."""
+    import re
+
+    re_patterns = [re.compile(p) for p in patterns]
+    return [a for a in assets if any(re.search(p, a.name) for p in re_patterns)]
+
+
+def prompt_select_asset(assets: List[Asset], stdout: TextIO) -> List[Asset]:
+    """Prompt the user to select a list of assets."""
     for i, asset in enumerate(assets):
         stdout.write(f"[{i}] {asset}\n")
     while True:
-        selection = get_input("pick an asset: ", stdout)
+        selection = get_input("Pick an asset: ", stdout)
         selections = [s.strip() for s in selection.split(",")]
         if not all(s.isdigit() for s in selections):
             continue
@@ -222,7 +261,7 @@ def gh_release_request(repo: str) -> List[Dict[str, Any]]:
         sys.exit(1)
 
 
-def get_release_list(repo: str) -> List[Release]:
+def fetch_release_list(repo: str) -> List[Release]:
     """Retrieve a list of release for the given GitHub repository."""
     releases_data = gh_release_request(repo)
     releases = []
@@ -276,7 +315,7 @@ class DownloadProgressBar:
         self.stdout = stdout
 
     def __call__(self, block_num: int, block_size: int, total_size: int) -> None:
-        """Callback function for urlretrieve's 'reporthook."""
+        """Callback function for urlretrieve's `reporthook`."""
         bar_len = 38
         num_blocks = max(total_size / block_size, 1)
         percentage = float(block_num) / num_blocks
@@ -284,7 +323,7 @@ class DownloadProgressBar:
         sys.stdout.write("\r")
         sys.stdout.write(
             f"{self.prefix} [{'#'*num_full}{' '*(bar_len - num_full)}] "
-            f"{max(int(percentage*100), 100)}%"
+            f"{min(int(percentage*100), 100)}%"
         )
         sys.stdout.flush()
 
