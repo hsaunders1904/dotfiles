@@ -30,9 +30,7 @@ elif [ -n "$(command -v glab)" ] && glab repo view "${remote_url}" &>/dev/null; 
     author="$(echo "${info}" | sed -En 's/author:\W+(.*)/\1/p')"
     pr_branch_name="${author}/${title}"
     is_gitlab=1
-fi
-
-if ! ((is_github)) && ! ((is_gitlab)); then
+else
     echo >&2 "git_checkout_pr: unsupported remote host: '${remote_url}'"
     exit 1
 fi
