@@ -6,7 +6,28 @@ Pretty print the output of 'git branch'.
 import os
 import subprocess
 import sys
+from typing import List
 
+
+class Format:
+    BLACK = "\u001b[30m"
+    BLUE = "\u001b[34m"
+    CYAN = "\u001b[36m"
+    GREEN = "\u001b[32m"
+    MAGENTA = "\u001b[35m"
+    RED = "\u001b[31m"
+    RESET = "\u001b[0m"
+    WHITE = "\u001b[37m"
+    YELLOW = "\u001b[33m"
+
+
+COLUMN_COLORS = [
+    Format.MAGENTA,
+    Format.YELLOW,
+    Format.WHITE,
+    Format.CYAN,
+    Format.GREEN,
+]
 DELIM = "|"
 FORMAT_COLS = [
     "%(authordate:short)",
@@ -17,65 +38,68 @@ FORMAT_COLS = [
 ]
 
 
-class Format:
-    BLACK = "\u001b[30m"
-    RED = "\u001b[31m"
-    GREEN = "\u001b[32m"
-    YELLOW = "\u001b[33m"
-    BLUE = "\u001b[34m"
-    MAGENTA = "\u001b[35m"
-    CYAN = "\u001b[36m"
-    WHITE = "\u001b[37m"
-    RESET = "\u001b[0m"
+def main(argv: List[str]) -> int:
+    branches = get_branches(argv[1:])
+    rows = [branch.split(DELIM) for branch in branches]
+    n_cols = len(rows[0])
+    col_widths = get_column_widths(rows, n_cols)
+    out = format_branches(rows, col_widths)
+    enable_term_colours()
+    print(out, end="")
+    return 0
 
 
 def add_color(s: str, fmt: Format) -> str:
     return f"{fmt}{s}{Format.RESET}"
 
 
-if __name__ == "__main__":
-    col_colors = [
-        Format.MAGENTA,
-        Format.YELLOW,
-        Format.WHITE,
-        Format.CYAN,
-        Format.GREEN,
-    ]
-
+def get_branches(sys_args: List[str]) -> List[str]:
     command = [
         "git",
         "branch",
         "--sort=-authordate:iso8601",
         "--format=" + DELIM.join(FORMAT_COLS),
-        *sys.argv[1:],
+        *sys_args,
     ]
     try:
         raw_branches = subprocess.check_output(command).decode()
     except subprocess.CalledProcessError:
         sys.exit(1)
-    branches = [b.strip() for b in raw_branches.split("\n") if b.strip()]
+    return [b.strip() for b in raw_branches.split("\n") if b.strip()]
 
-    rows = [branch.split(DELIM) for branch in branches]
-    n_cols = len(rows[0])
 
+def get_column_widths(rows: List[List[str]], num_cols: int) -> List[int]:
     term_size = os.get_terminal_size().columns
     col_widths = []
-    for col_num in range(n_cols):
+    for col_num in range(num_cols):
         col_widths.append(max([len(row[col_num]) for row in rows]))
-    if sum(col_widths) + n_cols > term_size:
-        col_widths[2] = col_widths[2] - sum(col_widths) - n_cols + term_size
+    if sum(col_widths) + num_cols > term_size:
+        col_widths[2] = col_widths[2] - sum(col_widths) - num_cols + term_size
+    return col_widths
 
+
+def format_branches(rows: List[List[str]], col_widths: List[int]) -> str:
     out = ""
     for row in rows:
-        for col_num in range(n_cols):
+        for col_num in range(len(col_widths)):
             item = row[col_num]
             if len(item) > col_widths[col_num]:
                 item = item[: col_widths[col_num] - 4] + "..."
             item = item.ljust(col_widths[col_num] + 1)
-            out += add_color(item, col_colors[col_num])
+            out += add_color(item, COLUMN_COLORS[col_num])
         out += "\n"
+    return out
 
+
+def enable_term_colours() -> None:
     if os.name == "nt":
         # Enable ANSI colours on Windows
         os.system("color")
-    print(out, end="")
+
+
+if __name__ == "__main__":
+    try:
+        sys.exit(main(sys.argv))
+    except Exception as exc:
+        print(f"git_branch_list: error: {exc}", file=sys.stderr)
+        sys.exit(1)
