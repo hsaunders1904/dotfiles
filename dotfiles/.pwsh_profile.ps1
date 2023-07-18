@@ -9,7 +9,7 @@ if (Get-Command oh-my-posh) {
     $Env:POSH_GIT_ENABLED = $true
     $ThemesDir = "${Env:DOTFILES_DIR}/apps/oh-my-posh/themes"
     $ThemeName = "agnoster-custom"
-    oh-my-posh init pwsh --config "${ThemesDir}\${ThemeName}.omp.json" `
+    oh-my-posh init pwsh --config "${ThemesDir}/${ThemeName}.omp.json" `
         | Invoke-Expression
     $env:VIRTUAL_ENV_DISABLE_PROMPT = 1
 } else {
