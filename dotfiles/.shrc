@@ -38,3 +38,5 @@ unset _funcs_path
 if [ -x "$(command -v ninja)" ]; then
     export CMAKE_GENERATOR=Ninja
 fi
+
+export CARGO_NET_GIT_FETCH_WITH_CLI=true
