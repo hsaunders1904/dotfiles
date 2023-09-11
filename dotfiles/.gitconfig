@@ -125,6 +125,7 @@
     main       = !"bash ${DOTFILES_DIR}/scripts/git_main"
     mc         = merge --continue
     no-assume-changed-all = !"f() { git update-index --no-assume-unchanged $(git ls-files $(git rev-parse --show-toplevel)) }"
+    patch      = !"git --no-pager diff --no-color"
     pl         = pull
     plo        = pull origin
     plu        = pull upstream
