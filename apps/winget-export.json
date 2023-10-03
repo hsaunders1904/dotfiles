@@ -7,6 +7,9 @@
       "Packages" :
       [
         {
+          "PackageIdentifier" : "Vim.Vim"
+        },
+        {
           "PackageIdentifier" : "BurntSushi.ripgrep.MSVC"
         },
         {
