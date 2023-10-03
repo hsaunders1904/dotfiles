@@ -25,7 +25,6 @@ def install_module_dependencies():
     install_script = os.path.join(THIS_DIR, "scripts", "install_modules.ps1")
     cmd = [
         "pwsh.exe",
-        "-NoProfile",
         "-ExecutionPolicy",
         "Bypass",
         "-Command",
