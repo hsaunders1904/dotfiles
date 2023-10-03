@@ -35,3 +35,19 @@ Set-PSReadLineOption -Colors ${Colors}
 Set-PSReadLineKeyHandler -Key Tab -Function Complete
 Set-PSReadLineOption -BellStyle None
 Set-PsFzfOption -PSReadLineChordProvider 'Ctrl+f' -PSReadLineChordReverseHistory 'Ctrl+r'
+
+# Set up autocomplete for some executables
+function Invoke-AutoComplete() {
+    param([string] $ExeName, [string] $RelativeScriptPath)
+    $ExePath = (Get-Command "${ExeName}" -ErrorAction Ignore).Path
+    if ("${ExePath}".Length -Gt 0) {
+        $AutoComplete = Join-Path (Split-Path "${ExePath}") "${RelativeScriptPath}"
+        if (Test-Path "${AutoComplete}") {
+            . "${AutoComplete}"
+        }
+    }
+}
+Invoke-AutoComplete fd "autocomplete/fd.ps1"
+Invoke-AutoComplete bat "autocomplete/_bat.ps1"
+Invoke-AutoComplete rg "complete/_rg.ps1"
+Remove-Item -Path Function:\Invoke-AutoComplete
