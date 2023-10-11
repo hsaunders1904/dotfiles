@@ -1,6 +1,8 @@
 .scratch/
 *.bak
 .DS_Store
+.env
+.envrc
 
 # Created by https://www.gitignore.io/api/c++,python,visualstudio,visualstudiocode
 # Edit at https://www.gitignore.io/?templates=c++,python,visualstudio,visualstudiocode
