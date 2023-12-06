@@ -42,8 +42,10 @@ name="$(
         sed 's/['\''"`]//g' |
         # replace any non-alphanumeric characters with underscores
         sed 's/[^a-zA-Z0-9.-]/_/g' |
+        # replace double underscores with single
+        sed -E 's/__+/_/g' |
         # remove any leading/trailing underscores
-        sed 's/^[_]*//; s/[_]*$//'
+        sed 's/^[_\.]*//; s/[_\.]*$//'
 )"
 if [ -z "${name}" ]; then
     echo >&2 "${SCRIPT_NAME}: could not create branch name for issue: '${issue_num}'"
