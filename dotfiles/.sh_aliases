@@ -51,7 +51,10 @@ fi
 if [ -z "$(command -v bat)" ] && [ -n "$(command -v batcat)" ]; then
     alias bat=batcat
 fi
-if [ -n "$(command -v xdg-open)" ]; then
+if is_wsl; then
+    alias ii=wsl-open
+    alias open=wsl-open
+elif [ -n "$(command -v xdg-open)" ]; then
     alias ii=xdg-open
     alias open=xdg-open
 elif [ -n "$(command -v open)" ]; then
