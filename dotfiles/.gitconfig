@@ -37,7 +37,8 @@
     a          = add
     aa         = add --all
     ac         = !"git add $(git diff --name-only --cached)"
-    ai         = add --interactive
+    ai         = !"git status --porcelain | fzf --multi --bind 'ctrl-a:select-all'"
+    aip        = !"git status --porcelain | fzf --multi --bind 'enter:select-all+accept'"
     alias      = config --get-regexp ^alias\\.
     au         = add --update
     b          = branch
@@ -50,7 +51,7 @@
         f"
     bdi        = !"f() { git branch -d $(bselect $@); }; f"
     bDi        = !"f() { git branch -D $(bselect $@); }; f"
-    bi         = !"f() { git branch --format='%(refname:short)' $@ | fzf --no-sort --tac; }; f"
+    bi         = !"f() { git bl -n $@ | fzf --ansi --height '~100%' | cut -f3 -d' '; }; f"
     bl         = !"\
         if [ -n \"$(command -v python3)\" ]; then \
             _py=python3; \
@@ -124,7 +125,7 @@
     ma         = merge --abort
     main       = !"bash ${DOTFILES_DIR}/scripts/git_main"
     mc         = merge --continue
-    no-assume-changed-all = !"f() { git update-index --no-assume-unchanged $(git ls-files $(git rev-parse --show-toplevel)) }"
+    no-assume-changed-all = !"git update-index --no-assume-unchanged $(git ls-files $(git rev-parse --show-toplevel))"
     patch      = !"git --no-pager diff --no-color"
     pl         = pull
     plo        = pull origin
@@ -160,7 +161,7 @@
     rss        = reset --soft
     s          = status --short -b
     sh         = show
-    si         = !"b=\"$(git bi)\"; if [ -n \"$b\" ]; then git switch $b; fi"
+    si         = !"f() { git bl -n $@ | fzf --ansi --height '~100%' | cut -f3 -d' ' | xargs git switch; }; f"
     sha        = rev-parse HEAD
     shn        = show --name-only
     shp        = show --patch
