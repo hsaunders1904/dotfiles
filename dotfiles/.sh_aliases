@@ -42,15 +42,19 @@ if [ -n "$(command -v lsd)" ]; then
     alias lsa='lsd -AlhFg'
     alias lt='lsd --tree'
 fi
+
 if [ -n "$(command -v apt)" ]; then
     alias apt='sudo apt'
 fi
+
 if [ -n "$(command -v apt-get)" ]; then
     alias apt-get='sudo apt-get'
 fi
+
 if [ -z "$(command -v bat)" ] && [ -n "$(command -v batcat)" ]; then
     alias bat=batcat
 fi
+
 if is_wsl; then
     alias ii=wsl-open
     alias open=wsl-open
@@ -60,6 +64,7 @@ elif [ -n "$(command -v xdg-open)" ]; then
 elif [ -n "$(command -v open)" ]; then
     alias ii=open
 fi
+
 if is_wsl; then
     alias clip=clip.exe
     alias clipr="perl -pe 'chomp if eof' | clip.exe"
@@ -70,15 +75,21 @@ elif [ -n "$(command -v pbcopy)" ]; then
     alias clip='pbcopy'
     alias clipr="perl -pe 'chomp if eof' | pbcopy"
 fi
+
 if [ -n "$(command -v fdfind)" ]; then
     alias fd=fdfind
 fi
+
 _diff_so_fancy="${DOTFILES_DIR}/external/diff-so-fancy/diff-so-fancy"
 if [ -f "${_diff_so_fancy}" ]; then
     # shellcheck disable=SC2139
     alias diff-so-fancy="${_diff_so_fancy}"
 fi
 unset _diff_so_fancy
+
+if [ -n "$(command -v nvim)" ]; then
+    alias nv=nvim
+fi
 
 # Typo corrections
 ## Git
