@@ -37,8 +37,8 @@
     a          = add
     aa         = add --all
     ac         = !"git add $(git diff --name-only --cached)"
-    ai         = !"git status --porcelain | fzf --multi --bind 'ctrl-a:select-all'"
-    aip        = !"git status --porcelain | fzf --multi --bind 'enter:select-all+accept'"
+    ai         = !"git status --porcelain -uall $@ | fzf --multi --scheme path --preview='bash \"${DOTFILES_DIR}/scripts/fzf_diff_preview.sh\" {}' | awk '{$1=$1};1' | cut -d' ' -f2 | xargs git add"
+    aip        = !"git status --porcelain -uall $@ | fzf --multi --scheme path --bind 'enter:select-all+accept' --preview='bash \"${DOTFILES_DIR}/scripts/fzf_diff_preview.sh\" {}' | awk '{$1=$1};1' | cut -d' ' -f2 | xargs git add"
     alias      = config --get-regexp ^alias\\.
     au         = add --update
     b          = branch
@@ -81,6 +81,7 @@
     d          = diff
     dc         = diff --cached
     dcn        = diff --cached --name-only
+    di         = !"git diff --name-only | awk '$0=\" M \"$0' | fzf --cycle --bind 'enter:abort' --preview='bash \"${DOTFILES_DIR}/scripts/fzf_diff_preview.sh\" {}' || true"
     dm         = !"git diff origin/$(git main)..."
     dmn        = dnm
     dn         = diff --name-only

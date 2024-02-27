@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+# A script to generate the diff of files outputted by 'git status --porcelain'.
+# The main use for this is to pass into fzf's '--preview' option.
+
+status="$(echo "$1" | head -n 1 | cut -c1-2)"
+f="$(echo "$1" | xargs | cut -d' ' -f2)"
+
+dsf="${DOTFILES_DIR}/external/diff-so-fancy/diff-so-fancy"
+if [ -f "${dsf}" ]; then
+    diff_formatter="${dsf}"
+else
+    diff_formatter="echo"
+fi
+
+if [ "$(echo "${status}" | cut -c2-2)" = "M" ]; then
+    git diff --color "$f" | ${diff_formatter}
+elif [ "${status}" = "??" ] || [ "${status}" = "A " ]; then
+    git diff --color --no-index /dev/null "$f" | ${diff_formatter}
+else
+    echo "No changes"
+fi
