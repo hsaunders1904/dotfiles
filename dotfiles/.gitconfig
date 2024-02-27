@@ -103,7 +103,7 @@
     g          = gui
     gr         = grep
     ignore     = !"cd -- ${GIT_PREFIX:-.}; if [ ! -f .gitignore ]; then echo '*' > .gitignore; fi"
-    issue      = !"f() { gh issue view "$(git rev-parse --abbrev-ref HEAD | sed -rn 's/([0-9]+)_.*/\\1/p')" $*; }; f"
+    issue      = !"f() { $(git repo-cli) issue view "$(git rev-parse --abbrev-ref HEAD | awk -F/ '{print $NF}' | sed -rn 's/([0-9]+)_.*/\\1/p')" $*; }; f"
     l          = log --oneline -n 15
     la         = log --pretty=full --graph
     ld         = lgd -n 15
@@ -131,13 +131,13 @@
     pl         = pull
     plo        = pull origin
     plu        = pull upstream
-    pr         = !"gh pr create --web"
+    pr         = pull-req
     ps         = push
     psfl       = push --force-with-lease
     psu        = push --set-upstream
     psuoc      = !"git push --set-upstream origin \"$(git rev-parse --abbrev-ref HEAD)\""
     psuuc      = !"git push --set-upstream upstream \"$(git rev-parse --abbrev-ref HEAD)\""
-    pull-req   = !"gh pr create --web"
+    pull-req   = !"if [ $(git repo-cli) = 'gh' ]; then gh pr create --web; else glab mr create --web; fi"
     rb         = rebase
     rba        = rebase --abort
     rbc        = rebase --continue
@@ -149,7 +149,8 @@
     rbsi       = rebase --autostash --interactive
     rbsq       = -c sequence.editor=: rebase --autosquash --interactive
     rbum       = !"git fetch upstream $(git main) && git rebase upstream/$(git main)"
-    repo       = !"gh repo view --web"
+    repo       = !"$(git repo-cli) repo view --web $(git remote get-url origin)"
+    repo-cli   = !"bash -c \"if [[ $(git remote get-url origin) = *@github.com:* ]]; then echo \"gh\"; else echo \"glab\"; fi"\"
     rev        = revert
     reva       = revert --abort
     revc       = revert --continue
