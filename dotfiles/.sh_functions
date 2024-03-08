@@ -47,3 +47,10 @@ mkdir_and_cd() {
     mkdir "$1"
     cd "$1" || return
 }
+
+if [ -n "$(command -v fzf)" ]; then
+    psi() {
+        # Interactively choose a process ID
+        echo "$(ps -aux | fzf | tr -s ' ' | cut -d' ' -f2)"
+    }
+fi
