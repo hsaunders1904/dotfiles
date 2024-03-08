@@ -12,11 +12,11 @@ REGION_START = ">>> hsaunders1904/dotfiles >>>"
 REGION_END = "<<< hsaunders1904/dotfiles <<<"
 
 
-def run_command_get_output(args: List[str], log=True) -> str:
+def run_command_get_output(args: List[str], log=True) -> str | None:
     if log:
         print(f"[+] {' '.join(args)}")
     if DRY_RUN:
-        return
+        return None
     result = subprocess.run(args, stdout=subprocess.PIPE)
     return result.stdout.decode()
 
@@ -29,12 +29,16 @@ def run_command(args: List[str], **kwargs):
 
 
 def update_dotfile(
-    file_path: str, new_region_content: str, comment_char: str, new_line: str = ""
+    file_path: str | Path,
+    new_region_content: str,
+    comment_char: str,
+    new_line: str = "",
 ):
     print(f"[+] Updating file '{file_path}'")
     if DRY_RUN:
         return
-    file_content = read_file_if_exists(file_path)
+    if (file_content := read_file_if_exists(file_path)) is None:
+        return None
     new_content = _update_dotfile_region(file_content, new_region_content, comment_char)
     if new_content is not None:
         with open(file_path, "w", newline=new_line) as f_writer:
@@ -84,7 +88,7 @@ def _download(url: str, out_path: str):
     request.urlretrieve(url, out_path)
 
 
-def read_file_if_exists(file_path: str) -> str:
+def read_file_if_exists(file_path: str | Path) -> str | None:
     try:
         with open(file_path, "r") as f:
             return f.read()
@@ -92,6 +96,7 @@ def read_file_if_exists(file_path: str) -> str:
         return ""
     except OSError as os_error:
         print(f"could not read file '{file_path}': {os_error}.")
+        return None
 
 
 def make_symlink_if_not_exist(origin: str, link: str):

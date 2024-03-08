@@ -5,6 +5,8 @@
 [branch]
     # Show most recently changed branches first.
     sort = -committerdate
+[advice]
+    addEmptyPathspec = false
 [diff]
     algorithm = histogram
 [init]
@@ -37,8 +39,8 @@
     a          = add
     aa         = add --all
     ac         = !"git add $(git diff --name-only --cached)"
-    ai         = !"git status --porcelain -uall $@ | fzf --multi --scheme path --preview='bash \"${DOTFILES_DIR}/scripts/fzf_diff_preview.sh\" {}' | awk '{$1=$1};1' | cut -d' ' -f2 | xargs git add"
-    aip        = !"git status --porcelain -uall $@ | fzf --multi --scheme path --bind 'enter:select-all+accept' --preview='bash \"${DOTFILES_DIR}/scripts/fzf_diff_preview.sh\" {}' | awk '{$1=$1};1' | cut -d' ' -f2 | xargs git add"
+    ai         = !"git status --porcelain -uall $@ | fzf --multi --cycle --scheme path --preview='bash \"${DOTFILES_DIR}/scripts/fzf_diff_preview\" {}' | awk '{$1=$1};1' | cut -d' ' -f2 | xargs git add"
+    aip        = !"git status --porcelain -uall $@ | fzf --multi --cycle --scheme path --bind 'enter:select-all+accept' --preview='bash \"${DOTFILES_DIR}/scripts/fzf_diff_preview\" {}' | awk '{$1=$1};1' | cut -d' ' -f2 | xargs git add"
     alias      = config --get-regexp ^alias\\.
     au         = add --update
     b          = branch
@@ -49,8 +51,8 @@
             && echo \"Created new branch: $(git branch --show-current)-BACKUP\"; \
         }; \
         f"
-    bdi        = !"f() { git branch -d $(bselect $@); }; f"
-    bDi        = !"f() { git branch -D $(bselect $@); }; f"
+    bdi        = !"f() { git bl -n $@ | fzf --multi --ansi --height '~100%' | cut -f3 -d' ' | xargs git branch -d; }; f"
+    bDi        = !"f() { git bl -n $@ | fzf --multi --ansi --height '~100%' | cut -f3 -d' ' | xargs git branch -D; }; f"
     bi         = !"f() { git bl -n $@ | fzf --ansi --height '~100%' | cut -f3 -d' '; }; f"
     bl         = !"\
         if [ -n \"$(command -v python3)\" ]; then \
@@ -81,7 +83,7 @@
     d          = diff
     dc         = diff --cached
     dcn        = diff --cached --name-only
-    di         = !"git diff --name-only | awk '$0=\" M \"$0' | fzf --cycle --bind 'enter:abort' --preview='bash \"${DOTFILES_DIR}/scripts/fzf_diff_preview.sh\" {}' || true"
+    di         = !"git status --porcelain -uall $@ | fzf --cycle --bind 'enter:abort' --preview='bash \"${DOTFILES_DIR}/scripts/fzf_diff_preview\" {}' || true"
     dm         = !"git diff origin/$(git main)..."
     dmn        = dnm
     dn         = diff --name-only

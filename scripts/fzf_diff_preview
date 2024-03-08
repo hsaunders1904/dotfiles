@@ -10,13 +10,17 @@ dsf="${DOTFILES_DIR}/external/diff-so-fancy/diff-so-fancy"
 if [ -f "${dsf}" ]; then
     diff_formatter="${dsf}"
 else
-    diff_formatter="echo"
+    diff_formatter="cat"
 fi
 
 if [ "$(echo "${status}" | cut -c2-2)" = "M" ]; then
     git diff --color "$f" | ${diff_formatter}
-elif [ "${status}" = "??" ] || [ "${status}" = "A " ]; then
+elif [ "${status}" = "??" ]; then
+    git diff --color --no-index /dev/null "$f" | ${diff_formatter} | sed '0,/added:/{s/added:/untracked:/}'
+elif [ "${status}" = "A " ]; then
     git diff --color --no-index /dev/null "$f" | ${diff_formatter}
+elif [ "$(echo "${status}" | cut -c2-2)" = "D" ]; then
+    git diff --color -- "$f" | ${diff_formatter}
 else
     echo "No changes"
 fi
