@@ -25,13 +25,16 @@ def install():
         diff_so_fancy.install()
     if is_executable("vim"):
         print("Vim...")
-        vim.install()
+        vim.install_vim()
+    if is_executable("nvim"):
+        print("Neovim...")
+        vim.install_neovim()
     if is_executable("pwsh"):
         print("PowerShell...")
         pwsh.install()
     if platform.system() == "Linux":
         # The apt package for fzf on Debian is really old, so lacks a
-        # lot of features. So install manually here instead.
+        # lot of features. Install manually here instead.
         print("fzf...")
         fzf.install()
 

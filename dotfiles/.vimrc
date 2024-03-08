@@ -1,40 +1,37 @@
-colorscheme slate
-
 filetype indent on
-filetype on
+filetype plugin indent on   " allow auto-indenting depending on file type
 filetype plugin on
 
-set expandtab
+syntax on                   " syntax highlighting
 
-set hlsearch
-set ignorecase
-set incsearch
-set nocompatible
+set termguicolors
+colorscheme desert
+
+set autoindent              " indent a new line the same amount as the line just typed
+set backupdir=~/.cache/vim  " Directory to store backup files.
+set clipboard=unnamedplus   " using system clipboard
+set cursorline              " highlight current cursorline
+set expandtab               " converts tabs to white space
+set hlsearch                " highlight search
+set ignorecase              " case insensitive
+set incsearch               " incremental search
+set mouse=a                 " enable mouse click
+set mouse=v                 " middle-click paste
+set nocompatible            " disable compatibility to old-time vi
 set noswapfile
-set number
+set number                  " add line numbers
 set ruler
 set shiftwidth=4
-set spell
+set shiftwidth=4            " width for autoindents
+set showmatch               " show matching
+set softtabstop=4           " see multiple spaces as tabstops so <BS> does the right thing
+set spell                   " enable spell check (may need to download language package)
 set spelllang=en
-set t_te=^[[?47l    " on exit, pop terminal state from alternate screen
-set t_ti=^[[?47h    " on init, push terminal state to alternate screen
-set tabstop=4
-if !has('nvim')
-    set term=xterm-256color
-endif
+set tabstop=4               " number of columns occupied by a tab
+set ttyfast                 " Speed up scrolling
+set wildmode=longest,list   " get bash-like tab completions
 
-if has('nvim')
-    :hi CocErrorHighlight gui=undercurl guisp=red
-else
-    :hi CocErrorHighlight cterm=undercurl ctermul=red
-endif
+hi clear spellbad
+hi spellbad gui=underline,italic cterm=underline,italic term=underline,italic
+hi cursorline guibg=Grey20
 
-syntax on
-
-" Make misspelled words red and italic
-hi clear SpellBad
-hi SpellBad cterm=italic,underline
-
-let mapleader = "'"
-
-nmap <C-d> mzyyp`z
