@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Download release artifacts from GitHub.
+"""Download release artifacts from GitHub.
 
 The first argument must be the GitHub repository name with the form
 '<owner>/<repository>'.
@@ -13,13 +12,15 @@ A list of available downloads (assets) for the selected releases will be shown.
 Select one or more assets to download them.
 """
 
+from __future__ import annotations
+
 import argparse
 import json
 import sys
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Dict, List, Optional, TextIO, Tuple
+from typing import Any, TextIO
 from urllib import request
 
 from pkg_resources import parse_version
@@ -31,10 +32,10 @@ DATETIME_FMT = "%Y-%m-%dT%H:%M:%SZ"
 class CliArgs:
     """Command line arguments."""
 
-    asset: Optional[List[str]]
+    asset: list[str] | None
     latest: bool
-    repository: Optional[str]
-    tag: Optional[List[str]]
+    repository: str | None
+    tag: list[str] | None
 
 
 @dataclass
@@ -55,10 +56,19 @@ class Asset:
 class Release:
     """Data related to a release."""
 
-    assets: List[Asset]
+    assets: list[Asset]
     name: str
     published: datetime
     tag: str
+
+    def __post_init__(self) -> None:
+        """Convert any empty values to defaults."""
+        if not self.name:
+            self.name = "Unnamed"
+        if not self.tag:
+            self.tag = "Untagged"
+        if not self.published:
+            self.published = datetime.fromtimestamp(0, tz=timezone.utc)
 
     def __str__(self) -> str:
         """Return the string representation of the asset."""
@@ -69,7 +79,7 @@ class Release:
         return s
 
 
-def main(argv: List[str], stdout: TextIO) -> int:
+def main(argv: list[str], stdout: TextIO) -> int:
     """Download release artifacts from GitHub."""
     args = parse_args(argv)
     if args.repository is None:
@@ -77,7 +87,12 @@ def main(argv: List[str], stdout: TextIO) -> int:
     else:
         repository = args.repository
     releases = fetch_release_list(repository)
-    selected_releases = select_releases(releases, args.latest, args.tag, stdout)
+    selected_releases = select_releases(
+        releases,
+        latest=args.latest,
+        tags=args.tag,
+        stdout=stdout,
+    )
     all_assets = []
     for release in selected_releases:
         all_assets.extend(release.assets)
@@ -88,7 +103,7 @@ def main(argv: List[str], stdout: TextIO) -> int:
     return 1 if error else 0
 
 
-def parse_args(argv: List[str]) -> CliArgs:
+def parse_args(argv: list[str]) -> CliArgs:
     """Parse command line arguments."""
     parser = argparse.ArgumentParser(
         description=__doc__,
@@ -137,8 +152,12 @@ def prompt_repo_name(stdout: TextIO) -> str:
 
 
 def select_releases(
-    releases: List[Release], latest: bool, tags: Optional[List[str]], stdout: TextIO
-) -> List[Release]:
+    releases: list[Release],
+    *,
+    latest: bool,
+    tags: list[str] | None,
+    stdout: TextIO,
+) -> list[Release]:
     """Select the release or releases to download assets from."""
     if latest:
         release = select_releases_latest(releases)
@@ -151,17 +170,19 @@ def select_releases(
     return select_releases_interactive(releases, stdout)
 
 
-def select_releases_tag(releases: List[Release], tags: List[str]) -> List[Release]:
+def select_releases_tag(releases: list[Release], tags: list[str]) -> list[Release]:
     """Select the releases in the given list that match any of the given tags."""
     selected = [release for release in releases if release.tag in tags]
     if not selected:
-        raise ValueError(f"no tags matching any of {str(tags)[1:-1]}")
+        msg = f"no tags matching any of {str(tags)[1:-1]}"
+        raise ValueError(msg)
     return selected
 
 
 def select_releases_interactive(
-    releases: List[Release], stdout: TextIO
-) -> List[Release]:
+    releases: list[Release],
+    stdout: TextIO,
+) -> list[Release]:
     """Get user to select from a list of releases."""
     for i, release in enumerate(releases):
         stdout.write(f"[{i}] {release}\n")
@@ -172,22 +193,22 @@ def select_releases_interactive(
             continue
         try:
             out = [releases[int(s)] for s in selections]
-            stdout.write("\n")
-            return out
         except IndexError:
             continue
+        stdout.write("\n")
+        return out
 
 
-def select_releases_latest(releases: List[Release]) -> Release:
-    """
-    Return the 'latest' release from the given list.
+def select_releases_latest(releases: list[Release]) -> Release:
+    """Return the 'latest' release from the given list.
 
     Note the latest version is retrieved according to PEP 440, which may
     not apply to some versioning systems. This is at best, an educated
     guess of which version is the latest.
     """
     if not releases:
-        raise ValueError("no releases to select from.")
+        msg = "no releases to select from."
+        raise ValueError(msg)
     if len(releases) == 1:
         return releases[0]
     latest = releases[0]
@@ -196,8 +217,9 @@ def select_releases_latest(releases: List[Release]) -> Release:
             latest_version = parse_version(latest.tag)
             version = parse_version(release.tag)
         except ValueError as exc:
+            msg = "could not get latest version, could not parse version"
             raise ValueError(
-                "could not get latest version, could not parse version"
+                msg,
             ) from exc
         if version > latest_version:
             latest = release
@@ -205,16 +227,17 @@ def select_releases_latest(releases: List[Release]) -> Release:
 
 
 def select_asset(
-    assets: List[Asset], stdout: TextIO, patterns: Optional[List[str]]
-) -> List[Asset]:
+    assets: list[Asset],
+    stdout: TextIO,
+    patterns: list[str] | None,
+) -> list[Asset]:
     """Get user to select from a list of assets."""
     if patterns:
         return match_select_asset(assets, patterns)
-    else:
-        return prompt_select_asset(assets, stdout)
+    return prompt_select_asset(assets, stdout)
 
 
-def match_select_asset(assets: List[Asset], patterns: List[str]) -> List[Asset]:
+def match_select_asset(assets: list[Asset], patterns: list[str]) -> list[Asset]:
     """Return the assets that match one of the given regex patterns."""
     import re
 
@@ -222,7 +245,7 @@ def match_select_asset(assets: List[Asset], patterns: List[str]) -> List[Asset]:
     return [a for a in assets if any(re.search(p, a.name) for p in re_patterns)]
 
 
-def prompt_select_asset(assets: List[Asset], stdout: TextIO) -> List[Asset]:
+def prompt_select_asset(assets: list[Asset], stdout: TextIO) -> list[Asset]:
     """Prompt the user to select a list of assets."""
     for i, asset in enumerate(assets):
         stdout.write(f"[{i}] {asset}\n")
@@ -233,10 +256,10 @@ def prompt_select_asset(assets: List[Asset], stdout: TextIO) -> List[Asset]:
             continue
         try:
             out = [assets[int(s)] for s in selections]
-            stdout.write("\n")
-            return out
         except IndexError:
             continue
+        stdout.write("\n")
+        return out
 
 
 def get_input(prompt: str, stdout: TextIO) -> str:
@@ -248,7 +271,7 @@ def get_input(prompt: str, stdout: TextIO) -> str:
         sys.exit(1)
 
 
-def gh_release_request(repo: str) -> List[Dict[str, Any]]:
+def gh_release_request(repo: str) -> list[dict[str, Any]]:
     """Request releases data from GitHub for the given repository."""
     url = f"https://api.github.com/repos/{repo}/releases"
     try:
@@ -256,39 +279,38 @@ def gh_release_request(repo: str) -> List[Dict[str, Any]]:
             return json.loads(response.read())
     except Exception as exc:
         sys.stderr.write(
-            f"gh_release_download: could not retrieve releases for '{repo}': {exc}\n"
+            f"gh_release_download: could not retrieve releases for '{repo}': {exc}\n",
         )
         sys.exit(1)
 
 
-def fetch_release_list(repo: str) -> List[Release]:
-    """Retrieve a list of release for the given GitHub repository."""
+def fetch_release_list(repo: str) -> list[Release]:
+    """Retrieve a list of releases for the given GitHub repository."""
     releases_data = gh_release_request(repo)
-    releases = []
-    for release_data in releases_data:
-        releases.append(
-            Release(
-                name=release_data["name"],
-                tag=release_data["tag_name"],
-                assets=parse_assets(release_data["assets"]),
-                published=datetime.strptime(release_data["published_at"], DATETIME_FMT),
-            )
+    return [
+        Release(
+            name=release_data.get("name", "Unnamed"),
+            tag=release_data.get("tag_name", "Untagged"),
+            assets=parse_assets(release_data.get("assets", [])),
+            published=datetime.strptime(
+                release_data.get("published_at", "1970-01-01T00:00:00Z"),
+                DATETIME_FMT,
+            ).astimezone(timezone.utc),
         )
-    return releases
+        for release_data in releases_data
+    ]
 
 
-def parse_assets(assets_data: List[Dict[str, Any]]) -> List[Asset]:
+def parse_assets(assets_data: list[dict[str, Any]]) -> list[Asset]:
     """Parse an asset from the data retrieved in a GitHub API request."""
-    assets = []
-    for asset_data in assets_data:
-        assets.append(
-            Asset(
-                name=asset_data["name"],
-                download_url=asset_data["browser_download_url"],
-                size=asset_data["size"],
-            )
+    return [
+        Asset(
+            name=asset_data["name"],
+            download_url=asset_data["browser_download_url"],
+            size=asset_data["size"],
         )
-    return assets
+        for asset_data in assets_data
+    ]
 
 
 def download_asset(asset: Asset, out_dir: Path, stdout: TextIO) -> bool:
@@ -296,54 +318,65 @@ def download_asset(asset: Asset, out_dir: Path, stdout: TextIO) -> bool:
     progress_bar = DownloadProgressBar(asset.name, stdout)
     try:
         request.urlretrieve(
-            asset.download_url, out_dir / asset.name, reporthook=progress_bar
+            asset.download_url,
+            out_dir / asset.name,
+            reporthook=progress_bar,
         )
         stdout.write("\n")
     except Exception as exc:
         sys.stderr.write(
-            f"\ngh_release_download: could not download asset '{asset.name}': {exc}\n"
+            f"\ngh_release_download: could not download asset '{asset.name}': {exc}\n",
         )
         return True
     return False
 
 
 class DownloadProgressBar:
-    """Simple progress bar."""
+    """A simple progress bar."""
 
     def __init__(self, prefix: str, stdout: TextIO = sys.stdout) -> None:
         self.prefix = prefix
         self.stdout = stdout
 
     def __call__(self, block_num: int, block_size: int, total_size: int) -> None:
-        """Callback function for urlretrieve's `reporthook`."""
+        """
+        Flush stdout and print the state of the progress bar.
+
+        This can be used as a callback function for urlretrieve's
+        `reporthook`.
+        """
         bar_len = 38
         num_blocks = max(total_size / block_size, 1)
         percentage = float(block_num) / num_blocks
         num_full = int(bar_len * percentage)
-        sys.stdout.write("\r")
-        sys.stdout.write(
+        self.stdout.write("\r")
+        self.stdout.write(
             f"{self.prefix} [{'#'*num_full}{' '*(bar_len - num_full)}] "
-            f"{min(int(percentage*100), 100)}%"
+            f"{min(int(percentage*100), 100)}%",
         )
-        sys.stdout.flush()
+        self.stdout.flush()
 
 
-def human_readable_size(num: int) -> Tuple[str, str]:
+def human_readable_size(num: float) -> tuple[str, str]:
     """
     Return the given number of bytes in a human readable form.
 
     https://stackoverflow.com/a/1094933.
     """
-    for unit in ["B", "KiB", "MiB", "GiB", "TiB", "PiB", "EiB", "ZiB"]:
-        if abs(num) < 1024.0:
+    kib = 1024.0  # bytes
+    for unit in ["B", "KiB", "MiB", "GiB", "TiB"]:
+        if abs(num) < kib:
             break
-        num /= 1024.0
+        num /= kib
     return f"{num:.0f}", unit
 
 
 if __name__ == "__main__":
+    import traceback
+
     try:
         sys.exit(main(sys.argv[1:], sys.stdout))
     except Exception as exc:
         sys.stderr.write(f"gh_release_download: error: {exc}\n")
+        traceback.print_exception(exc)
         sys.exit(1)
