@@ -21,11 +21,11 @@ def run_command_get_output(args: List[str], log=True) -> str | None:
     return result.stdout.decode()
 
 
-def run_command(args: List[str], **kwargs):
+def run_command(args: List[str], check=True, **kwargs):
     print(f"[+] {' '.join(args)}")
     if DRY_RUN:
         return
-    subprocess.run(args, check=True, **kwargs)
+    subprocess.run(args, check=check, **kwargs)
 
 
 def update_dotfile(
@@ -71,7 +71,9 @@ def _update_dotfile_region(string: str, new_content: str, comment_char: str):
             return f"{string}\n{new_region}"
 
 
-def download_file(url: str, out_path: str, log: bool = True, force: bool = False):
+def download_file(
+    url: str, out_path: str | Path, log: bool = True, force: bool = False
+):
     if os.path.isfile(out_path) and not force:
         return
     if log:
@@ -79,7 +81,7 @@ def download_file(url: str, out_path: str, log: bool = True, force: bool = False
     if DRY_RUN:
         return
     try:
-        _download(url, out_path)
+        _download(url, str(out_path))
     except Exception as exc:
         print(f"download failed: {exc}")
 
