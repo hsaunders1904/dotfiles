@@ -10,8 +10,8 @@ addpath() {
 
 bak() {
     # Create backups of the given files
-    for path in "$@"; do
-        cp "${path}" "${path}.bak"
+    for file_path in "$@"; do
+        cp "${file_path}" "${file_path}.bak"
     done
 }
 
