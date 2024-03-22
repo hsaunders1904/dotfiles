@@ -45,22 +45,12 @@
     au         = add --update
     b          = branch
     ba         = branch --all
-    backup     = !"\
-        f() { \
-            git branch \"$(git branch --show-current)-BACKUP\" \
-            && echo \"Created new branch: $(git branch --show-current)-BACKUP\"; \
-        }; \
-        f"
-    bdi        = !"f() { git bl -n $@ | fzf --multi --ansi --height '~100%' | cut -f3 -d' ' | xargs git branch -d; }; f"
-    bDi        = !"f() { git bl -n $@ | fzf --multi --ansi --height '~100%' | cut -f3 -d' ' | xargs git branch -D; }; f"
+    backup     = !"f() { git branch \"$(git branch --show-current)-BACKUP\" && echo \"Created new branch: $(git branch --show-current)-BACKUP\"; }; f"
+    bdi        = !"f() { git bl -n $@ | fzf --multi --ansi --height '~100%' --preview='git log -n50 --oneline --graph --color $(echo \"{}\" | cut -d\" \" -f3)' | cut -f3 -d' ' | xargs git branch -d; }; f"
+    bDi        = !"f() { git bl -n $@ | fzf --multi --ansi --height '~100%' --preview='git log -n50 --oneline --graph --color $(echo \"{}\" | cut -d\" \" -f3)' | cut -f3 -d' ' | xargs git branch -D; }; f"
     bi         = !"f() { git bl -n $@ | fzf --ansi --height '~100%' | cut -f3 -d' '; }; f"
-    bl         = !"\
-        if [ -n \"$(command -v python3)\" ]; then \
-            _py=python3; \
-        else \
-            _py=python; \
-        fi && \
-        ${_py} \"${DOTFILES_DIR}/scripts/git_branch_list\" $@"
+    bl         = !"if [ -n \"$(command -v python3)\" ]; then _py=python3; else _py=python; fi && ${_py} \"${DOTFILES_DIR}/scripts/git_branch_list\" $@"
+    bli        = !"git bl | fzf --ansi --preview='git log -n50 --pretty --decorate --graph --color $(echo \"{}\" | cut -d\" \" -f3)' | cut -d\" \" -f3"
     brsh       = !"git backup && git reset --hard"
     c          = commit
     ca         = commit --amend
@@ -104,6 +94,7 @@
     fum        = !"git fetch upstream $(git main)"
     g          = gui
     gr         = grep
+    graph      = log --pretty --decorate --graph --color
     ignore     = !"cd -- ${GIT_PREFIX:-.}; if [ ! -f .gitignore ]; then echo '*' > .gitignore; fi"
     issue      = !"f() { $(git repo-cli) issue view "$(git rev-parse --abbrev-ref HEAD | awk -F/ '{print $NF}' | sed -rn 's/([0-9]+)_.*/\\1/p')" $*; }; f"
     l          = log --oneline -n 15
