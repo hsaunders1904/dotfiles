@@ -58,6 +58,7 @@
     caan       = commit --amend --all --no-edit
     can        = commit --amend --no-edit
     cf         = commit --fixup
+    cff        = !"f() { git commit --fixup $1 && git rbas $1^1; }; f"
     chp        = cherry-pick
     cl         = clean
     cla        = clean -ixd
@@ -133,6 +134,7 @@
     pull-req   = !"if [ $(git repo-cli) = 'gh' ]; then gh pr create --web; else glab mr create --web; fi"
     rb         = rebase
     rba        = rebase --abort
+    rbas       = !"git -c sequence.editor=: rebase --autosquash --interactive"
     rbc        = rebase --continue
     rbi        = rebase --interactive
     rbis       = rebase --autostash --interactive
