@@ -16,7 +16,7 @@ fi
 if [ "$(echo "${status}" | cut -c2-2)" = "M" ]; then
     git diff --color "$f" | ${diff_formatter}
 elif [ "${status}" = "??" ]; then
-    git diff --color --no-index /dev/null "$f" | ${diff_formatter} | sed '0,/added:/{s/added:/untracked:/}'
+    git diff --color --no-index /dev/null "$f" | ${diff_formatter} | sed '0,/added:/ s/added:/untracked:/'
 elif [ "${status}" = "A " ]; then
     git diff --color --no-index /dev/null "$f" | ${diff_formatter}
 elif [ "$(echo "${status}" | cut -c2-2)" = "D" ]; then
