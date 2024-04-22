@@ -58,7 +58,7 @@
     caan       = commit --amend --all --no-edit
     can        = commit --amend --no-edit
     cf         = commit --fixup
-    cff        = !"f() { git commit --fixup $1 && git rbas $1^1; }; f"
+    cff        = !"f() { git commit --fixup $1 && git rbas --autostash $1^1; }; f"
     chp        = cherry-pick
     cl         = clean
     cla        = clean -ixd
