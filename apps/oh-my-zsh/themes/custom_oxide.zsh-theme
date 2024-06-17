@@ -88,11 +88,21 @@ function _get_python_env() {
     fi
 }
 
+function _get_dstask_count() {
+    if command -v dstask >/dev/null 2>&1; then
+        TASK_COUNT="$(dstask | grep '"id"' --count)"
+        if ! [ "$TASK_COUNT" -eq "0" ]; then
+            echo "${TASK_COUNT}📝 "
+        fi
+    fi
+}
+
 # Stop Python virtual environments from editing prompt
 export VIRTUAL_ENV_DISABLE_PROMPT=1
 
 PROMPT=$'\n'
 PROMPT+=$'%{$oxide_limegreen%}%/%{$oxide_reset_color%} '
+PROMPT+=$'%{$oxide_red%}$(_get_dstask_count)%{$oxide_reset_color%}'
 PROMPT+=$'%{$oxide_yellow%}$(_get_python_env)%{$oxide_reset_color%}'
 PROMPT+=$'${vcs_info_msg_0_}\n'
 PROMPT+=$'%(?.%{$oxide_white%}.%{$oxide_red%})%(!.#.»)%{$oxide_reset_color%} '
