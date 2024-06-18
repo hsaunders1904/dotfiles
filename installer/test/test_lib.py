@@ -6,7 +6,7 @@ class TestUpdateDotfileRegion:
         string = ""
         new_content = "Some\n" "Multiline\n" "string"
 
-        new_string = lib.update_dotfile_region(string, new_content, "#")
+        new_string = lib._update_dotfile_region(string, new_content, "#")
 
         expected_content = (
             f"# {lib.REGION_START}\n" f"{new_content}\n" f"# {lib.REGION_END}\n"
@@ -17,7 +17,7 @@ class TestUpdateDotfileRegion:
         string = "Some text we want to keep here...\n" "Some more test to keep...\n"
         new_content = "Some\n" "Multiline\n" "string"
 
-        new_string = lib.update_dotfile_region(string, new_content, "//")
+        new_string = lib._update_dotfile_region(string, new_content, "//")
 
         expected_content = (
             "Some text we want to keep here...\n"
@@ -40,7 +40,7 @@ class TestUpdateDotfileRegion:
         )
         new_content = "Some\n" "Multiline\n" "string\n"
 
-        new_string = lib.update_dotfile_region(string, new_content, "#")
+        new_string = lib._update_dotfile_region(string, new_content, "#")
 
         expected_content = (
             "Some text we want to keep here...\n"
