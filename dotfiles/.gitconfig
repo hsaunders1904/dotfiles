@@ -39,16 +39,17 @@
     a          = add
     aa         = add --all
     ac         = !"git add $(git diff --name-only --cached)"
-    ai         = !"git status --porcelain -uall $@ | fzf --multi --cycle --scheme path --preview='bash \"${DOTFILES_DIR}/scripts/fzf_diff_preview\" {}' | awk '{$1=$1};1' | cut -d' ' -f2 | xargs git add"
-    aip        = !"git status --porcelain -uall $@ | fzf --multi --cycle --scheme path --bind 'enter:select-all+accept' --preview='bash \"${DOTFILES_DIR}/scripts/fzf_diff_preview\" {}' | awk '{$1=$1};1' | cut -d' ' -f2 | xargs git add"
+    ai         = !"git status --porcelain -uall $@ | fzf --multi --cycle --scheme path --preview-window=up --preview='bash \"${DOTFILES_DIR}/scripts/fzf_diff_preview\" {}' | awk '{$1=$1};1' | cut -d' ' -f2 | xargs git add"
+    aip        = !"git status --porcelain -uall $@ | fzf --multi --cycle --scheme path --bind 'enter:select-all+accept' --preview-window=up --preview='bash \"${DOTFILES_DIR}/scripts/fzf_diff_preview\" {}' | awk '{$1=$1};1' | cut -d' ' -f2 | xargs git add"
     alias      = config --get-regexp ^alias\\.
     au         = add --update
     b          = branch
     ba         = branch --all
     backup     = !"f() { git branch \"$(git branch --show-current)-BACKUP\" && echo \"Created new branch: $(git branch --show-current)-BACKUP\"; }; f"
-    bdi        = !"f() { git bl -n $@ | fzf --multi --ansi --height '~100%' --preview='git log -n50 --decorate --oneline --graph --color $(echo \"{}\" | cut -d\" \" -f3)' | cut -f3 -d' ' | xargs git branch -d; }; f"
-    bDi        = !"f() { git bl -n $@ | fzf --multi --ansi --height '~100%' --preview='git log -n50 --decorate --oneline --graph --color $(echo \"{}\" | cut -d\" \" -f3)' | cut -f3 -d' ' | xargs git branch -D; }; f"
-    bi         = !"f() { git bl -n $@ | fzf --ansi --height '~100%' | cut -f3 -d' '; }; f"
+    bdi        = !"f() { git bim | xargs git branch -d; }; f"
+    bDi        = !"f() { git bim | xargs git branch -D; }; f"
+    bi         = !"f() { git bl -n $@ | fzf --ansi --preview-window=up --preview='git log --decorate --oneline --graph --color $(echo \"{}\" | cut -d\" \" -f3)' | cut -f3 -d' '; }; f"
+    bim        = !"f() { git bl -n $@ | fzf --multi --ansi --preview='git log --decorate --oneline --graph --color $(echo \"{}\" | cut -d\" \" -f3)' | cut -f3 -d' '; }; f"
     bl         = !"if [ -n \"$(command -v python3)\" ]; then _py=python3; else _py=python; fi && ${_py} \"${DOTFILES_DIR}/scripts/git_branch_list\" $@"
     bla        = bl --all
     bli        = !"git bl | fzf --ansi --preview='git log -n50 --pretty --decorate --graph --color $(echo \"{}\" | cut -d\" \" -f3)' | cut -d\" \" -f3"
@@ -75,7 +76,7 @@
     d          = diff
     dc         = diff --cached
     dcn        = diff --cached --name-only
-    di         = !"git status --porcelain -uall $@ | fzf --cycle --bind 'enter:abort' --preview='bash \"${DOTFILES_DIR}/scripts/fzf_diff_preview\" {}' || true"
+    di         = !"git status --porcelain -uall $@ | fzf --cycle --bind 'enter:abort' --preview-window=up --preview='bash \"${DOTFILES_DIR}/scripts/fzf_diff_preview\" {}' || true"
     dm         = !"git diff origin/$(git main)..."
     dmn        = dnm
     dn         = diff --name-only
@@ -154,14 +155,14 @@
     rs         = reset
     rs1        = reset "HEAD@{1}"
     rsa        = reset --all
-    rsi        = !"git diff --staged --name-only $@ | fzf --multi --cycle --scheme path --preview='git diff --color --staged {} | \"${DOTFILES_DIR}/external/diff-so-fancy/diff-so-fancy\"' | xargs git reset"
+    rsi        = !"git diff --staged --name-only $@ | fzf --multi --cycle --scheme path --preview-window=up --preview='git diff --color --staged {} | \"${DOTFILES_DIR}/external/diff-so-fancy/diff-so-fancy\"' | xargs git reset"
     rsh        = reset --hard
     rshb       = "git backup && reset --hard"
     rss        = reset --soft
     s          = status --short -b
     sc         = switch --create
     sh         = show
-    si         = !"f() { git bl -n $@ | fzf --multi --ansi --height '~100%' --preview='git log -n50 --decorate --oneline --color $(echo \"{}\" | cut -d\" \" -f3)' | cut -f3 -d' ' | xargs git switch; }; f"
+    si         = !"f() { git bi | xargs git switch; }; f"
     sm         = !"git switch $(git main)"
     sha        = rev-parse HEAD
     shn        = show --name-only
