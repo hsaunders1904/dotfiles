@@ -51,6 +51,12 @@ if [ -n "$(command -v apt-get)" ]; then
     alias apt-get='sudo apt-get'
 fi
 
+if [ -n "$(command -v fzf)" ] && [ -n "$(command -v fd)" ]; then
+    alias fzfcd='cd_with_fzf'
+    alias cdfzf='cd_with_fzf'
+    alias cf='cd_with_fzf'
+fi
+
 if [ -z "$(command -v bat)" ] && [ -n "$(command -v batcat)" ]; then
     alias bat=batcat
 fi

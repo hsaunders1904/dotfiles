@@ -11,7 +11,7 @@ addpath() {
 bak() {
     # Create backups of the given files
     for file_path in "$@"; do
-        cp "${file_path}" "${file_path}.bak"
+        cp "${file_path}" "${file_path}.bak" || :
     done
 }
 
@@ -23,6 +23,18 @@ cd_and_ls() {
     fi
     builtin cd "${new_dir}" && ls
 }
+
+if [ -n "$(command -v fzf)" ] && [ -n "$(command -v fd)" ]; then
+    cd_with_fzf() {
+        # Use fd to list directories and choose one to cd into using fzf
+        root_dir="${1-$(pwd)}"
+        if ! [ -d "${root_dir}" ]; then
+            >&2 echo "no such directory: '${root_dir}'"
+            return 1
+        fi
+        cd "$(fd . -t d "${root_dir}" | fzf --scheme path)" || return 2
+    }
+fi
 
 cpath() {
     # Copy the given file's full path to the clipboard
@@ -51,6 +63,6 @@ mkdir_and_cd() {
 if [ -n "$(command -v fzf)" ]; then
     psi() {
         # Interactively choose a process ID
-        echo "$(ps -aux | fzf | tr -s ' ' | cut -d' ' -f2)"
+        ps -aux | fzf | tr -s ' ' | cut -d' ' -f2
     }
 fi
