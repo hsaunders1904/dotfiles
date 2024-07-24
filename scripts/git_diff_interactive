@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+set -e
+
+ITEMS="$1"
+if [ -z "${ITEMS}" ]; then
+    exit 0
+fi
+FZF_ARGS="$2"
+
+FZF_BORDER_HEIGHT=4
+TERM_HEIGHT="$(tput lines)"
+NUM_ITEMS="$(echo "${ITEMS}" | wc -l)"
+MIN_PREVIEW_HEIGHT=$(("${TERM_HEIGHT}" / 2))
+PREVIEW_HEIGHT=$(("${TERM_HEIGHT}" - "${FZF_BORDER_HEIGHT}" - "${NUM_ITEMS}"))
+PREVIEW_HEIGHT=$(("${PREVIEW_HEIGHT}">"${MIN_PREVIEW_HEIGHT}" ? "${PREVIEW_HEIGHT}" : "${MIN_PREVIEW_HEIGHT}"))
+
+echo "${ITEMS}" | \
+    fzf \
+        --cycle \
+        --scheme path \
+        --preview-window="up,${PREVIEW_HEIGHT}" \
+        --preview="bash '${DOTFILES_DIR}/scripts/fzf_diff_preview' {}" \
+        "${FZF_ARGS[@]}" | \
+    awk '{$1=$1};1' | \
+    cut -d' ' -f2

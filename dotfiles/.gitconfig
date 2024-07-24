@@ -39,8 +39,7 @@
     a          = add
     aa         = add --all
     ac         = !"git add $(git diff --name-only --cached)"
-    ai         = !"git status --porcelain -uall $@ | fzf --multi --cycle --scheme path --preview-window=up --preview='bash \"${DOTFILES_DIR}/scripts/fzf_diff_preview\" {}' | awk '{$1=$1};1' | cut -d' ' -f2 | xargs git add"
-    aip        = !"git status --porcelain -uall $@ | fzf --multi --cycle --scheme path --bind 'enter:select-all+accept' --preview-window=up --preview='bash \"${DOTFILES_DIR}/scripts/fzf_diff_preview\" {}' | awk '{$1=$1};1' | cut -d' ' -f2 | xargs git add"
+    ai         = !"${DOTFILES_DIR}/scripts/git_add_interactive"
     alias      = config --get-regexp ^alias\\.
     au         = add --update
     b          = branch
@@ -48,8 +47,11 @@
     backup     = !"f() { git branch \"$(git branch --show-current)-BACKUP\" && echo \"Created new branch: $(git branch --show-current)-BACKUP\"; }; f"
     bdi        = !"f() { git bim | xargs git branch -d; }; f"
     bDi        = !"f() { git bim | xargs git branch -D; }; f"
-    bi         = !"f() { git bl -n $@ | fzf --ansi --preview-window=up --preview='git log --decorate --oneline --graph --color $(echo \"{}\" | cut -d\" \" -f3)' | cut -f3 -d' '; }; f"
-    bim        = !"f() { git bl -n $@ | fzf --multi --ansi --preview='git log --decorate --oneline --graph --color $(echo \"{}\" | cut -d\" \" -f3)' | cut -f3 -d' '; }; f"
+    bi         = !"f() { "${DOTFILES_DIR}/scripts/git_branch_interactive"; }; f"
+    bia        = !"f() { "${DOTFILES_DIR}/scripts/git_branch_interactive" -a; }; f"
+    biam       = !"f() { "${DOTFILES_DIR}/scripts/git_branch_interactive" -a -m; }; f"
+    bim        = !"f() { "${DOTFILES_DIR}/scripts/git_branch_interactive" -m; }; f"
+    bima       = !"f() { "${DOTFILES_DIR}/scripts/git_branch_interactive" -m -a; }; f"
     bl         = !"if [ -n \"$(command -v python3)\" ]; then _py=python3; else _py=python; fi && ${_py} \"${DOTFILES_DIR}/scripts/git_branch_list\" $@"
     bla        = bl --all
     bli        = !"git bl | fzf --ansi --preview='git log -n50 --pretty --decorate --graph --color $(echo \"{}\" | cut -d\" \" -f3)' | cut -d\" \" -f3"
@@ -77,7 +79,7 @@
     d          = diff
     dc         = diff --cached
     dcn        = diff --cached --name-only
-    di         = !"git status --porcelain -uall $@ | fzf --cycle --bind 'enter:abort' --preview-window=up --preview='bash \"${DOTFILES_DIR}/scripts/fzf_diff_preview\" {}' || true"
+    di         = !"\"${DOTFILES_DIR}/scripts/git_diff_interactive\" \"$(git status --porcelain -uall)\" '--bind='enter:abort'' || true"
     dm         = !"git diff origin/$(git main)..."
     dmn        = dnm
     dn         = diff --name-only
@@ -164,7 +166,7 @@
     sc         = switch --create
     sd         = switch develop
     sh         = show
-    si         = !"f() { git bi | xargs git switch; }; f"
+    si         = !"f() { git bi "$@" | xargs git switch; }; f"
     sm         = !"git switch $(git main)"
     sha        = rev-parse HEAD
     shn        = show --name-only
@@ -174,9 +176,9 @@
     sta        = stash apply
     stash-save = "!git aa && git stash -k && git reset"
     sti        = stash --keep-index
-    stl        = "!git stash list --pretty=format:\"%C(magenta)%>(10)%gd %C(yellow)%>(8)%h%C(reset) %<(80,trunc)%s %C(green)(%cr)%C(reset)\""
+    stl        = !"git stash list --pretty=format:\"%C(magenta)%>(10)%gd %C(yellow)%>(8)%h%C(reset) %<(80,trunc)%s %C(green)(%cr)%C(reset)\""
     stp        = stash push
-    strip-whitespace = "!sed -bi 's/[[:space:]]*$//' $(git diff --name-only --cached)"
+    strip-whitespace = !"sed -bi 's/[[:space:]]*$//' $(git diff --name-only --cached)"
     sts        = stash-save
     sw         = switch
     swc        = switch --create

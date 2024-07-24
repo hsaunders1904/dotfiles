@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+set -e
+
+while getopts "am" opt; do
+    case "${opt}" in
+        a) ALL="--all" ;;
+        m) MULTI="--multi" ;;
+        *) exit 1
+    esac
+done
+
+SCRIPT_DIR="$(cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd)"
+if [ -n "$(command -v python3)" ]; then
+    _py=python3
+else
+    _py=python
+fi
+
+ITEMS="$("${_py}" "${SCRIPT_DIR}/git_branch_list" -n ${ALL})"
+PREVIEW_HEIGHT="$("${SCRIPT_DIR}/fzf_vertical_preview_height" "${ITEMS}")"
+echo "${ITEMS}" | \
+    fzf \
+        ${MULTI} \
+        --ansi \
+        --preview-window="up,${PREVIEW_HEIGHT}" \
+        --preview='git log --color --graph --oneline --decorate --simplify-by-decoration $(git for-each-ref --format='\''%(refname)'\'' refs/heads) $(git rev-list --reverse $(git merge-base HEAD $(git for-each-ref --format='\''%(refname)'\'' refs/heads | grep -v $(git symbolic-ref --short HEAD)))..HEAD) | GREP_COLORS="mt=01;30;47" grep --color=always -E "$(echo "{}" | cut -d" " -f2)|$"' | \
+    cut -d' ' -f3

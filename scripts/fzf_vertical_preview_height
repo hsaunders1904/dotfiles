@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+# Determine the maximum height (in number of lines) of a vertical fzf preview.
+
+set -e
+
+ITEMS="$1"
+if [ -z "${ITEMS}" ]; then
+    exit 0
+fi
+
+FZF_BORDER_HEIGHT=4
+TERM_HEIGHT="$(tput lines)"
+NUM_ITEMS="$(echo "${ITEMS}" | wc -l)"
+MIN_PREVIEW_HEIGHT=$(("${TERM_HEIGHT}" / 2))
+PREVIEW_HEIGHT=$(("${TERM_HEIGHT}" - "${FZF_BORDER_HEIGHT}" - "${NUM_ITEMS}"))
+PREVIEW_HEIGHT=$(("${PREVIEW_HEIGHT}">"${MIN_PREVIEW_HEIGHT}" ? "${PREVIEW_HEIGHT}" : "${MIN_PREVIEW_HEIGHT}"))
+
+echo "${PREVIEW_HEIGHT}"

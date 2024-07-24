@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+set -e
+
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+FILES="$(git status --porcelain -uall "$@")"
+PREVIEW_HEIGHT="$("${SCRIPT_DIR}/fzf_vertical_preview_height" "${FILES}")"
+echo "${FILES}" | \
+    fzf \
+        --cycle \
+        --multi \
+        --scheme path \
+        --preview-window="up,${PREVIEW_HEIGHT}" \
+        --preview="bash '${SCRIPT_DIR}/fzf_diff_preview' {}" | \
+    awk '{$1=$1};1' | \
+    cut -d' ' -f2 | \
+    xargs git add
