@@ -47,8 +47,11 @@
     backup     = !"f() { git branch \"$(git branch --show-current)-BACKUP\" && echo \"Created new branch: $(git branch --show-current)-BACKUP\"; }; f"
     bdi        = !"f() { git bim | xargs git branch -d; }; f"
     bDi        = !"f() { git bim | xargs git branch -D; }; f"
-    bi         = !"f() { "${DOTFILES_DIR}/scripts/git_branch_interactive" "$@"; }; f"
-    bim        = !"f() { git bl -n $@ | fzf --multi --ansi --preview='git log --decorate --oneline --graph --color $(echo \"{}\" | cut -d\" \" -f3)' | cut -f3 -d' '; }; f"
+    bi         = !"f() { "${DOTFILES_DIR}/scripts/git_branch_interactive"; }; f"
+    bia        = !"f() { "${DOTFILES_DIR}/scripts/git_branch_interactive" -a; }; f"
+    biam       = !"f() { "${DOTFILES_DIR}/scripts/git_branch_interactive" -a -m; }; f"
+    bim        = !"f() { "${DOTFILES_DIR}/scripts/git_branch_interactive" -m; }; f"
+    bima       = !"f() { "${DOTFILES_DIR}/scripts/git_branch_interactive" -m -a; }; f"
     bl         = !"if [ -n \"$(command -v python3)\" ]; then _py=python3; else _py=python; fi && ${_py} \"${DOTFILES_DIR}/scripts/git_branch_list\" $@"
     bla        = bl --all
     bli        = !"git bl | fzf --ansi --preview='git log -n50 --pretty --decorate --graph --color $(echo \"{}\" | cut -d\" \" -f3)' | cut -d\" \" -f3"
@@ -173,9 +176,9 @@
     sta        = stash apply
     stash-save = "!git aa && git stash -k && git reset"
     sti        = stash --keep-index
-    stl        = "!git stash list --pretty=format:\"%C(magenta)%>(10)%gd %C(yellow)%>(8)%h%C(reset) %<(80,trunc)%s %C(green)(%cr)%C(reset)\""
+    stl        = !"git stash list --pretty=format:\"%C(magenta)%>(10)%gd %C(yellow)%>(8)%h%C(reset) %<(80,trunc)%s %C(green)(%cr)%C(reset)\""
     stp        = stash push
-    strip-whitespace = "!sed -bi 's/[[:space:]]*$//' $(git diff --name-only --cached)"
+    strip-whitespace = !"sed -bi 's/[[:space:]]*$//' $(git diff --name-only --cached)"
     sts        = stash-save
     test-pr    = !"${DOTFILES_DIR}/scripts/git_checkout_pr"
     wip        = !"git add -A && git rm $(git ls-files --deleted) 2>/dev/null; git commit --no-verify --no-gpg-sign -m '--wip-- [skip ci]'"
