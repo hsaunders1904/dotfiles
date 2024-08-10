@@ -91,6 +91,10 @@ if [ -n "$(command -v nvim)" ]; then
     alias nv=nvim
 fi
 
+if [ -n "$(command -v micromamba)" ]; then
+    alias mm=micromamba
+fi
+
 # Typo corrections
 ## Git
 alias g8t=git
