@@ -13,7 +13,6 @@ if [ -d "${HOME}/.oh-my-zsh" ]; then
         copybuffer
         copyfile
         extract
-        fd
         git
         poetry
         pyautoenv
