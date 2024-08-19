@@ -67,6 +67,7 @@
     cln        = clean -n
     cloner     = clone --recurse-submodules
     co         = checkout
+    cod        = checkout develop
     cor        = checkout --recurse-submodules
     co-        = co -
     copr       = !"${DOTFILES_DIR}/scripts/git_checkout_pr"
@@ -161,6 +162,7 @@
     rss        = reset --soft
     s          = status --short -b
     sc         = switch --create
+    sd         = switch develop
     sh         = show
     si         = !"f() { git bi | xargs git switch; }; f"
     sm         = !"git switch $(git main)"
