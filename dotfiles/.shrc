@@ -42,4 +42,8 @@ if [ -x "$(command -v ninja)" ]; then
     export CMAKE_GENERATOR=Ninja
 fi
 
+if command -v direnv > /dev/null; then
+    eval "$(direnv hook ${SHELL})"
+fi
+
 export CARGO_NET_GIT_FETCH_WITH_CLI=true
