@@ -53,6 +53,7 @@ fi
 
 if [ -n "$(command -v fzf)" ] && [ -n "$(command -v fd)" ]; then
     alias fzfcd='cd_with_fzf'
+    alias fzfp="fzf --preview='bat --color=always {}'"
     alias cdfzf='cd_with_fzf'
     alias cf='cd_with_fzf'
 fi
