@@ -17,6 +17,7 @@ if [ -d "${HOME}/.oh-my-zsh" ]; then
         poetry
         pyautoenv
         rust
+        uv
         zsh-autosuggestions
     )
     source "${ZSH}/oh-my-zsh.sh"
