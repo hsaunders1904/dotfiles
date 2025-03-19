@@ -20,6 +20,7 @@ set mouse=v                 " middle-click paste
 set nocompatible            " disable compatibility to old-time vi
 set noswapfile
 set number                  " add line numbers
+set relativenumber
 set ruler
 set shiftwidth=4            " width for autoindents
 set showmatch               " show matching
