@@ -21,7 +21,6 @@ set nocompatible            " disable compatibility to old-time vi
 set noswapfile
 set number                  " add line numbers
 set ruler
-set shiftwidth=4
 set shiftwidth=4            " width for autoindents
 set showmatch               " show matching
 set softtabstop=4           " see multiple spaces as tabstops so <BS> does the right thing
@@ -34,4 +33,3 @@ set wildmode=longest,list   " get bash-like tab completions
 hi clear spellbad
 hi spellbad gui=underline,italic cterm=underline,italic term=underline,italic
 hi cursorline guibg=Grey20
-
