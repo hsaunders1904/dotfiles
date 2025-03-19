@@ -1,10 +1,10 @@
-function file_exists(name)
+local function file_exists(name)
     local f = io.open(name,"r")
     if f ~= nil then io.close(f) return true else return false end
 end
 
-dotfiles_dir = os.getenv('DOTFILES_DIR')
-vimrc =  dotfiles_dir .. '/dotfiles/.vimrc'
+local dotfiles_dir = os.getenv('DOTFILES_DIR')
+local vimrc =  dotfiles_dir .. '/dotfiles/.vimrc'
 if file_exists(vimrc) then
     vim.cmd('source' .. vimrc)
 end
@@ -14,6 +14,10 @@ vim.g.maplocalleader = "\\"
 
 vim.opt.runtimepath:append(dotfiles_dir .. '/apps/neovim')
 require("config.lazy")
+require("github-theme")
+require('lspconfig')
+require('neo-tree')
+require('nvim-treesitter')
 require("telescope").setup()
 
 
