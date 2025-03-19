@@ -7,7 +7,7 @@ export LESSCHARSET=utf-8
 # ow and tw change symlinks, and di changes directory colours
 export LS_COLORS="${LS_COLORS}:ow=1;94:tw=1;94:di=36;0:ex=0;32"
 
-if [ -n "$(command -v conda)" ]; then
+if command -v conda > /dev/null; then
     conda config --set changeps1 False
 fi
 
@@ -20,7 +20,7 @@ if [ -d "${HOME}/.local/bin" ]; then
 fi
 
 # Tab-completion
-if [ -x "$(command -v gh)" ]; then
+if command -v gh > /dev/null; then
     eval "$(gh completion -s "$(basename "${SHELL}")")"
 fi
 
@@ -38,7 +38,7 @@ if [ -f "${_funcs_path}" ]; then
 fi
 unset _funcs_path
 
-if [ -x "$(command -v ninja)" ]; then
+if command -v ninja > /dev/null; then
     export CMAKE_GENERATOR=Ninja
 fi
 
@@ -46,4 +46,6 @@ if command -v direnv > /dev/null; then
     eval "$(direnv hook ${SHELL})"
 fi
 
-export CARGO_NET_GIT_FETCH_WITH_CLI=true
+if command -v cargo > /dev/null; then
+    export CARGO_NET_GIT_FETCH_WITH_CLI=true
+fi
