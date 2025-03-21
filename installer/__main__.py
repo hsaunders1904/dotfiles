@@ -1,7 +1,7 @@
 import platform
 import shutil
 
-from installer import bash, diff_so_fancy, fzf, git, pwsh, vim, wsl, zsh
+from installer import bash, diff_so_fancy, fzf, git, neovim, pwsh, vim, wsl, zsh
 
 
 def is_executable(exe_name: str) -> bool:
@@ -25,10 +25,10 @@ def install():
         diff_so_fancy.install()
     if is_executable("vim"):
         print("Vim...")
-        vim.install_vim()
+        vim.install()
     if is_executable("nvim"):
         print("Neovim...")
-        vim.install_neovim()
+        neovim.install()
     if is_executable("pwsh"):
         print("PowerShell...")
         pwsh.install()
