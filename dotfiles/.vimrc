@@ -31,6 +31,11 @@ set tabstop=4               " number of columns occupied by a tab
 set ttyfast                 " Speed up scrolling
 set wildmode=longest,list   " get bash-like tab completions
 
+let mapleader = " "
+let maplocalleader = "\\"
+nnoremap <leader>w :w<CR>
+nnoremap <leader>qq :q<CR>
+
 hi clear spellbad
 hi spellbad gui=underline,italic cterm=underline,italic term=underline,italic
 hi cursorline guibg=Grey20

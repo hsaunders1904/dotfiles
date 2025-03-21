@@ -1,43 +1,27 @@
-local function file_exists(name)
-    local f = io.open(name,"r")
-    if f ~= nil then io.close(f) return true else return false end
-end
-
 local dotfiles_dir = os.getenv('DOTFILES_DIR')
-local vimrc =  dotfiles_dir .. '/dotfiles/.vimrc'
-if file_exists(vimrc) then
-    vim.cmd('source' .. vimrc)
-end
 
-vim.g.mapleader = " "
-vim.g.maplocalleader = "\\"
-
+-- Load vanilla Vim config
+vim.cmd('source ' .. dotfiles_dir .. '/dotfiles/.vimrc')
 vim.opt.runtimepath:append(dotfiles_dir .. '/apps/neovim')
-require("config.lazy")
-require("github-theme")
-require('lspconfig')
-require('neo-tree')
-require('nvim-treesitter')
-require("telescope").setup()
 
+-- Add these dotfiles to the runtime path
+local dotfiles_rt_path = dotfiles_dir .. '/apps/neovim/lua/?.lua'
+package.path = package.path .. ';' .. dotfiles_rt_path
 
--- require "user.alpha"
--- require "user.autocommands"
--- require "user.autopairs"
--- require "user.bufferline"
--- require "user.cmp"
--- require "user.colorscheme"
--- require "user.comment"
--- require "user.gitsigns"
--- require "user.impatient"
--- require "user.indentline"
--- require "user.keymaps"
--- require "user.lualine"
--- require "user.nvim-tree"
--- require "user.options"
--- require "user.plugins"
--- require "user.project"
--- require "user.telescope"
--- require "user.toggleterm"
--- require "user.treesitter"
--- require "user.whichkey"
+-- Plugins
+require('config.lazy') -- must be imported first
+require("mason").setup {}
+require('telescope').setup {}
+require('toggleterm').setup {}
+
+-- Configs
+require("config.cmp")
+require('config.pyright')
+
+-- Mappings
+vim.api.nvim_set_keymap(
+    'n',
+    '<leader>tt',
+    ':ToggleTerm<CR>',
+    { noremap = true, silent = true }
+)
