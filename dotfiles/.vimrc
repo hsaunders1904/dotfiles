@@ -33,8 +33,9 @@ set wildmode=longest,list   " get bash-like tab completions
 
 let mapleader = " "
 let maplocalleader = "\\"
-nnoremap <leader>w :w<CR>
-nnoremap <leader>qq :q<CR>
+nnoremap <leader>w  :w<CR>
+nnoremap <leader>q  :q<CR>
+nnoremap <leader>qa :qa<CR>
 
 hi clear spellbad
 hi spellbad gui=underline,italic cterm=underline,italic term=underline,italic
