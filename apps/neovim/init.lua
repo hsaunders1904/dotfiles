@@ -11,6 +11,7 @@ package.path = package.path .. ';' .. dotfiles_rt_path
 -- Plugins
 require('config.lazy') -- must be imported first
 require("mason").setup {}
+require("navigator").setup {}
 require('telescope').setup {}
 require('toggleterm').setup {}
 
