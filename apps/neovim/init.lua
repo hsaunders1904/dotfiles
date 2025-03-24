@@ -18,6 +18,7 @@ require('toggleterm').setup {}
 -- Configs
 require("config.cmp")
 require('config.lsp')
+require('config.vertical-bars')
 
 -- Mappings
 vim.api.nvim_set_keymap(
