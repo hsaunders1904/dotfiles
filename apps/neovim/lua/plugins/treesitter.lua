@@ -1,4 +1,4 @@
 return {
     'nvim-treesitter/nvim-treesitter',
-    tag = '0.9.3',
+    tag = 'v0.9.3',
 }
