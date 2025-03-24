@@ -16,7 +16,7 @@ require('toggleterm').setup {}
 
 -- Configs
 require("config.cmp")
-require('config.pyright')
+require('config.lsp')
 
 -- Mappings
 vim.api.nvim_set_keymap(
@@ -24,4 +24,22 @@ vim.api.nvim_set_keymap(
     '<leader>tt',
     ':ToggleTerm<CR>',
     { noremap = true, silent = true }
+)
+vim.api.nvim_set_keymap(
+    'n',
+    '<leader>vs',
+    ':vsplit<CR>',
+    { noremap = true, silent = true }
+)
+vim.api.nvim_set_keymap(
+    "n",
+    "<leader>/",
+    "gcc",
+    { noremap = false, silent = true }
+)
+vim.api.nvim_set_keymap(
+    "v",
+    "<leader>/",
+    "gc",
+    { noremap = false, silent = true }
 )
