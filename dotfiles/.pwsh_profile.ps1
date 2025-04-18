@@ -8,7 +8,7 @@ Import-Module "${Env:DOTFILES_DIR}/dotfiles/.pwsh_functions.psm1"
 if (Get-Command oh-my-posh) {
     $Env:POSH_GIT_ENABLED = $true
     $ThemesDir = "${Env:DOTFILES_DIR}/apps/oh-my-posh/themes"
-    $ThemeName = "agnoster-custom"
+    $ThemeName = "amro-custom"
     oh-my-posh init pwsh --config "${ThemesDir}/${ThemeName}.omp.json" `
         | Invoke-Expression
     $env:VIRTUAL_ENV_DISABLE_PROMPT = 1

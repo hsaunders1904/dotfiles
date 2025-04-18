@@ -19,11 +19,6 @@ if [ -d "${HOME}/.local/bin" ]; then
     esac
 fi
 
-# Tab-completion
-if command -v gh > /dev/null; then
-    eval "$(gh completion -s "$(basename "${SHELL}")")"
-fi
-
 # Alias definitions (must come before functions)
 _aliases_path="${DOTFILES_DIR}/dotfiles/.sh_aliases"
 if [ -f "${_aliases_path}" ]; then
@@ -40,10 +35,6 @@ unset _funcs_path
 
 if command -v ninja > /dev/null; then
     export CMAKE_GENERATOR=Ninja
-fi
-
-if command -v direnv > /dev/null; then
-    eval "$(direnv hook ${SHELL})"
 fi
 
 if command -v cargo > /dev/null; then
