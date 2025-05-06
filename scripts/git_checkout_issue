@@ -28,7 +28,7 @@ if [[ "${remote_url}" == git@github* ]]; then
     name="$(gh issue view "${issue_num}" --json title --jq '.title')"
 elif [ -n "$(command -v glab)" ] && glab repo view "${remote_url}" &>/dev/null; then
     user="$(glab config get user | head -n 1)"
-    name="$(glab issue view "${issue_num}" | sed -En 's/title:\W+(.*)/\1/p')"
+    name="$(glab issue view -F json "${issue_num}" | jq '.title')"
 else
     echo >&2 "${SCRIPT_NAME}: unsupported remote host: '${remote_url}'"
     exit 1
