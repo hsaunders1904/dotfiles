@@ -35,16 +35,20 @@ class Os(enum.Enum):
 def main(argv: list[str]) -> int:
     """Download and install nerd fonts."""
     args = parse_args(argv)
-    try:
-        operating_system = get_os()
-    except ValueError:
-        logging.exception("could not get fonts directory:")
-        return 1
-    for font in args.fonts:
+    if install_fonts(args.fonts):
+        return 0
+    return 1
+
+
+def install_fonts(font_names: list[str]) -> bool:
+    if not (operating_system := get_os()):
+        return False
+    ok = True
+    for font in font_names:
         url = f"{BASE_DOWNLOAD_URL}/{font}.tar.xz"
         if out_dir := get_fonts_dir(font, operating_system):
-            download_and_extract_tar(url, out_dir)
-    return 0
+            ok &= download_and_extract_tar(url, out_dir)
+    return ok
 
 
 def parse_args(argv: list[str]) -> CliArgs:
@@ -70,15 +74,16 @@ def get_fonts_dir(font_name: str, operating_system: Os) -> Path | None:
     return None
 
 
-def get_os() -> Os:
+def get_os() -> Os | None:
     if sys.platform.startswith("linux"):
         return Os.LINUX
     if sys.platform.startswith("darwin"):
         return Os.MACOS
-    raise ValueError(f"unsupported platform '{sys.platform}'")
+    logging.error("unsupported platform '%s'", sys.platform)
+    return None
 
 
-def download_and_extract_tar(url: str, out_dir: Path):
+def download_and_extract_tar(url: str, out_dir: Path) -> bool:
     """Download and extract a nerd font into the given directory."""
     try:
         with (
@@ -88,6 +93,8 @@ def download_and_extract_tar(url: str, out_dir: Path):
             tar.extractall(out_dir, filter=_tar_filter)
     except Exception:
         logger.exception("failed to install '%s'", url)
+        return False
+    return True
 
 
 def _tar_filter(member: tarfile.TarInfo, path: str, /) -> tarfile.TarInfo | None:
