@@ -9,6 +9,8 @@ $MODULES = @(
     "ZLocation"
 )
 
+Set-PSRepository PSGallery -InstallationPolicy Trusted
+
 foreach ($Req in ${MODULES}) {
     Install-Module "${Req}" -Scope CurrentUser -AcceptLicense -AllowClobber
 }
