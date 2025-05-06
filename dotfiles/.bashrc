@@ -32,7 +32,3 @@ elif [ -d "${DOTFILES_DIR}/external/fzf" ]; then
     fi
     source "${DOTFILES_DIR}/external/fzf/shell/key-bindings.bash"
 fi
-
-if [ -n "$(command -v zoxide)" ]; then
-    eval "$(zoxide init bash)"
-fi

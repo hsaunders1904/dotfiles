@@ -43,15 +43,3 @@ elif [ -d "${DOTFILES_DIR}/external/fzf" ]; then
     fi
     source "${DOTFILES_DIR}/external/fzf/shell/key-bindings.zsh"
 fi
-
-if command -v zoxide > /dev/null; then
-    eval "$(zoxide init zsh)"
-fi
-
-if command -v gh > /dev/null; then
-    eval "$(gh completion -s zsh)"
-fi
-
-if command -v direnv > /dev/null; then
-    eval "$(direnv hook zsh)"
-fi
