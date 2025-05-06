@@ -20,6 +20,7 @@ MACOS_FONT_INSTALL_DIR = Path("~/Library/Fonts").expanduser()
 
 logging.basicConfig(format="%(name)s: %(levelname)s: %(message)s")
 logger = logging.getLogger("nerdfont")
+logger.setLevel(logging.INFO)
 
 
 @dataclass
@@ -85,11 +86,13 @@ def get_os() -> Os | None:
 
 def download_and_extract_tar(url: str, out_dir: Path) -> bool:
     """Download and extract a nerd font into the given directory."""
+    logger.info("downloading '%s'", url)
     try:
         with (
             request.urlopen(url) as response,
             tarfile.open(fileobj=response, mode="r|xz") as tar,
         ):
+            logger.info("extracting to '%s'", out_dir)
             tar.extractall(out_dir, filter=_tar_filter)
     except Exception:
         logger.exception("failed to install '%s'", url)
@@ -100,7 +103,7 @@ def download_and_extract_tar(url: str, out_dir: Path) -> bool:
 def _tar_filter(member: tarfile.TarInfo, path: str, /) -> tarfile.TarInfo | None:
     member = tarfile.tar_filter(member, dest_path=path)
     member = tarfile.data_filter(member, dest_path=path)
-    if Path(member.name).suffix == ".ttf":
+    if Path(member.name).suffix in [".ttf", ".otf"]:
         return member
     return None
 
