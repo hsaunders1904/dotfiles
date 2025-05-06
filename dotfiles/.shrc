@@ -34,11 +34,11 @@ fi
 unset _funcs_path
 
 if command -v zoxide > /dev/null; then
-    eval "$(zoxide init "$(ps -hp $$ | awk '{print $5}')")"
+    eval "$(zoxide init "$(current_shell)")"
 fi
 
 if command -v gh > /dev/null; then
-    eval "$(gh completion -s "$(ps -hp $$ | awk '{print $5}')")"
+    eval "$(gh completion -s "$(current_shell)")"
 fi
 
 if command -v ninja > /dev/null; then
@@ -46,7 +46,7 @@ if command -v ninja > /dev/null; then
 fi
 
 if command -v direnv > /dev/null; then
-    eval "$(direnv hook "$(ps -hp $$ | awk '{print $5}')")"
+    eval "$(direnv hook "$(current_shell)")"
 fi
 
 if command -v cargo > /dev/null; then

@@ -54,6 +54,11 @@ cpath() {
     fi
 }
 
+current_shell() {
+    # Get the name of the current shell.
+    ps -p "$$" | tail -n1 | xargs | cut -d' ' -f4 | tr -d '-'
+}
+
 mkdir_and_cd() {
     # Make a directory and cd into it
     mkdir "$1"
