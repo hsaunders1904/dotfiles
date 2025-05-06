@@ -48,6 +48,7 @@ def install_fonts(font_names: list[str]) -> bool:
     for font in font_names:
         url = f"{BASE_DOWNLOAD_URL}/{font}.tar.xz"
         if out_dir := get_fonts_dir(font, operating_system):
+            out_dir.parent.mkdir(exist_ok=True, parents=True)
             ok &= download_and_extract_tar(url, out_dir)
     return ok
 
