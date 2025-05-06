@@ -52,6 +52,6 @@ def _get_pwsh_profile_path() -> str:
 def _build_import_str(file_to_import: str, tab_size: int = 2) -> str:
     return (
         f'if (Test-Path "{file_to_import}") {{\n'
-        f"{' '*tab_size}. \"{file_to_import}\"\n"
+        f'{" " * tab_size}. "{file_to_import}"\n'
         f"}}"
     )

@@ -20,8 +20,4 @@ def update_rc_file(this: Path, dot_file: Path):
 
 
 def build_import_str(file_path: Path) -> str:
-    return (
-        f'if filereadable("{file_path}")\n'
-        f"    exe 'source' \"{file_path}\"\n"
-        "endif\n"
-    )
+    return f'if filereadable("{file_path}")\n    exe \'source\' "{file_path}"\nendif\n'

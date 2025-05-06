@@ -22,4 +22,3 @@ vim.api.nvim_create_autocmd("FileType", {
         vim.opt.colorcolumn = "50,72"
     end,
 })
-

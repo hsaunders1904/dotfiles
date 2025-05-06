@@ -351,8 +351,8 @@ class DownloadProgressBar:
         num_full = int(bar_len * percentage)
         self.stdout.write("\r")
         self.stdout.write(
-            f"{self.prefix} [{'#'*num_full}{' '*(bar_len - num_full)}] "
-            f"{min(int(percentage*100), 100)}%",
+            f"{self.prefix} [{'#' * num_full}{' ' * (bar_len - num_full)}] "
+            f"{min(int(percentage * 100), 100)}%",
         )
         self.stdout.flush()
 

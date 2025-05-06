@@ -57,9 +57,7 @@ def _update_dotfile_region(string: str, new_content: str, comment_char: str):
     if new_content.endswith("\n"):
         new_content = new_content[:-1]
     new_region = (
-        f"{comment_char} {REGION_START}\n"
-        f"{new_content}\n"
-        f"{comment_char} {REGION_END}\n"
+        f"{comment_char} {REGION_START}\n{new_content}\n{comment_char} {REGION_END}\n"
     )
     if match:
         # escape backlashes, particularly important for Windows paths

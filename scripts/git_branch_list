@@ -2,6 +2,7 @@
 """
 Pretty print the output of 'git branch'.
 """
+
 from __future__ import annotations
 
 import argparse
