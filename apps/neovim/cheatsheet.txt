@@ -1,0 +1,6 @@
+Go to definition:             Ctrl-]
+Go back to previous location: Ctrl-O
+Indent:                       >
+Go to character 'X'           fX
+Delete to end of line         D
+Delete line up to cursor      d0
