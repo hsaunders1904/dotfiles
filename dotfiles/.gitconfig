@@ -64,6 +64,7 @@
     cf         = commit --fixup
     cff        = !"f() { git commit --fixup $1 && git rbas --autostash $1^1; }; f"
     chp        = cherry-pick
+    chpc       = cherry-pick --continue
     cl         = clean
     cla        = clean -ixd
     cln        = clean -n
@@ -129,6 +130,7 @@
     patch      = !"git --no-pager diff --no-color"
     pl         = pull
     plo        = pull origin
+    plr        = pull --rebase
     plu        = pull upstream
     pr         = pull-req
     ps         = push
