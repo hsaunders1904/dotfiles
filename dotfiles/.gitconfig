@@ -102,7 +102,7 @@
     g          = gui
     gr         = grep
     graph      = log --pretty --decorate --graph --color
-    ignore     = !"cd -- ${GIT_PREFIX:-.}; if [ ! -f .gitignore ]; then echo '*' > .gitignore; fi"
+    ignore     = "!f() { dir=\"${1:-.}\"; cd -- \"${GIT_PREFIX-.}\" && { [ -f \"${dir}/.gitignore\" ] || echo '*' > \"${dir}/.gitignore\"; }; }; f"
     issue      = !"f() { $(git repo-cli) issue view "$(git rev-parse --abbrev-ref HEAD | awk -F/ '{print $NF}' | sed -rn 's/([0-9]+)_.*/\\1/p')" $*; }; f"
     l          = log --oneline -n 15
     la         = log --pretty=full --graph
