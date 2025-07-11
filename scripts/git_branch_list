@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
-"""
-Pretty print the output of 'git branch'.
-"""
+"""Pretty print the output of 'git branch'."""
 
 from __future__ import annotations
 
 import argparse
 import os
+import shutil
 import subprocess
 import sys
 from dataclasses import dataclass
@@ -19,23 +18,25 @@ class Args:
 
 
 class Format:
-    BLACK = "\u001b[30m"
-    BLUE = "\u001b[34m"
-    CYAN = "\u001b[36m"
-    GREEN = "\u001b[32m"
-    MAGENTA = "\u001b[35m"
-    RED = "\u001b[31m"
     RESET = "\u001b[0m"
-    WHITE = "\u001b[37m"
-    YELLOW = "\u001b[33m"
+    COLORS = {
+        "black": "\u001b[30m",
+        "red": "\u001b[31m",
+        "green": "\u001b[32m",
+        "yellow": "\u001b[33m",
+        "blue": "\u001b[34m",
+        "magenta": "\u001b[35m",
+        "cyan": "\u001b[36m",
+        "white": "\u001b[37m",
+    }
 
 
 COLUMN_COLORS = [
-    Format.MAGENTA,
-    Format.YELLOW,
-    Format.WHITE,
-    Format.CYAN,
-    Format.GREEN,
+    Format.COLORS["magenta"],
+    Format.COLORS["yellow"],
+    Format.COLORS["white"],
+    Format.COLORS["cyan"],
+    Format.COLORS["green"],
 ]
 DELIM = "|"
 FORMAT_COLS = [
@@ -59,7 +60,7 @@ def main(argv: list[str]) -> int:
 
 def parse_args(argv: list[str]) -> Args:
     parser = argparse.ArgumentParser(
-        description=__doc__,
+        description=__doc__ or "",
         prog="git_branch_list",
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
@@ -95,50 +96,49 @@ def get_branches(show_all: bool) -> list[str]:
         command.append("--all")
     try:
         raw_branches = subprocess.check_output(command).decode()
-    except subprocess.CalledProcessError:
+    except subprocess.CalledProcessError as e:
+        print(f"git_branch_list: failed to run git: {e}", file=sys.stderr)
         sys.exit(1)
-    return [b.strip() for b in raw_branches.split("\n") if b.strip()]
+    return [b.strip() for b in raw_branches.splitlines() if b.strip()]
+
+
+def get_column_widths_no_crop(rows: list[list[str]], num_cols: int) -> list[int]:
+    return [max(len(row[col_num]) for row in rows) for col_num in range(num_cols)]
 
 
 def get_column_widths(rows: list[list[str]], num_cols: int) -> list[int]:
     col_widths = get_column_widths_no_crop(rows, num_cols)
-    term_size = get_terminal_column_count()
-    if sum(col_widths) + num_cols > term_size:
-        col_widths[2] += term_size - sum(col_widths) - num_cols
+    term_width = shutil.get_terminal_size(fallback=(100, 20)).columns
+    total_with_spaces = sum(col_widths) + num_cols  # Add padding space per column
+    if total_with_spaces > term_width:
+        # Reduce refname column (index 2) to fit
+        excess = total_with_spaces - term_width
+        col_widths[2] = max(5, col_widths[2] - excess)
     return col_widths
-
-
-def get_column_widths_no_crop(rows: list[list[str]], num_cols: int) -> list[int]:
-    col_widths = []
-    for col_num in range(num_cols):
-        col_widths.append(max([len(row[col_num]) for row in rows]))
-    return col_widths
-
-
-def get_terminal_column_count() -> int:
-    try:
-        return os.get_terminal_size().columns
-    except Exception:  # noqa: E722
-        return 100
 
 
 def tabulate_rows(rows: list[list[str]], no_crop: bool) -> str:
-    n_cols = len(rows[0])
-    if no_crop:
-        col_widths = get_column_widths_no_crop(rows, n_cols)
-    else:
-        col_widths = get_column_widths(rows, n_cols)
+    if not rows:
+        return ""
 
-    out = ""
+    num_cols = len(rows[0])
+    col_widths = (
+        get_column_widths_no_crop(rows, num_cols)
+        if no_crop
+        else get_column_widths(rows, num_cols)
+    )
+
+    lines = []
     for row in rows:
-        for col_num, col in enumerate(col_widths):
+        line_parts = []
+        for col_num, width in enumerate(col_widths):
             item = row[col_num]
-            if len(item) > col:
-                item = item[: col - 4] + "..."
-            item = item.ljust(col + 1)
-            out += add_color(item, COLUMN_COLORS[col_num])
-        out += "\n"
-    return out
+            if len(item) > width:
+                item = item[: width - 4] + "..."
+            item = item.ljust(width + 1)
+            line_parts.append(add_color(item, COLUMN_COLORS[col_num]))
+        lines.append("".join(line_parts))
+    return "\n".join(lines) + "\n"
 
 
 def enable_term_colours() -> None:
