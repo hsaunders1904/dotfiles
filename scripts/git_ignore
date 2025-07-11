@@ -1,0 +1,196 @@
+#!/usr/bin/env python3
+
+"""Instruct git to ignore the given files or directories."""
+
+import argparse
+import enum
+import logging
+import os
+import textwrap
+from collections import defaultdict
+from dataclasses import dataclass
+from pathlib import Path
+
+logging.basicConfig(
+    level=getattr(
+        logging,
+        os.environ.get("DOTFILES_LOG_LEVEL", "INFO").upper(),
+        logging.INFO,
+    ),
+    format="%(name)s: %(levelname)s:\n%(message)s",
+)
+logger = logging.getLogger("git_ignore")
+
+
+class Config:
+    """Singleton for storing global config."""
+
+    dry_run: bool = False
+
+
+class IgnoreMode(enum.Enum):
+    """Enumeration of methods of ignoring files."""
+
+    LOCAL = enum.auto()
+    """Ignore path using the '.git/info/exclude' file."""
+    FILE = enum.auto()
+    """Ignore path using a .gitignore file in the same directory as the path."""
+    ROOT = enum.auto()
+    """Ignore path using a .gitignore file in the root of the repo."""
+
+    def __str__(self) -> str:
+        return self.name.lower()
+
+
+@dataclass
+class Args:
+    """Command line arguments."""
+
+    paths: list[Path]
+    """The paths to ignore."""
+    mode: IgnoreMode
+    """The method of ignoring the path."""
+    comment: str
+    """A comment to add before the ignore."""
+    dry_run: bool
+    """Whether to write or preview what changes are to be made."""
+
+
+def main(argv: list[str]) -> int:
+    """Git ignore files and directories."""
+    args = parse_args(argv)
+    Config.dry_run = args.dry_run
+
+    match args.mode:
+        case IgnoreMode.LOCAL:
+            ignore_paths_local(args.paths, args.comment)
+        case IgnoreMode.ROOT:
+            ignore_paths_root(args.paths, args.comment)
+        case IgnoreMode.FILE:
+            ignore_paths_file(args.paths, args.comment)
+    return 0
+
+
+def parse_args(argv: list[str]) -> Args:
+    """Parse command line arguments."""
+    parser = argparse.ArgumentParser(
+        prog="git_ignore",
+        description=__doc__,
+        formatter_class=argparse.RawTextHelpFormatter,
+    )
+    parser.add_argument(
+        "paths",
+        help="the files or directories to ignore",
+        nargs="+",
+        type=Path,
+    )
+    parser.add_argument(
+        "-m",
+        "--mode",
+        choices=list(IgnoreMode),
+        default=IgnoreMode.LOCAL.name.lower(),
+        help=(
+            "the method to use to ignore the given paths\n"
+            " * local: Use .git/info/exclude file. (default)\n"
+            " * file:  Use .gitignore file in the same directory as the path.\n"
+            " * root:  Use .gitignore file in the root of the repository."
+        ),
+        type=lambda s: IgnoreMode[s.upper()],
+    )
+    parser.add_argument(
+        "-c",
+        "--comment",
+        default="",
+        help="optional comment to add on the line before the ignore",
+    )
+    parser.add_argument(
+        "-n",
+        "--dry-run",
+        action="store_true",
+        help="preview what will be written to which files",
+        default=False,
+    )
+    return Args(**vars(parser.parse_args(argv)))
+
+
+def ignore_paths_local(paths: list[Path], comment: str) -> None:
+    """Write the given paths to the .git/info/exclude file."""
+    if not paths:
+        return
+    repo_root = discover_shared_git_repo(paths)
+    ignore_lines = build_ignore_file_lines(paths, repo_root, comment)
+    exclude_file = repo_root / ".git" / "info" / "exclude"
+    append_lines_to_file(exclude_file, ignore_lines, parent_mkdir=True)
+
+
+def ignore_paths_file(paths: list[Path], comment: str) -> None:
+    """Write the given paths to the ignore files in their parent dirs."""
+    if not paths:
+        return
+    excludes = defaultdict(lambda: [f"# {comment}"] if comment else [])
+    for path in paths:
+        exclude_file = path.parent / ".gitignore"
+        name = path.name + "/" if path.is_dir() else path.name
+        excludes[exclude_file].append(name)
+    for exclude_file, ignore_lines in excludes.items():
+        append_lines_to_file(exclude_file, ignore_lines)
+
+
+def ignore_paths_root(paths: list[Path], comment: str) -> None:
+    """Write the given paths to the root .gitignore file."""
+    if not paths:
+        return
+    repo_root = discover_shared_git_repo(paths)
+    ignore_lines = build_ignore_file_lines(paths, repo_root, comment)
+    exclude_file = repo_root / ".gitignore"
+    append_lines_to_file(exclude_file, ignore_lines)
+
+
+def build_ignore_file_lines(
+    paths: list[Path], repo_root: Path, comment: str
+) -> list[str]:
+    """Generate the lines that should be written to an ignore file."""
+    ignore_paths = (p.absolute().relative_to(repo_root) for p in paths)
+    ignore_lines = [f"# {comment}"] if comment else []
+    for path in ignore_paths:
+        if path.is_dir():
+            ignore_lines.append(str(path) + "/")
+        else:
+            ignore_lines.append(str(path))
+    return ignore_lines
+
+
+def discover_shared_git_repo(paths: list[Path]) -> Path:
+    """
+    Find the root of the Git repository shared by the given paths.
+
+    Raise a ValueError if the paths do not share a common root (that is
+    not the file system/drive root) or no .git directory can be found.
+    """
+    common_root = Path(os.path.commonpath((p.absolute() for p in paths)))
+    if common_root == common_root.anchor:
+        raise ValueError(f"paths '{paths[1:-1]}' do not share a common directory")
+    candidate_git_dir = common_root
+    while candidate_git_dir != common_root.anchor:
+        if (candidate_git_dir / ".git").is_dir():
+            return candidate_git_dir
+        candidate_git_dir = candidate_git_dir.parent
+    raise ValueError(f"paths '{paths[1:-1]}' are not within any git repository")
+
+
+def append_lines_to_file(path: Path, lines: list[str], parent_mkdir: bool = False):
+    """Append the lines to the given file."""
+    logger.info("  %s:\n%s", path, textwrap.indent("\n".join(lines), "  "))
+    if Config.dry_run:
+        return
+    if parent_mkdir:
+        path.parent.mkdir(exist_ok=True)
+    lines = ["", *lines, ""] if path.is_file() else [*lines, ""]
+    with path.open("a") as f:
+        f.write("\n".join(lines))
+
+
+if __name__ == "__main__":
+    import sys
+
+    sys.exit(main(sys.argv[1:]))
