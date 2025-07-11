@@ -1,0 +1,31 @@
+// Zed keymap
+//
+// For information on binding keys, see the Zed
+// documentation: https://zed.dev/docs/key-bindings
+//
+// To see the default key bindings run `zed: open default keymap`
+// from the command palette.
+[
+    {
+        "bindings": {
+            "ctrl-k j": "workspace::ActivatePaneLeft",
+            "ctrl-k l": "workspace::ActivatePaneRight",
+            "ctrl-k shift-j": "workspace::SwapPaneLeft",
+            "ctrl-k shift-l": "workspace::SwapPaneRight",
+            "ctrl-shift-n": "file_finder::Toggle"
+        },
+        "context": "Workspace"
+    },
+    {
+        "bindings": {
+            "ctrl-alt-left": "pane::GoBack",
+            "ctrl-alt-right": "pane::GoForward",
+            "ctrl-d": "editor::DuplicateLineDown",
+            "ctrl-k o": "editor::SwitchSourceHeader",
+            "ctrl-k shift-p": "editor::CopyRelativePath",
+            "ctrl-r": "search::ToggleReplace",
+            "ctrl-shift-backspace": "editor::DeleteLine"
+        },
+        "context": "Editor"
+    }
+]
