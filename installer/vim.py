@@ -1,23 +1,23 @@
 from pathlib import Path
 
-from installer.lib import REPO_ROOT, update_dotfile
-
-__all__ = ["install"]
-
-COMMENT_CHAR = '"'
-RC_FILE = ".vimrc"
-HOME_RC_PATH = Path.home() / RC_FILE
-THIS_RC_PATH = REPO_ROOT / "dotfiles" / RC_FILE
+from installer.base import Installer
 
 
-def install():
-    update_rc_file(THIS_RC_PATH, HOME_RC_PATH)
+class VimInstaller(Installer):
+    COMMENT_CHAR = '"'
 
+    def install(self) -> bool:
+        vimrc = Path.home() / ".vimrc"
+        dotfile = self.repo_root() / "dotfiles" / ".vimrc"
+        import_str = "\n".join(
+            [
+                f'if filereadable("{dotfile}")',
+                f"    exe 'source' \"{dotfile}\"",
+                "endif",
+                "",
+            ]
+        )
+        return self.update_dotfile(vimrc, import_str, self.COMMENT_CHAR)
 
-def update_rc_file(this: Path, dot_file: Path):
-    import_str = build_import_str(this)
-    update_dotfile(dot_file, import_str, COMMENT_CHAR, new_line="\n")
-
-
-def build_import_str(file_path: Path) -> str:
-    return f'if filereadable("{file_path}")\n    exe \'source\' "{file_path}"\nendif\n'
+    def should_install(self) -> bool:
+        return self.is_executable("vim")

@@ -1,52 +1,53 @@
 import os
-import subprocess
+from pathlib import Path
 
-from installer import lib
-
-__all__ = ["install"]
-
-CUSTOM_ZSH_DIR = os.path.join(lib.REPO_ROOT, "apps", "oh-my-zsh")
-SH_COMMENT_CHAR = "#"
-HOME_ZSH_PATH = os.path.join(os.path.expanduser("~"), ".zshrc")
-THIS_ZSH_PATH = os.path.join(lib.REPO_ROOT, "dotfiles", ".zshrc")
-OHMYZSH_URL = "https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh"
+from installer.base import Installer
 
 
-def install():
-    if not ohmyzsh_installed():
-        install_ohmyzsh()
-    else:
-        print("[-] oh-my-zsh already installed")
-    pull_plugins()
-    update_zshrc()
+class ZshInstaller(Installer):
+    OMZ_URL = "https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh"
+    COMMENT_CHAR = "#"
 
+    def install(self) -> bool:
+        if self.oh_my_zsh_path() is None:
+            if not self.install_oh_my_zsh():
+                return False
+        ok = self.pull_plugins()
+        ok |= self.update_zshrc()
+        return ok
 
-def update_zshrc():
-    import_str = build_file_import_str(THIS_ZSH_PATH)
-    lib.update_dotfile(HOME_ZSH_PATH, import_str, SH_COMMENT_CHAR, new_line="\n")
+    def should_install(self) -> bool:
+        return self.is_executable("zsh")
 
+    def install_oh_my_zsh(self):
+        installer_path = self.external_dir() / "ohmyzsh_install.sh"
+        self.download_file(self.OMZ_URL, installer_path, force=True)
+        install_cmd = ["sh", installer_path, "--unattended", "--keep-zshrc"]
+        return self.run_command(install_cmd)
 
-def ohmyzsh_installed():
-    path = os.environ.get("ZSH", None)
-    if path is not None:
-        return os.path.isdir(path)
-    return False
+    def pull_plugins(self) -> bool:
+        cmd = ["git", "submodule", "update", "--init", str(self.custom_omz_dir())]
+        return self.run_command(cmd)
 
+    def update_zshrc(self) -> bool:
+        dotfile = self.repo_root() / "dotfiles" / ".zshrc"
+        import_str = "\n".join(
+            [
+                f'if [ -f "{dotfile}" ]; then',
+                f'    . "{dotfile}"',
+                "fi",
+            ]
+        )
+        zshrc = Path.home() / ".zshrc"
+        return self.update_dotfile(zshrc, import_str, self.COMMENT_CHAR)
 
-def install_ohmyzsh():
-    installer_path = os.path.join(lib.REPO_ROOT, "external", "ohmyzsh_install.sh")
-    lib.download_file(OHMYZSH_URL, installer_path, log=False)
-    install_cmd = ["sh", installer_path, "--unattended", "--keep-zshrc"]
-    print(f"[+] {' '.join(install_cmd)}")
-    result = subprocess.run(install_cmd, stdout=subprocess.PIPE)
-    if result.returncode != 0:
-        print(result.stdout.decode())
+    def custom_omz_dir(self):
+        return self.repo_root() / "apps" / "oh-my-zsh"
 
-
-def build_file_import_str(file_path: str):
-    return f'if [ -f "{file_path}" ]; then\n    . "{file_path}"\nfi'
-
-
-def pull_plugins():
-    cmd = ["git", "submodule", "update", "--init", CUSTOM_ZSH_DIR]
-    lib.run_command(cmd)
+    @staticmethod
+    def oh_my_zsh_path() -> Path | None:
+        if not (path_str := os.environ.get("ZSH", None)):
+            return None
+        if (path := Path(path_str)).is_dir():
+            return path
+        return None
