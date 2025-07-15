@@ -14,7 +14,7 @@ from pathlib import Path
 logging.basicConfig(
     level=getattr(
         logging,
-        os.environ.get("DOTFILES_LOG_LEVEL", "INFO").upper(),
+        os.environ.get("DOTFILES_LOG_LEVEL", "DEBUG").upper(),
         logging.INFO,
     ),
     format="%(name)s: %(levelname)s:\n%(message)s",
@@ -60,14 +60,14 @@ def main(argv: list[str]) -> int:
     """Git ignore files and directories."""
     args = parse_args(argv)
     Config.dry_run = args.dry_run
-
+    abs_paths = [Path.cwd() / p for p in args.paths]
     match args.mode:
         case IgnoreMode.LOCAL:
-            ignore_paths_local(args.paths, args.comment)
+            ignore_paths_local(abs_paths, args.comment)
         case IgnoreMode.ROOT:
-            ignore_paths_root(args.paths, args.comment)
+            ignore_paths_root(abs_paths, args.comment)
         case IgnoreMode.FILE:
-            ignore_paths_file(args.paths, args.comment)
+            ignore_paths_file(abs_paths, args.comment)
     return 0
 
 
@@ -150,10 +150,10 @@ def build_ignore_file_lines(
     paths: list[Path], repo_root: Path, comment: str
 ) -> list[str]:
     """Generate the lines that should be written to an ignore file."""
-    ignore_paths = (p.absolute().relative_to(repo_root) for p in paths)
+    ignore_paths = (p.relative_to(repo_root) for p in paths)
     ignore_lines = [f"# {comment}"] if comment else []
     for path in ignore_paths:
-        if path.is_dir():
+        if (repo_root / path).is_dir():
             ignore_lines.append(str(path) + "/")
         else:
             ignore_lines.append(str(path))
@@ -180,7 +180,7 @@ def discover_shared_git_repo(paths: list[Path]) -> Path:
 
 def append_lines_to_file(path: Path, lines: list[str], parent_mkdir: bool = False):
     """Append the lines to the given file."""
-    logger.info("  %s:\n%s", path, textwrap.indent("\n".join(lines), "  "))
+    logger.info("%s:\n%s", path.resolve(), textwrap.indent("\n".join(lines), "  "))
     if Config.dry_run:
         return
     if parent_mkdir:

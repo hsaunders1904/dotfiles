@@ -102,8 +102,7 @@
     g          = gui
     gr         = grep
     graph      = log --pretty --decorate --graph --color
-    # ignore     = "!f() { dir=\"${1:-.}\"; cd -- \"${GIT_PREFIX-.}\" && { [ -f \"${dir}/.gitignore\" ] || echo '*' > \"${dir}/.gitignore\"; }; }; f"
-    ignore     = !"f() { python ${DOTFILES_DIR}/scripts/git_ignore $@; }; f"
+    ignore     = !"f() { cd -- \"${GIT_PREFIX:-.}\" && python \"${DOTFILES_DIR}/scripts/git_ignore\" $@; }; f"
     issue      = !"f() { $(git repo-cli) issue view "$(git rev-parse --abbrev-ref HEAD | awk -F/ '{print $NF}' | sed -rn 's/([0-9]+)_.*/\\1/p')" $*; }; f"
     l          = log --oneline -n 15
     la         = log --pretty=full --graph
