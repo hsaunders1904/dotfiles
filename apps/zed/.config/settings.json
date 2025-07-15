@@ -37,15 +37,11 @@
         "C++": {
             "format_on_save": "on",
             "formatter": "language_server",
-            "language_servers": [
-                "clangd"
-            ],
+            "language_servers": ["clangd"],
             "tab_size": 2
         },
         "Markdown": {
-            "wrap_guides": [
-                80
-            ]
+            "wrap_guides": [80]
         },
         "Python": {
             "format_on_save": "on",
@@ -61,33 +57,21 @@
                     }
                 }
             ],
-            "language_servers": [
-                "pyright",
-                "ruff",
-                "!ty",
-                "!pyrefly"
-            ],
-            "wrap_guides": [
-                72,
-                89
-            ]
+            "language_servers": ["pyright", "ruff", "!ty", "!pyrefly"],
+            "wrap_guides": [72, 89]
         }
     },
     "lsp": {
         "ruff": {
             "binary": {
-                "arguments": [
-                    "server"
-                ],
+                "arguments": ["server"],
                 "path": "ruff"
             },
             "initialization_options": {
                 "settings": {
                     "lineLength": 89,
                     "lint": {
-                        "extendSelect": [
-                            "I"
-                        ]
+                        "extendSelect": ["I"]
                     }
                 }
             }
