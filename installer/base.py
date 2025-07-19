@@ -93,8 +93,8 @@ class Installer(abc.ABC):
 
     def make_symlink(self, origin: Path, link: Path) -> bool:
         if link.is_file():
-            logger.debug("SYMLINK: link '%s' is already a file or symlink")
-            return False
+            logger.debug("SYMLINK: link '%s' is already a file or symlink", link)
+            return True
         logger.info("SYMLINK: '%s' -> '%s'", origin, link)
         return self.run_command(["ln", "-s", str(origin), str(link)], log=True)
 
@@ -108,6 +108,10 @@ class Installer(abc.ABC):
 
     def logger(self) -> logging.Logger:
         return logger
+
+    @staticmethod
+    def local_bin() -> Path:
+        return Path.home() / ".local" / "bin"
 
 
 def _download(url: str, out_path: Path):

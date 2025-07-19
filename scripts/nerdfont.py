@@ -81,7 +81,7 @@ def get_os() -> Os | None:
         return Os.LINUX
     if sys.platform.startswith("darwin"):
         return Os.MACOS
-    logging.error("unsupported platform '%s'", sys.platform)
+    logger.error("unsupported platform '%s'", sys.platform)
     return None
 
 

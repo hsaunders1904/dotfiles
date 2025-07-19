@@ -1,57 +1,65 @@
-import os
 import shutil
-import subprocess
+from pathlib import Path
 
-from installer import lib
-
-__all__ = ["install"]
-
-PWSH_COMMENT_CHAR = "#"
-THIS_DIR = os.path.dirname(__file__)
-THIS_PWSH_PROFILE = os.path.join(lib.REPO_ROOT, "dotfiles", ".pwsh_profile.ps1")
+from installer.base import Installer
 
 
-def install():
-    install_module_dependencies()
-    update_profile()
+class PwshInstaller(Installer):
+    COMMENT_CHAR = "#"
 
+    def install(self) -> bool:
+        ok = self.install_modules()
+        ok &= self.update_profile()
+        return ok
 
-def update_profile() -> None:
-    import_str = _build_import_str(THIS_PWSH_PROFILE)
-    pwsh_profile = _get_pwsh_profile_path()
-    if not os.path.isdir(os.path.dirname(pwsh_profile)):
-        os.makedirs(os.path.dirname(pwsh_profile), exist_ok=True)
-    lib.update_dotfile(pwsh_profile, import_str, PWSH_COMMENT_CHAR)
+    def should_install(self) -> bool:
+        return self.is_executable("pwsh")
 
+    def update_profile(self) -> bool:
+        if not (pwsh_profile := self.profile_path()):
+            self.logger().warning("could not get path to pwsh profile")
+            return False
+        dotfile = self.repo_root() / "dotfiles" / ".pwsh_profile.ps1"
+        import_str = "\n".join(
+            [
+                f'if (Test-Path "{dotfile}") {{',
+                f'    . "{dotfile}"',
+                "}",
+            ]
+        )
+        return self.update_dotfile(pwsh_profile, import_str, self.COMMENT_CHAR)
 
-def install_module_dependencies():
-    install_script = os.path.join(THIS_DIR, "scripts", "install_modules.ps1")
-    cmd = [
-        shutil.which("pwsh"),
-        "-NoProfile",
-        "-ExecutionPolicy",
-        "Bypass",
-        "-Command",
-        f'. "{install_script}"',
-    ]
-    lib.run_command(cmd)
+    def install_modules(self) -> bool:
+        if not (pwsh_exe := self.pwsh_exe()):
+            self.logger().debug("could not install modules, pwsh not found")
+            return False
+        install_script = (
+            self.repo_root() / "installer" / "scripts" / "install_modules.ps1"
+        )
+        cmd = [
+            str(pwsh_exe),
+            "-NoProfile",
+            "-ExecutionPolicy",
+            "Bypass",
+            "-Command",
+            f'. "{install_script}"',
+        ]
+        return self.run_command(cmd)
 
-
-def _get_pwsh_profile_path() -> str:
-    raw_output = subprocess.check_output(
-        [
-            shutil.which("pwsh"),
+    def profile_path(self) -> Path | None:
+        if not (pwsh_exe := self.pwsh_exe()):
+            return None
+        args = [
+            str(pwsh_exe),
             "-NoProfile",
             "-Command",
             r"Write-Host $PROFILE",
         ]
-    )
-    return raw_output.decode().strip()
+        if profile_str := self.run_command_get_output(args, log=False):
+            return Path(profile_str.strip())
+        return None
 
-
-def _build_import_str(file_to_import: str, tab_size: int = 2) -> str:
-    return (
-        f'if (Test-Path "{file_to_import}") {{\n'
-        f'{" " * tab_size}. "{file_to_import}"\n'
-        f"}}"
-    )
+    def pwsh_exe(self) -> Path | None:
+        if pwsh_exe := shutil.which("pwsh"):
+            return Path(pwsh_exe)
+        return None

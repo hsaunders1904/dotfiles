@@ -2,36 +2,39 @@ import os
 import stat
 from pathlib import Path
 
-from installer import lib
-
-PROC_VERSION = "/proc/version"
-WSL_OPEN = "wsl-open"
-WSL_OPEN_URL = "https://gitlab.com/4U6U57/wsl-open/-/raw/master/wsl-open.sh"
-XDG_OPEN = "xdg-open"
+from installer.base import Installer
 
 
-def install():
-    install_wsl_open()
+class WslInstaller(Installer):
+    PROC_VERSION = "/proc/version"
+    WSL_OPEN_URL = "https://gitlab.com/4U6U57/wsl-open/-/raw/master/wsl-open.sh"
+
+    def install(self) -> bool:
+        return self.install_wsl_open()
+
+    def should_install(self) -> bool:
+        return self.os_is_wsl()
+
+    def install_wsl_open(self) -> bool:
+        out_path = self.external_dir() / "wsl-open"
+        if not self.download_file(self.WSL_OPEN_URL, out_path, force=True):
+            return False
+        if not out_path.is_file():
+            return False
+        _make_executable(out_path)
+        symlink_path = Path.home() / ".local" / "bin"
+        symlink_path.mkdir(exist_ok=True, parents=True)
+        ok = self.make_symlink(out_path, symlink_path / "wsl-open")
+        ok &= self.make_symlink(out_path, symlink_path / "xdg-open")
+        return ok
+
+    def os_is_wsl(self) -> bool:
+        try:
+            return "microsoft" in Path(self.PROC_VERSION).read_text().lower()
+        except Exception:
+            return False
 
 
-def is_wsl() -> bool:
-    try:
-        return "microsoft" in Path(PROC_VERSION).read_text().lower()
-    except Exception:
-        return False
-
-
-def install_wsl_open():
-    out_path = os.path.join(lib.EXTERNAL_DIR, WSL_OPEN)
-    lib.download_file(WSL_OPEN_URL, out_path, force=True)
-    if not os.path.isfile(out_path):
-        return
-    _make_executable(out_path)
-    local_bin = lib.make_local_bin_dir()
-    lib.make_symlink_if_not_exist(out_path, os.path.join(local_bin, WSL_OPEN))
-    lib.make_symlink_if_not_exist(out_path, os.path.join(local_bin, XDG_OPEN))
-
-
-def _make_executable(file_path: str):
-    st = os.stat(file_path)
-    os.chmod(file_path, st.st_mode | stat.S_IEXEC)
+def _make_executable(file_path: Path):
+    st = file_path.stat()
+    file_path.chmod(st.st_mode | stat.S_IEXEC)

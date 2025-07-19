@@ -1,21 +1,27 @@
-import os
-import subprocess
-
-from installer import lib
-
-__all__ = ["install"]
+from installer.base import Installer
 
 GIT_URL = "https://github.com/junegunn/fzf.git"
 
 
-def install():
-    clone_dir = os.path.join(lib.EXTERNAL_DIR, "fzf")
-    if os.path.exists(clone_dir):
-        _git_pull(clone_dir)
-    else:
-        _git_clone(GIT_URL, clone_dir)
-    lib.run_command(
-        [
+class FzfInstaller(Installer):
+    def install(self) -> bool:
+        if not self.update_fzf():
+            return False
+        return self.install_fzf()
+
+    def update_fzf(self):
+        clone_dir = self.fzf_dir()
+        if clone_dir.is_dir():
+            ok = self.git_pull(clone_dir)
+        else:
+            ok = self.git_clone(GIT_URL, clone_dir)
+        if not ok:
+            return False
+        return True
+
+    def install_fzf(self):
+        fzf_dir = self.fzf_dir()
+        install_args = [
             "bash",
             "./install",
             "--no-update-rc",
@@ -24,21 +30,11 @@ def install():
             "--no-bash",
             "--no-fish",
             "--no-zsh",
-        ],
-        cwd=clone_dir,
-    )
-    local_bin = lib.make_local_bin_dir()
-    lib.make_symlink_if_not_exist(
-        os.path.join(clone_dir, "bin", "fzf"),
-        os.path.join(local_bin, "fzf"),
-    )
+        ]
+        if not self.run_command(install_args, cwd=str(fzf_dir)):
+            return False
+        self.local_bin().mkdir(exist_ok=True, parents=True)
+        return self.make_symlink(fzf_dir / "bin" / "fzf", self.local_bin() / "fzf")
 
-
-def _git_clone(url: str, clone_dir: str):
-    print(f"[+] Cloning '{url}'")
-    subprocess.run(["git", "clone", url, clone_dir])
-
-
-def _git_pull(repo_dir: str):
-    print(f"[+] Pulling '{repo_dir}'")
-    subprocess.run(["git", "-C", repo_dir, "pull"])
+    def fzf_dir(self):
+        return self.external_dir() / "fzf"

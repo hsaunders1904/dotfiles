@@ -4,7 +4,7 @@ import os
 
 class ColouredLoggingFormatter(logging.Formatter):
     # ANSI color codes
-    GREY = "\x1b[38;21m"
+    BLUE_UNDERLINE = "\x1b[4;34m"
     GREEN = "\x1b[32;21m"
     YELLOW = "\x1b[33;21m"
     RED = "\x1b[31;21m"
@@ -12,7 +12,7 @@ class ColouredLoggingFormatter(logging.Formatter):
     RESET = "\x1b[0m"
 
     LEVEL_COLORS = {
-        logging.DEBUG: GREY,
+        logging.DEBUG: BLUE_UNDERLINE,
         logging.INFO: GREEN,
         logging.WARNING: YELLOW,
         logging.ERROR: RED,
