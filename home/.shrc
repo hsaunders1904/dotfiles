@@ -8,19 +8,18 @@ export LESSCHARSET=utf-8
 export LS_COLORS="${LS_COLORS}:ow=1;94:tw=1;94:di=36;0:ex=0;32"
 
 # Path additions
-_append_script="${DOTFILES_DIR}/scripts/sys_path_append"
-_new_paths="
-${HOME}/.local/bin
-${HOME}/.pixi/bin
-"
-echo $PATH
-echo ${_new_paths}
-PATH="$("${_append_script}" ${_new_paths} --prepend)"
-# PATH="$("${_append_script}" "${HOME}/.pixi/bin" --prepend)"
-# PATH="$("${_append_script}" "${HOME}/.local/bin" --prepend)"
+add_to_path_if_valid() {
+    dir="$1"
+    if [ -d "$dir" ]; then
+        case ":$PATH:" in
+        *":$dir:"*) ;;
+        *) PATH="$dir:$PATH" ;;
+        esac
+    fi
+}
+add_to_path_if_valid "${HOME}/.local/bin"
+add_to_path_if_valid "${HOME}/.pixi/bin"
 export PATH
-echo $PATH
-unset _append_script
 
 # Alias definitions (must come before functions)
 _aliases_path="${DOTFILES_DIR}/dotfiles/.sh_aliases"

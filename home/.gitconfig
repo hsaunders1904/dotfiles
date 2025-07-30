@@ -1,0 +1,188 @@
+[core]
+    editor = "if [ -n \"$(command -v nvim)\" ]; then _editor=nvim; else _editor=vim; fi; ${_editor}"
+    # only page if content does not fit on screen
+    pager = "${DOTFILES_DIR}/external/diff-so-fancy/diff-so-fancy | less -FRX"
+[branch]
+    # Show most recently changed branches first.
+    sort = -committerdate
+[advice]
+    addEmptyPathspec = false
+[diff]
+    algorithm = histogram
+[init]
+    defaultBranch = main
+[interactive]
+    diffFilter = "${DOTFILES_DIR}/external/diff-so-fancy/diff-so-fancy --patch"
+[color]
+    ui = true
+    [diff-highlight]
+        oldNormal = "red bold"
+        oldHighlight = "red bold 52"
+        newNormal = "green bold"
+        newHighlight = "green bold 22"
+    [diff]
+        meta = "11"
+        frag = "magenta bold"
+        func = "146 bold"
+        commit = "yellow bold"
+        old = "red bold"
+        new = "green bold"
+        whitespace = "red reverse"
+    [diff-so-fancy]
+        markEmptyLines = false
+        stripLeadingSymbols = false
+[rebase]
+    autosquash = true
+[pull]
+    ff = only
+[alias]
+    a          = add
+    aa         = add --all
+    ac         = !"git add $(git diff --name-only --cached)"
+    ai         = !"${DOTFILES_DIR}/scripts/git_add_interactive"
+    alias      = config --get-regexp ^alias\\.
+    au         = add --update
+    b          = branch
+    ba         = branch --all
+    backup     = !"f() { git branch \"$(git branch --show-current)-BACKUP\" && echo \"Created new branch: $(git branch --show-current)-BACKUP\"; }; f"
+    bdi        = !"f() { git bim | xargs git branch -d; }; f"
+    bDi        = !"f() { git bim | xargs git branch -D; }; f"
+    bi         = !"f() { "${DOTFILES_DIR}/scripts/git_branch_interactive"; }; f"
+    bia        = !"f() { "${DOTFILES_DIR}/scripts/git_branch_interactive" -a; }; f"
+    biam       = !"f() { "${DOTFILES_DIR}/scripts/git_branch_interactive" -a -m; }; f"
+    bim        = !"f() { "${DOTFILES_DIR}/scripts/git_branch_interactive" -m; }; f"
+    bima       = !"f() { "${DOTFILES_DIR}/scripts/git_branch_interactive" -m -a; }; f"
+    bl         = !"if [ -n \"$(command -v python3)\" ]; then _py=python3; else _py=python; fi && ${_py} \"${DOTFILES_DIR}/scripts/git_branch_list\" $@"
+    bla        = bl --all
+    bli        = !"git bl | fzf --ansi --preview='git log -n50 --pretty --decorate --graph --color $(echo \"{}\" | cut -d\" \" -f3)' | cut -d\" \" -f3"
+    brsh       = !"git backup && git reset --hard"
+    c          = commit
+    ca         = commit --amend
+    caa        = commit --amend --all
+    caan       = commit --amend --all --no-edit
+    can        = commit --amend --no-edit
+    cf         = commit --fixup
+    cff        = !"f() { git commit --fixup $1 && git rbas --autostash $1^1; }; f"
+    chp        = cherry-pick
+    chpc       = cherry-pick --continue
+    cl         = clean
+    cla        = clean -ixd
+    cln        = clean -n
+    cloner     = clone --recurse-submodules
+    co         = checkout
+    cod        = checkout develop
+    cor        = checkout --recurse-submodules
+    co-        = co -
+    copr       = !"${DOTFILES_DIR}/scripts/git_checkout_pr"
+    cob        = checkout -b
+    cobi       = !"${DOTFILES_DIR}/scripts/git_checkout_issue"
+    com        = !"git checkout $(git main)"
+    d          = diff
+    dc         = diff --cached
+    dcn        = diff --cached --name-only
+    di         = !"\"${DOTFILES_DIR}/scripts/git_diff_interactive\" \"$(git status --porcelain -uall)\" '--bind='enter:abort'' || true"
+    dm         = !"git diff origin/$(git main)..."
+    dmn        = dnm
+    dn         = diff --name-only
+    dnc        = dcn
+    dnm        = !"git diff --name-only origin/$(git main)..."
+    dnum       = !"git diff --name-only upstream/$(git main)..."
+    ds         = diff --staged
+    dsn        = diff --staged --name-only
+    dum        = !"git diff upstream/$(git main)..."
+    dumn       = !"git diff --name-only upstream/$(git main)..."
+    f          = fetch
+    fa         = fetch --all -p
+    fo         = fetch origin -p
+    fom        = !"git fetch origin $(git main)"
+    fp         = fetch -p
+    ft         = fetch origin --tags
+    fu         = fetch upstream -p
+    fum        = !"git fetch upstream $(git main)"
+    g          = gui
+    gr         = grep
+    graph      = log --pretty --decorate --graph --color
+    ignore     = !"f() { cd -- \"${GIT_PREFIX:-.}\" && python \"${DOTFILES_DIR}/scripts/git_ignore\" $@; }; f"
+    issue      = !"f() { $(git repo-cli) issue view "$(git rev-parse --abbrev-ref HEAD | awk -F/ '{print $NF}' | sed -rn 's/([0-9]+)_.*/\\1/p')" $*; }; f"
+    l          = log --oneline -n 15
+    la         = log --pretty=full --graph
+    ld         = lgd -n 15
+    lday       = !"f() { git l --after=\"$1 00:00\" --before=\"$1 23:59\"}; }; f"
+    ldday      = !"f() { git ld --after=\"$1 00:00\" --before=\"$1 23:59\"; }; f"
+    lfp        = log --oneline --first-parent
+    lg         = log
+    lgd        = log --pretty=format:'%C(yellow)%h  %Cblue%ad  %Cgreen%<(7)%aN  %Creset%s' --date=short
+    lgday      = !"f() { git lg --after=\"$1 00:00\" --before=\"$1 23:59\"}; }; f"
+    ll         = log --oneline -n 30
+    lld        = lgd -n 30
+    llday      = !"f() { git ll --after=\"$1 00:00\" --before=\"$1 23:59\"}; }; f"
+    lldday     = !"f() { git lgd --after=\"$1 00:00\" --before=\"$1 23:59\"}; }; f"
+    lldn       = lgd -n
+    lll        = log --oneline
+    lln        = log -n
+    llnd       = lgd -n
+    ln         = log --oneline -n
+    m          = merge
+    ma         = merge --abort
+    main       = !"bash ${DOTFILES_DIR}/scripts/git_main"
+    mc         = merge --continue
+    no-assume-changed-all = !"git update-index --no-assume-unchanged $(git ls-files $(git rev-parse --show-toplevel))"
+    patch      = !"git --no-pager diff --no-color"
+    pl         = pull
+    plo        = pull origin
+    plr        = pull --rebase
+    plu        = pull upstream
+    pr         = pull-req
+    ps         = push
+    psfl       = push --force-with-lease
+    psu        = push --set-upstream
+    psuoc      = !"git push --set-upstream origin \"$(git rev-parse --abbrev-ref HEAD)\""
+    psuuc      = !"git push --set-upstream upstream \"$(git rev-parse --abbrev-ref HEAD)\""
+    pull-req   = !"if [ $(git repo-cli) = 'gh' ]; then gh pr create --web; else glab mr create --web; fi"
+    rb         = rebase
+    rba        = rebase --abort
+    rbas       = !"git -c sequence.editor=: rebase --autosquash --interactive"
+    rbc        = rebase --continue
+    rbi        = rebase --interactive
+    rbis       = rebase --autostash --interactive
+    rbm        = !"git rebase $(git main)"
+    rbom       = !"git fetch origin $(git main) && git rebase origin/$(git main)"
+    rbs        = rebase --autostash
+    rbsi       = rebase --autostash --interactive
+    rbsq       = -c sequence.editor=: rebase --autosquash --interactive
+    rbum       = !"git fetch upstream $(git main) && git rebase upstream/$(git main)"
+    repo       = !"$(git repo-cli) repo view --web $(git remote get-url origin)"
+    repo-cli   = !"bash -c \"if [[ $(git remote get-url origin) = *@github.com:* ]]; then echo \"gh\"; else echo \"glab\"; fi"\"
+    rev        = revert
+    reva       = revert --abort
+    revc       = revert --continue
+    rl         = reflog
+    rs         = reset
+    rs1        = reset "HEAD@{1}"
+    rsa        = reset --all
+    rsi        = !"git diff --staged --name-only $@ | fzf --multi --cycle --scheme path --preview-window=up --preview='git diff --color --staged {} | \"${DOTFILES_DIR}/external/diff-so-fancy/diff-so-fancy\"' | xargs git reset"
+    rsh        = reset --hard
+    rshb       = "git backup && reset --hard"
+    rss        = reset --soft
+    s          = status --short -b
+    sc         = switch --create
+    sd         = switch develop
+    sh         = show
+    si         = !"f() { git bi "$@" | xargs git switch; }; f"
+    sm         = !"git switch $(git main)"
+    sha        = rev-parse HEAD
+    shn        = show --name-only
+    shp        = show --patch
+    ss         = status
+    st         = stash
+    sta        = stash apply
+    stash-save = "!git aa && git stash -k && git reset"
+    sti        = stash --keep-index
+    stl        = !"git stash list --pretty=format:\"%C(magenta)%>(10)%gd %C(yellow)%>(8)%h%C(reset) %<(80,trunc)%s %C(green)(%cr)%C(reset)\""
+    stp        = stash push
+    strip-whitespace = !"sed -bi 's/[[:space:]]*$//' $(git diff --name-only --cached)"
+    sts        = stash-save
+    sw         = switch
+    swc        = switch --create
+    test-pr    = !"${DOTFILES_DIR}/scripts/git_checkout_pr"
+    wip        = !"git add -A && git rm $(git ls-files --deleted) 2>/dev/null; git commit --no-verify --no-gpg-sign -m '--wip-- [skip ci]'"

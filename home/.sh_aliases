@@ -1,0 +1,140 @@
+#!/usr/bin/env sh
+
+alias :q=exit
+alias ap=addpath
+alias bk=bak
+alias bs=bselect
+alias ca="conda activate"
+alias calc='noglob "${DOTFILES_DIR}/scripts/calc"'
+alias cdf='cd "$(fd -t d | fzf)"'
+alias cg='cd `git rev-parse --show-toplevel`'
+alias cl=cd_and_ls
+alias clc=clear
+alias cphist='hist | clip'
+alias cpv='rsync -ah --info=progress2'
+alias hist='history | cut -c 8- | fzf'
+alias ippub='dig +short myip.opendns.com @resolver1.opendns.com'
+alias ipy=ipython
+alias is_wsl='[ -f /proc/version ] && grep microsoft --silent < /proc/version'
+alias l='ls -1'
+alias la='ls -A'
+alias lla='ls -lA'
+alias lsa='ls -AlhF'
+alias md5='openssl md5'
+alias mk=mkdir
+alias mkcd=mkdir_and_cd
+alias op=open
+alias path='echo -e ${PATH//:/\\n}'
+alias py=python
+alias pyt=pytest
+alias quit=exit
+alias sha=sha1
+alias sha1='openssl sha1'
+alias sha256='openssl sha256'
+alias sudo='sudo '
+alias untar='tar -xvf'
+alias vs-init='python3 ${DOTFILES_DIR}/scripts/vscode_init.py'
+
+if [ -n "$(command -v lsd)" ]; then
+    export DISABLE_LS_COLORS="true"  # stop oh-my-zsh from overriding ls alias
+    alias ls=lsd
+    alias lla='lsd -lAg'
+    alias lsa='lsd -AlhFg'
+    alias lt='lsd --tree'
+fi
+
+if [ -n "$(command -v apt)" ]; then
+    alias apt='sudo apt'
+fi
+
+if [ -n "$(command -v apt-get)" ]; then
+    alias apt-get='sudo apt-get'
+fi
+
+if [ -n "$(command -v fdfind)" ]; then
+    alias fd=fdfind
+fi
+
+if [ -n "$(command -v fzf)" ] && [ -n "$(command -v fd)" ]; then
+    alias fzfcd='cd_with_fzf'
+    alias fzfp="fzf --preview='bat --color=always {}'"
+    alias cdfzf='cd_with_fzf'
+    alias cf='cd_with_fzf'
+fi
+
+if [ -z "$(command -v bat)" ] && [ -n "$(command -v batcat)" ]; then
+    alias bat=batcat
+fi
+
+if is_wsl; then
+    alias ii=wsl-open
+    alias open=wsl-open
+elif [ -n "$(command -v xdg-open)" ]; then
+    alias ii=xdg-open
+    alias open=xdg-open
+elif [ -n "$(command -v open)" ]; then
+    alias ii=open
+fi
+
+if is_wsl; then
+    alias clip=clip.exe
+    alias clipr="perl -pe 'chomp if eof' | clip.exe"
+elif [ -n "$(command -v xclip)" ]; then
+    alias clip='xclip -selection c'
+    alias clipr='xclip -selection c -rmlastnl'
+elif [ -n "$(command -v pbcopy)" ]; then
+    alias clip='pbcopy'
+    alias clipr="perl -pe 'chomp if eof' | pbcopy"
+fi
+
+_diff_so_fancy="${DOTFILES_DIR}/external/diff-so-fancy/diff-so-fancy"
+if [ -f "${_diff_so_fancy}" ]; then
+    # shellcheck disable=SC2139
+    alias diff-so-fancy="${_diff_so_fancy}"
+fi
+unset _diff_so_fancy
+
+if [ -n "$(command -v nvim)" ]; then
+    alias nv=nvim
+fi
+
+if [ -n "$(command -v micromamba)" ]; then
+    alias mm=micromamba
+fi
+
+# Typo corrections
+## Git
+alias g8t=git
+alias g9t=git
+alias ggit=git
+alias gi5=git
+alias gi6=git
+alias gi=git
+alias gif=git
+alias gig=git
+alias gih=git
+alias giit=git
+alias gir=git
+alias gitt=git
+alias giot=git
+alias giut=git
+alias giy=git
+alias gjt=git
+alias gkt=git
+alias glt=git
+alias got=git
+alias gt=git
+alias gti=git
+alias gut=git
+alias igt=git
+alias tit=git
+alias yit=git
+## ls
+alias ks=ls
+alias ld=ls
+alias le=ls
+alias lw=ls
+alias lx=ls
+alias lz=ls
+alias os=ls
+alias sl=ls
