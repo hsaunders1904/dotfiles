@@ -1,12 +1,9 @@
-[submodule "apps/oh-my-zsh/plugins/zsh-autosuggestions"]
-	path = apps/oh-my-zsh/plugins/zsh-autosuggestions
+[submodule "home/.oh-my-zsh/plugins/pyautoenv"]
+	path = home/.oh-my-zsh/plugins/pyautoenv
+	url = https://github.com/hsaunders1904/pyautoenv.git
+[submodule "home/.oh-my-zsh/plugins/zsh-autosuggestions"]
+	path = home/.oh-my-zsh/plugins/zsh-autosuggestions
 	url = https://github.com/zsh-users/zsh-autosuggestions
-	branch = master
-[submodule "apps/oh-my-zsh/plugins/autoupdate"]
-	path = apps/oh-my-zsh/plugins/autoupdate
+[submodule "home/.oh-my-zsh/plugins/autoupdate"]
+	path = home/.oh-my-zsh/plugins/autoupdate
 	url = https://github.com/TamCore/autoupdate-oh-my-zsh-plugins
-	branch = master
-[submodule "apps/oh-my-zsh/plugins/pyautoenv"]
-	path = apps/oh-my-zsh/plugins/pyautoenv
-	url = git@github.com:hsaunders1904/pyautoenv.git
-    branch = main

@@ -1,11 +1,12 @@
 import os
 
-from installer import bash, diff_so_fancy, font, git, neovim, pwsh, vim, wsl, zsh
+from installer import bash, diff_so_fancy, font, git, neovim, pixi, pwsh, vim, wsl, zsh
 from installer.base import Installer
 
 
 def install():
     installers: list[Installer] = [
+        pixi.PixiInstaller(),
         bash.BashInstaller(),
         zsh.ZshInstaller(),
         git.GitInstaller(),

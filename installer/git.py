@@ -7,12 +7,15 @@ class GitInstaller(Installer):
         self.add_config_excludesfile()
         return True
 
+    def should_install(self) -> bool:
+        return self.is_executable("git")
+
     def add_config_include_path(self):
-        path = self.repo_root() / "dotfiles" / ".gitconfig"
+        path = self.dotfiles_home() / ".config" / "config"
         self.set_config_option_value("include.path", str(path))
 
     def add_config_excludesfile(self):
-        excludes_file = self.repo_root() / "dotfiles" / ".gitignore_global"
+        excludes_file = self.dotfiles_home() / ".config" / "ignore"
         self.set_config_option_value("core.excludesfile", str(excludes_file))
 
     def set_config_option_value(self, option: str, value: str):
@@ -24,4 +27,4 @@ class GitInstaller(Installer):
 
     def get_config_option_values(self, option: str) -> list[str]:
         args = ["git", "config", "--global", "--get-all", option]
-        return self.run_command_get_output(args, log=False).strip().split("\n")
+        return self.run_command_get_output(args).strip().split("\n")

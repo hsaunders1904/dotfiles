@@ -1,19 +1,18 @@
 # Environment variables
-$Env:DOTFILES_DIR = Split-Path "${PSScriptRoot}"
+$Env:DOTFILES_DIR = Split-Path (Split-Path (Split-Path "${PSScriptRoot}"))
+$Env:DOTFILES_HOME = Join-Path $Env:DOTFILES_DIR "home"
 $Env:VIRTUAL_ENV_DISABLE_PROMPT = 1  # oh-my-posh deals with venv display
 
 # Configure aliases and the prompt
-Import-Module "${Env:DOTFILES_DIR}/dotfiles/.pwsh_aliases.psm1"
-Import-Module "${Env:DOTFILES_DIR}/dotfiles/.pwsh_functions.psm1"
+Import-Module "${PSScriptRoot}/aliases.psm1"
+Import-Module "${PSScriptRoot}/functions.psm1"
 if (Test-Command oh-my-posh) {
     $Env:POSH_GIT_ENABLED = $true
-    $ThemesDir = "${Env:DOTFILES_DIR}/apps/oh-my-posh/themes"
-    $ThemeName = "amro-custom"
-    oh-my-posh init pwsh --config "${ThemesDir}/${ThemeName}.omp.json" `
+    $ThemesDir = "${Env:DOTFILES_HOME}/.oh-my-posh/themes"
+    oh-my-posh init pwsh --config "${ThemesDir}/amro-custom.omp.json" `
         | Invoke-Expression
-    $env:VIRTUAL_ENV_DISABLE_PROMPT = 1
 } else {
-    Import-Module "${Env:DOTFILES_DIR}/dotfiles/.pwsh_prompt.psm1"
+    Import-Module "${PSScriptRoot}/prompt.psm1"
 }
 
 # Import external modules
@@ -51,3 +50,4 @@ Invoke-AutoComplete fd "autocomplete/fd.ps1"
 Invoke-AutoComplete bat "autocomplete/_bat.ps1"
 Invoke-AutoComplete rg "complete/_rg.ps1"
 Remove-Item -Path Function:\Invoke-AutoComplete
+(& pixi completion --shell powershell) | Out-String | Invoke-Expression

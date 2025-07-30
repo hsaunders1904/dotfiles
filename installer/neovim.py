@@ -24,11 +24,18 @@ class NeovimInstaller(Installer):
         return self.update_init_lua()
 
     def should_install(self) -> bool:
-        return self.is_executable("nvim")
+        if not self.is_executable("nvim"):
+            self.logger().debug("skipping: 'nvim' not found")
+            return False
+        if not self.init_lua_dotfile_path().is_file():
+            self.logger().debug(
+                f"skipping: '{self.init_lua_dotfile_path()}' is not a file"
+            )
+            return False
+        return True
 
     def update_init_lua(self) -> bool:
-        dotfile_path = self.repo_root() / "apps" / "neovim" / "init.lua"
-        import_str = self.IMPORT_TEMPLATE.format(dotfile_path)
+        import_str = self.IMPORT_TEMPLATE.format(self.init_lua_dotfile_path())
         path = self.init_lua_path()
         path.parent.mkdir(exist_ok=True, parents=True)
         return self.update_dotfile(path, import_str, self.COMMENT_CHAR)
@@ -38,3 +45,6 @@ class NeovimInstaller(Installer):
             return (Path("~/AppData/Local/nvim") / "init.lua").expanduser()
         xdg_config = Path(os.environ.get("XDG_CONFIG_HOME", "~/.config"))
         return (xdg_config / "nvim" / "init.lua").expanduser()
+
+    def init_lua_dotfile_path(self) -> Path:
+        return self.dotfiles_home() / ".config" / "nvim" / "init.lua"

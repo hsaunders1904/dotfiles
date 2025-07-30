@@ -1,11 +1,11 @@
 local dotfiles_dir = os.getenv('DOTFILES_DIR')
 
 -- Load vanilla Vim config
-vim.cmd('source ' .. dotfiles_dir .. '/dotfiles/.vimrc')
-vim.opt.runtimepath:append(dotfiles_dir .. '/apps/neovim')
+vim.cmd('source ' .. dotfiles_dir .. '/home/.vimrc')
+vim.opt.runtimepath:append(dotfiles_dir .. '/home/.config/nvim')
 
 -- Add these dotfiles to the runtime path
-local dotfiles_rt_path = dotfiles_dir .. '/apps/neovim/lua/?.lua'
+local dotfiles_rt_path = dotfiles_dir .. '/home/.config/nvim/lua/?.lua'
 package.path = package.path .. ';' .. dotfiles_rt_path
 
 -- Plugins

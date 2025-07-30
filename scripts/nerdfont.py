@@ -26,6 +26,7 @@ logger.setLevel(logging.INFO)
 @dataclass
 class CliArgs:
     fonts: list[str]
+    force: bool
 
 
 class Os(enum.Enum):
@@ -36,18 +37,21 @@ class Os(enum.Enum):
 def main(argv: list[str]) -> int:
     """Download and install nerd fonts."""
     args = parse_args(argv)
-    if install_fonts(args.fonts):
+    if install_fonts(args.fonts, args.force):
         return 0
     return 1
 
 
-def install_fonts(font_names: list[str]) -> bool:
+def install_fonts(font_names: list[str], force: bool = False) -> bool:
     if not (operating_system := get_os()):
         return False
     ok = True
     for font in font_names:
         url = f"{BASE_DOWNLOAD_URL}/{font}.tar.xz"
         if out_dir := get_fonts_dir(font, operating_system):
+            if not force and (out_dir).is_dir():
+                logger.info("skipping '%s', already installed at '%s'", font, out_dir)
+                continue
             out_dir.parent.mkdir(exist_ok=True, parents=True)
             ok &= download_and_extract_tar(url, out_dir)
     return ok
@@ -60,6 +64,13 @@ def parse_args(argv: list[str]) -> CliArgs:
         formatter_class=argparse.RawTextHelpFormatter,
     )
     parser.add_argument("fonts", nargs="+", help="the names of the fonts to install")
+    parser.add_argument(
+        "-f",
+        "--force",
+        action="store_true",
+        default=False,
+        help="overwrite existing fonts if they already exist",
+    )
     return CliArgs(**vars(parser.parse_args(argv)))
 
 

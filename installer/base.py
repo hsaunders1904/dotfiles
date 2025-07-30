@@ -30,6 +30,9 @@ class Installer(abc.ABC):
     def repo_root(self) -> Path:
         return Path(__file__).parent.parent
 
+    def dotfiles_home(self) -> Path:
+        return Path(__file__).parent.parent / "home"
+
     def external_dir(self) -> Path:
         return self.repo_root() / "external"
 
@@ -93,10 +96,10 @@ class Installer(abc.ABC):
 
     def make_symlink(self, origin: Path, link: Path) -> bool:
         if link.is_file():
-            logger.debug("SYMLINK: link '%s' is already a file or symlink", link)
+            logger.info("SYMLINK: link '%s' is already a file or symlink", link)
             return True
         logger.info("SYMLINK: '%s' -> '%s'", origin, link)
-        return self.run_command(["ln", "-s", str(origin), str(link)], log=True)
+        return self.run_command(["ln", "-s", str(origin), str(link)])
 
     def git_clone(self, url: str, path: Path) -> bool:
         logger.info("GIT: cloning '%s' into '%s'", url, path)

@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+
+if [ "$#" -ne 1 ]; then
+    echo "usage: $0 <SHELL_NAME>" >&2
+    echo "Error: Exactly one argument is required." >&2
+    exit 1
+fi
+
+selected_shell="$1"
+
+# App activations
+if command -v direnv >/dev/null; then
+    eval "$(direnv hook "${selected_shell}")"
+fi
+
+if command -v zellij >/dev/null; then
+    eval "$(zellij setup --generate-auto-start "${selected_shell}")"
+fi
+
+if command -v zoxide >/dev/null; then
+    eval "$(zoxide init "${selected_shell}")"
+fi
+
+# Completions
+if command -v fzf >/dev/null; then
+    eval "$(fzf --"${selected_shell}")"
+fi
+
+if command -v gh >/dev/null; then
+    eval "$(gh completion -s "${selected_shell}")"
+fi
+
+if command -v pixi >/dev/null; then
+    eval "$(pixi completion --shell "${selected_shell}")"
+fi
