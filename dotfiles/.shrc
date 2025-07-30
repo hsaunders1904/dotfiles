@@ -55,6 +55,10 @@ if command -v direnv >/dev/null; then
     eval "$(direnv hook "$(current_shell)")"
 fi
 
+if command -v pixi >/dev/null; then
+    eval "$(pixi completion --shell "$(current_shell)")"
+fi
+
 if command -v cargo >/dev/null; then
     export CARGO_NET_GIT_FETCH_WITH_CLI=true
 fi
