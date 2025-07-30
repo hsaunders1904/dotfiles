@@ -1,6 +1,6 @@
 import os
 
-from installer import bash, diff_so_fancy, font, fzf, git, neovim, pwsh, vim, wsl, zsh
+from installer import bash, diff_so_fancy, font, git, neovim, pwsh, vim, wsl, zsh
 from installer.base import Installer
 
 
@@ -15,7 +15,6 @@ def install():
         pwsh.PwshInstaller(),
         font.FontInstaller(),
         wsl.WslInstaller(),
-        fzf.FzfInstaller(),
     ]
 
     dry_run = os.environ.get("DOTFILES_DRY_RUN") not in ["0", None]
