@@ -7,17 +7,19 @@ export LESSCHARSET=utf-8
 # ow and tw change symlinks, and di changes directory colours
 export LS_COLORS="${LS_COLORS}:ow=1;94:tw=1;94:di=36;0:ex=0;32"
 
-if command -v conda > /dev/null; then
-    conda config --set changeps1 False
-fi
-
 # Path additions
-if [ -d "${HOME}/.local/bin" ]; then
-    case ":${PATH}:" in
-        *":${HOME}/.local/bin:"*) ;;
-        *) export PATH="${HOME}/.local/bin:${PATH}";;
-    esac
-fi
+add_to_path_if_valid() {
+    dir="$1"
+    if [ -d "$dir" ]; then
+        case ":$PATH:" in
+        *":$dir:"*) ;;
+        *) PATH="$dir:$PATH" ;;
+        esac
+    fi
+}
+add_to_path_if_valid ${HOME}/.local/bin
+add_to_path_if_valid ${HOME}/.pixi/bin
+export PATH
 
 # Alias definitions (must come before functions)
 _aliases_path="${DOTFILES_DIR}/dotfiles/.sh_aliases"
@@ -33,22 +35,26 @@ if [ -f "${_funcs_path}" ]; then
 fi
 unset _funcs_path
 
-if command -v zoxide > /dev/null; then
+if command -v conda >/dev/null; then
+    conda config --set changeps1 False
+fi
+
+if command -v zoxide >/dev/null; then
     eval "$(zoxide init "$(current_shell)")"
 fi
 
-if command -v gh > /dev/null; then
+if command -v gh >/dev/null; then
     eval "$(gh completion -s "$(current_shell)")"
 fi
 
-if command -v ninja > /dev/null; then
+if command -v ninja >/dev/null; then
     export CMAKE_GENERATOR=Ninja
 fi
 
-if command -v direnv > /dev/null; then
+if command -v direnv >/dev/null; then
     eval "$(direnv hook "$(current_shell)")"
 fi
 
-if command -v cargo > /dev/null; then
+if command -v cargo >/dev/null; then
     export CARGO_NET_GIT_FETCH_WITH_CLI=true
 fi
