@@ -6,26 +6,43 @@
 // To see the default key bindings run `zed: open default keymap`
 // from the command palette.
 [
-    {
-        "bindings": {
-            "ctrl-k j": "workspace::ActivatePaneLeft",
-            "ctrl-k l": "workspace::ActivatePaneRight",
-            "ctrl-k shift-j": "workspace::SwapPaneLeft",
-            "ctrl-k shift-l": "workspace::SwapPaneRight",
-            "ctrl-shift-n": "file_finder::Toggle"
-        },
-        "context": "Workspace"
+  {
+    "bindings": {
+      "ctrl-k j": "workspace::ActivatePaneLeft",
+      "ctrl-k l": "workspace::ActivatePaneRight",
+      "ctrl-k shift-j": "workspace::SwapPaneLeft",
+      "ctrl-k shift-l": "workspace::SwapPaneRight",
+      "ctrl-shift-n": "file_finder::Toggle",
+
+      // OSX equivalents
+      "cmd-k j": "workspace::ActivatePaneLeft",
+      "cmd-k l": "workspace::ActivatePaneRight",
+      "cmd-k shift-j": "workspace::SwapPaneLeft",
+      "cmd-k shift-l": "workspace::SwapPaneRight",
+      "cmd-shift-n": "file_finder::Toggle"
     },
-    {
-        "bindings": {
-            "ctrl-alt-left": "pane::GoBack",
-            "ctrl-alt-right": "pane::GoForward",
-            "ctrl-d": "editor::DuplicateLineDown",
-            "ctrl-k o": "editor::SwitchSourceHeader",
-            "ctrl-k shift-p": "editor::CopyRelativePath",
-            "ctrl-r": "search::ToggleReplace",
-            "ctrl-shift-backspace": "editor::DeleteLine"
-        },
-        "context": "Editor"
-    }
+    "context": "Workspace"
+  },
+  {
+    "bindings": {
+      "ctrl-alt-left": "pane::GoBack",
+      "ctrl-alt-right": "pane::GoForward",
+      "ctrl-d": "editor::DuplicateLineDown",
+      "ctrl-k o": "editor::SwitchSourceHeader",
+      "ctrl-k shift-p": "editor::CopyRelativePath",
+      "ctrl-r": "search::ToggleReplace",
+      "ctrl-shift-backspace": "editor::DeleteLine",
+
+      // OSX equivalents
+      "cmd-alt-left": "pane::GoBack",
+      "cmd-alt-right": "pane::GoForward",
+      "cmd-d": "editor::DuplicateLineDown",
+      "cmd-k o": "editor::SwitchSourceHeader",
+      "cmd-k shift-p": "editor::CopyRelativePath",
+      "cmd-r": "search::ToggleReplace",
+      "cmd-shift-backspace": "editor::DeleteLine",
+      "cmd-y": "editor::Redo"
+    },
+    "context": "Editor"
+  }
 ]
