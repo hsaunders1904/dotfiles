@@ -3,18 +3,6 @@
 DOTFILES_DIR="$(dirname "${0:a:h}")"
 export DOTFILES_DIR
 
-_shrc="${DOTFILES_DIR}/dotfiles/.shrc"
-if [ -f "${_shrc}" ]; then
-    . "${_shrc}"
-fi
-unset _shrc
-
-_aliases="${DOTFILES_DIR}/dotfiles/.zsh_aliases"
-if [ -f "${_aliases}" ]; then
-    . "${_aliases}"
-fi
-unset _aliases
-
 # oh-my-zsh settings
 if [ -d "${HOME}/.oh-my-zsh" ]; then
     export ZSH="${HOME}/.oh-my-zsh"
@@ -34,6 +22,18 @@ if [ -d "${HOME}/.oh-my-zsh" ]; then
     )
     source "${ZSH}/oh-my-zsh.sh"
 fi
+
+_shrc="${DOTFILES_DIR}/dotfiles/.shrc"
+if [ -f "${_shrc}" ]; then
+    . "${_shrc}"
+fi
+unset _shrc
+
+_aliases="${DOTFILES_DIR}/dotfiles/.zsh_aliases"
+if [ -f "${_aliases}" ]; then
+    . "${_aliases}"
+fi
+unset _aliases
 
 if [ -f "/opt/homebrew/opt/fzf/shell/key-bindings.zsh" ]; then
     source "/opt/homebrew/opt/fzf/shell/key-bindings.zsh"
