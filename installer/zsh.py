@@ -17,7 +17,15 @@ class ZshInstaller(Installer):
         return ok
 
     def should_install(self) -> bool:
-        return self.is_executable("zsh")
+        if not self.is_executable("zsh"):
+            self.logger().debug("skipping: 'zsh' not found")
+            return False
+        if not self.dotfiles_zshrc_path().is_file():
+            self.logger().debug(
+                f"skipping: '{self.dotfiles_zshrc_path()}' is not a file"
+            )
+            return False
+        return True
 
     def install_oh_my_zsh(self):
         installer_path = self.external_dir() / "ohmyzsh_install.sh"
@@ -26,11 +34,11 @@ class ZshInstaller(Installer):
         return self.run_command(install_cmd)
 
     def pull_plugins(self) -> bool:
-        cmd = ["git", "submodule", "update", "--init", str(self.custom_omz_dir())]
+        cmd = ["git", "submodule", "update", "--init", str(self.dotfiles_omz_dir())]
         return self.run_command(cmd)
 
     def update_zshrc(self) -> bool:
-        dotfile = self.repo_root() / "dotfiles" / ".zshrc"
+        dotfile = self.dotfiles_home() / ".zshrc"
         import_str = "\n".join(
             [
                 f'if [ -f "{dotfile}" ]; then',
@@ -41,8 +49,11 @@ class ZshInstaller(Installer):
         zshrc = Path.home() / ".zshrc"
         return self.update_dotfile(zshrc, import_str, self.COMMENT_CHAR)
 
-    def custom_omz_dir(self):
-        return self.repo_root() / "apps" / "oh-my-zsh"
+    def dotfiles_omz_dir(self):
+        return self.dotfiles_home() / ".oh-my-zsh"
+
+    def dotfiles_zshrc_path(self) -> Path:
+        return self.dotfiles_home() / ".zshrc"
 
     @staticmethod
     def oh_my_zsh_path() -> Path | None:

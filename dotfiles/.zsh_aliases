@@ -1,3 +1,0 @@
-#!/usr/bin/env zsh
-
-aliases[=]='noglob "${DOTFILES_DIR}/scripts/calc"'

@@ -22,10 +22,9 @@ class WslInstaller(Installer):
         if not out_path.is_file():
             return False
         _make_executable(out_path)
-        symlink_path = Path.home() / ".local" / "bin"
-        symlink_path.mkdir(exist_ok=True, parents=True)
-        ok = self.make_symlink(out_path, symlink_path / "wsl-open")
-        ok &= self.make_symlink(out_path, symlink_path / "xdg-open")
+        self.local_bin().mkdir(exist_ok=True, parents=True)
+        ok = self.make_symlink(out_path, self.local_bin() / "wsl-open")
+        ok &= self.make_symlink(out_path, self.local_bin() / "xdg-open")
         return ok
 
     def os_is_wsl(self) -> bool:

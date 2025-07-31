@@ -13,13 +13,21 @@ class PwshInstaller(Installer):
         return ok
 
     def should_install(self) -> bool:
-        return self.is_executable("pwsh")
+        if not self.is_executable("pwsh"):
+            self.logger().debug("skipping: 'pwsh' not found")
+            return False
+        if not self.dotfiles_profile_path().is_file():
+            self.logger().debug(
+                f"skipping: '{self.dotfiles_profile_path()}' is not a file"
+            )
+            return False
+        return True
 
     def update_profile(self) -> bool:
         if not (pwsh_profile := self.profile_path()):
             self.logger().warning("could not get path to pwsh profile")
             return False
-        dotfile = self.repo_root() / "dotfiles" / ".pwsh_profile.ps1"
+        dotfile = self.dotfiles_profile_path()
         import_str = "\n".join(
             [
                 f'if (Test-Path "{dotfile}") {{',
@@ -58,6 +66,14 @@ class PwshInstaller(Installer):
         if profile_str := self.run_command_get_output(args, log=False):
             return Path(profile_str.strip())
         return None
+
+    def dotfiles_profile_path(self) -> Path:
+        return (
+            self.dotfiles_home()
+            / ".config"
+            / "powershell"
+            / "Microsoft.PowerShell_profile.ps1"
+        )
 
     def pwsh_exe(self) -> Path | None:
         if pwsh_exe := shutil.which("pwsh"):

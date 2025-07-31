@@ -30,6 +30,9 @@ class Installer(abc.ABC):
     def repo_root(self) -> Path:
         return Path(__file__).parent.parent
 
+    def dotfiles_home(self) -> Path:
+        return Path(__file__).parent.parent / "home"
+
     def external_dir(self) -> Path:
         return self.repo_root() / "external"
 

@@ -1,5 +1,3 @@
-import os
-import shutil
 from pathlib import Path
 
 from installer.base import Installer
@@ -10,7 +8,7 @@ class BashInstaller(Installer):
 
     def install(self) -> bool:
         bashrc = Path.home() / ".bashrc"
-        dotfiles_bashrc = self.repo_root() / "dotfiles" / ".bashrc"
+        dotfiles_bashrc = self.repo_root() / "home" / ".bashrc"
         import_str = _build_file_import_str(dotfiles_bashrc)
         self.update_dotfile(bashrc, import_str, self.COMMENT_CHAR)
         return True
