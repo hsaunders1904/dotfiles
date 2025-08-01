@@ -82,9 +82,9 @@
     },
     "theme": {
         "dark": "Ultimate Dark Neo",
-        "light": "Arrakis Night",
+        "light": "One Light",
         "mode": "dark"
     },
-    "ui_font_family": "Liberation Mono",
+    "ui_font_family": "LiterationMono Nerd Font",
     "ui_font_size": 14
 }

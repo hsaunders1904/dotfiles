@@ -1,10 +1,13 @@
 """Base class for installer definitions."""
 
+from __future__ import annotations
+
 import abc
 import logging
 import re
 import shutil
 import subprocess
+from datetime import datetime
 from pathlib import Path
 from urllib import request
 
@@ -57,9 +60,10 @@ class Installer(abc.ABC):
                 f_writer.write(new_content)
         return True
 
-    def run_command(self, args: list[str], **kwargs) -> bool:
+    def run_command(self, args: list[str], *, log=True, **kwargs) -> bool:
         cmd_str = " ".join(args)
-        logger.info("RUN: %s", cmd_str)
+        if log:
+            logger.info("RUN: %s", cmd_str)
         if self.dry_run:
             return True
 
@@ -94,12 +98,20 @@ class Installer(abc.ABC):
             logging.exception("DOWNLOAD: failed")
             return False
 
-    def make_symlink(self, origin: Path, link: Path) -> bool:
-        if link.is_file():
+    def make_symlink(self, origin: Path, link: Path, force: bool = False) -> bool:
+        if origin.resolve() == link.resolve():
+            logger.info("SYMLINK: link '%s' already points to '%s'", link, origin)
+            return True
+        if force and link.is_symlink() and origin.resolve() != link.resolve():
+            link.unlink()
+        elif force and link.exists():
+            self.backup_and_move(link)
+        elif not force and link.exists():
             logger.info("SYMLINK: link '%s' is already a file or symlink", link)
             return True
+
         logger.info("SYMLINK: '%s' -> '%s'", origin, link)
-        return self.run_command(["ln", "-s", str(origin), str(link)])
+        return self.run_command(["ln", "-s", str(origin), str(link)], log=False)
 
     def git_clone(self, url: str, path: Path) -> bool:
         logger.info("GIT: cloning '%s' into '%s'", url, path)
@@ -111,6 +123,12 @@ class Installer(abc.ABC):
 
     def logger(self) -> logging.Logger:
         return logger
+
+    def backup_and_move(self, path: Path) -> Path:
+        current_time = datetime.now().strftime("%Y%m%d%H%M%S")
+        new_path = path.with_name(path.name + "." + current_time + "." + ".bak")
+        self.logger().debug("BACKUP: '%s' -> '%s'", path, new_path)
+        return Path(shutil.move(path, new_path))
 
     @staticmethod
     def local_bin() -> Path:

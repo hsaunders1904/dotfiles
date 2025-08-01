@@ -369,7 +369,7 @@ scroll_buffer_size 100000
 // copy_command "wl-copy"                    // wayland
 // copy_command "pbcopy"                     // osx
 //
-// copy_command "pbcopy"
+copy_command "copytext"
 
 // Choose the destination for copied text
 // Allows using the primary selection buffer (on x11/wayland) instead of the system clipboard.
@@ -383,7 +383,7 @@ scroll_buffer_size 100000
 // Enable automatic copying (and clearing) of selection when releasing mouse
 // Default: true
 //
-// copy_on_select true
+copy_on_select false
 
 // Path to the default editor to use to edit pane scrollbuffer
 // Default: $EDITOR or $VISUAL
