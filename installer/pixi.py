@@ -19,9 +19,7 @@ class PixiInstaller(Installer):
         dotfile_manifest = (
             self.dotfiles_home() / ".pixi" / "manifests" / "pixi-global.toml"
         )
-        if manifest.is_file() and not file_are_equal(manifest, dotfile_manifest):
-            _backup_and_move(manifest)
-        self.make_symlink(dotfile_manifest, manifest)
+        self.make_symlink(dotfile_manifest, manifest, force=True)
 
         ok = self.run_command([str(pixi_exe), "global", "sync"])
         os.environ["PATH"] = ":".join(

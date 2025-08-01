@@ -11,6 +11,7 @@ add_to_path_if_valid() {
     fi
 }
 add_to_path_if_valid "${HOME}/.local/bin"
+add_to_path_if_valid "${DOTFILES_DIR}/home/.local/bin"
 add_to_path_if_valid "${HOME}/.pixi/bin"
 export PATH
 

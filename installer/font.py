@@ -17,7 +17,7 @@ class FontInstaller(Installer):
 
         ok = False
         if platform.system() == "Darwin":
-            fonts = ["LiberationMono"]
+            fonts = ["LiberationMono", "SourceCodePro"]
             ok = nf.install_fonts(fonts)
         elif platform.system() == "Linux":
             fonts = ["UbuntuMono"]

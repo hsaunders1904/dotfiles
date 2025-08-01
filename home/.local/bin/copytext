@@ -1,0 +1,16 @@
+#!/usr/bin/env python3
+
+if __name__ == "__main__":
+    import platform
+    import subprocess
+    import sys
+
+    if platform.system() == "Darwin":
+        copy_cmd = ["pbcopy"]
+    elif platform.system() == "Windows":
+        copy_cmd = ["clip"]
+    else:
+        copy_cmd = ["xclip", "-selection", "clipboard"]
+
+    result = subprocess.run(copy_cmd, universal_newlines=True, stdin=sys.stdin)
+    sys.exit(result.returncode)
