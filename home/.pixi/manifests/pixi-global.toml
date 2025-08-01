@@ -33,7 +33,7 @@ exposed = { git = "git", git-cvsserver = "git-cvsserver", git-receive-pack = "gi
 [envs.glab]
 channels = ["conda-forge"]
 dependencies = { glab = "*" }
-exposed = { glab = "glab"
+exposed = { glab = "glab" }
 
 [envs.go-shfmt]
 channels = ["conda-forge"]
@@ -88,7 +88,7 @@ exposed = { xclip = "xclip", xclip-copyfile = "xclip-copyfile", xclip-cutfile = 
 [envs.zellij]
 channels = ["conda-forge"]
 dependencies = { zellij = "*" }
-exposed = { zellij = "zellij"
+exposed = { zellij = "zellij" }
 
 [envs.zoxide]
 channels = ["conda-forge"]

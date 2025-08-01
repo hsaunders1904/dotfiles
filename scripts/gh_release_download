@@ -23,8 +23,6 @@ from pathlib import Path
 from typing import Any, TextIO
 from urllib import request
 
-from pkg_resources import parse_version
-
 DATETIME_FMT = "%Y-%m-%dT%H:%M:%SZ"
 
 
@@ -214,8 +212,8 @@ def select_releases_latest(releases: list[Release]) -> Release:
     latest = releases[0]
     for release in releases[1:]:
         try:
-            latest_version = parse_version(latest.tag)
-            version = parse_version(release.tag)
+            latest_version = Version(latest.tag)
+            version = Version(release.tag)
         except ValueError as exc:
             msg = "could not get latest version, could not parse version"
             raise ValueError(
