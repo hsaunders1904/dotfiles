@@ -52,6 +52,8 @@ def parse_args(argv: list[str]) -> Args:
 
 
 def install(pick: list[str], skip: list[str], dry_run: bool) -> bool:
+    # TODO: this won't work because we need to be able to control the
+    #  order things are installed. pixi must be first, for example.
     installers = [cls() for cls in Installer.__subclasses__()]
     has_error = False
     for installer in installers:
