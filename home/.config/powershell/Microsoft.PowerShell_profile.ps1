@@ -8,7 +8,7 @@ Import-Module "${PSScriptRoot}/aliases.psm1"
 Import-Module "${PSScriptRoot}/functions.psm1"
 if (Test-Command oh-my-posh) {
     $Env:POSH_GIT_ENABLED = $true
-    $ThemesDir = "${Env:DOTFILES_HOME}/.config/oh-my-posh/themes"
+    $ThemesDir = "${Env:DOTFILES_HOME}/.oh-my-posh/themes"
     oh-my-posh init pwsh --config "${ThemesDir}/amro-custom.omp.json" `
         | Invoke-Expression
 } else {

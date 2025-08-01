@@ -35,54 +35,54 @@ alias sudo='sudo '
 alias untar='tar -xvf'
 alias vs-init='python3 ${DOTFILES_DIR}/scripts/vscode_init.py'
 
-if [ -n "$(command -v lsd)" ]; then
-    export DISABLE_LS_COLORS="true"  # stop oh-my-zsh from overriding ls alias
+if command -v lsd >/dev/null; then
+    export DISABLE_LS_COLORS="true" # stop oh-my-zsh from overriding ls alias
     alias ls=lsd
     alias lla='lsd -lAg'
     alias lsa='lsd -AlhFg'
     alias lt='lsd --tree'
 fi
 
-if [ -n "$(command -v apt)" ]; then
+if command -v apt >/dev/null; then
     alias apt='sudo apt'
 fi
 
-if [ -n "$(command -v apt-get)" ]; then
+if command -v apt-get >/dev/null; then
     alias apt-get='sudo apt-get'
 fi
 
-if [ -n "$(command -v fdfind)" ]; then
+if command -v fdfind >/dev/null; then
     alias fd=fdfind
 fi
 
-if [ -n "$(command -v fzf)" ] && [ -n "$(command -v fd)" ]; then
+if command -v fzf >/dev/null && command -v fd >/dev/null; then
     alias fzfcd='cd_with_fzf'
     alias fzfp="fzf --preview='bat --color=always {}'"
     alias cdfzf='cd_with_fzf'
     alias cf='cd_with_fzf'
 fi
 
-if [ -z "$(command -v bat)" ] && [ -n "$(command -v batcat)" ]; then
+if ! command -v bat >/dev/null && command -v batcat >/dev/null; then
     alias bat=batcat
 fi
 
 if is_wsl; then
     alias ii=wsl-open
     alias open=wsl-open
-elif [ -n "$(command -v xdg-open)" ]; then
+elif command -v xdg-open >/dev/null; then
     alias ii=xdg-open
     alias open=xdg-open
-elif [ -n "$(command -v open)" ]; then
+elif command -v open >/dev/null; then
     alias ii=open
 fi
 
 if is_wsl; then
     alias clip=clip.exe
     alias clipr="perl -pe 'chomp if eof' | clip.exe"
-elif [ -n "$(command -v xclip)" ]; then
+elif command -v xclip >/dev/null; then
     alias clip='xclip -selection c'
     alias clipr='xclip -selection c -rmlastnl'
-elif [ -n "$(command -v pbcopy)" ]; then
+elif command -v pbcopy >/dev/null; then
     alias clip='pbcopy'
     alias clipr="perl -pe 'chomp if eof' | pbcopy"
 fi
@@ -94,11 +94,11 @@ if [ -f "${_diff_so_fancy}" ]; then
 fi
 unset _diff_so_fancy
 
-if [ -n "$(command -v nvim)" ]; then
+if command -v nvim >/dev/null; then
     alias nv=nvim
 fi
 
-if [ -n "$(command -v micromamba)" ]; then
+if command -v micromamba >/dev/null; then
     alias mm=micromamba
 fi
 

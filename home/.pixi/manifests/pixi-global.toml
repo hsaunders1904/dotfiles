@@ -30,6 +30,11 @@ channels = ["conda-forge"]
 dependencies = { git = "*" }
 exposed = { git = "git", git-cvsserver = "git-cvsserver", git-receive-pack = "git-receive-pack", git-shell = "git-shell", git-upload-archive = "git-upload-archive", git-upload-pack = "git-upload-pack", gitk = "gitk", scalar = "scalar" }
 
+[envs.glab]
+channels = ["conda-forge"]
+dependencies = { glab = "*" }
+exposed = { glab = "glab"
+
 [envs.go-shfmt]
 channels = ["conda-forge"]
 dependencies = { go-shfmt = "*" }
@@ -79,6 +84,11 @@ exposed = { wget = "wget" }
 channels = ["conda-forge"]
 dependencies = { xclip = "*" }
 exposed = { xclip = "xclip", xclip-copyfile = "xclip-copyfile", xclip-cutfile = "xclip-cutfile", xclip-pastefile = "xclip-pastefile" }
+
+[envs.zellij]
+channels = ["conda-forge"]
+dependencies = { zellij = "*" }
+exposed = { zellij = "zellij"
 
 [envs.zoxide]
 channels = ["conda-forge"]

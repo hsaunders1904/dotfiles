@@ -8,11 +8,11 @@ class GitInstaller(Installer):
         return True
 
     def add_config_include_path(self):
-        path = self.dotfiles_home() / ".gitconfig"
+        path = self.dotfiles_home() / ".config" / "config"
         self.set_config_option_value("include.path", str(path))
 
     def add_config_excludesfile(self):
-        excludes_file = self.dotfiles_home() / ".gitignore_global"
+        excludes_file = self.dotfiles_home() / ".config" / "ignore"
         self.set_config_option_value("core.excludesfile", str(excludes_file))
 
     def set_config_option_value(self, option: str, value: str):

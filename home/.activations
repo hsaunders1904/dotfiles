@@ -10,7 +10,11 @@ selected_shell="$1"
 
 # App activations
 if command -v direnv >/dev/null; then
-    eval "$(direnv hook "$(current_shell)")"
+    eval "$(direnv hook "${selected_shell}")"
+fi
+
+if command -v zellij >/dev/null; then
+    eval "$(zellij setup --generate-auto-start "${selected_shell}")"
 fi
 
 if command -v zoxide >/dev/null; then
