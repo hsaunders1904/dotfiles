@@ -2,100 +2,95 @@ version = 1
 
 [envs.bat]
 channels = ["conda-forge"]
-dependencies = { bat = "*" }
-exposed = { bat = "bat" }
+dependencies = {bat = "*"}
+exposed = {bat = "bat"}
 
 [envs.btop]
 channels = ["conda-forge"]
-dependencies = { btop = "*" }
-exposed = { btop = "btop" }
+dependencies = {btop = "*"}
+exposed = {btop = "btop"}
 
 [envs.fd-find]
 channels = ["conda-forge"]
-dependencies = { fd-find = "*" }
-exposed = { fd = "fd" }
+dependencies = {fd-find = "*"}
+exposed = {fd = "fd"}
 
 [envs.fzf]
 channels = ["conda-forge"]
-dependencies = { fzf = "*" }
-exposed = { fzf = "fzf" }
+dependencies = {fzf = "*"}
+exposed = {fzf = "fzf"}
 
 [envs.gh]
 channels = ["conda-forge"]
-dependencies = { gh = "*" }
-exposed = { gh = "gh" }
+dependencies = {gh = "*"}
+exposed = {gh = "gh"}
 
 [envs.git]
 channels = ["conda-forge"]
-dependencies = { git = "*" }
-exposed = { git = "git", git-cvsserver = "git-cvsserver", git-receive-pack = "git-receive-pack", git-shell = "git-shell", git-upload-archive = "git-upload-archive", git-upload-pack = "git-upload-pack", gitk = "gitk", scalar = "scalar" }
+dependencies = {git = "*"}
+exposed = {git = "git", git-cvsserver = "git-cvsserver", git-receive-pack = "git-receive-pack", git-shell = "git-shell", git-upload-archive = "git-upload-archive", git-upload-pack = "git-upload-pack", gitk = "gitk", scalar = "scalar"}
 
 [envs.glab]
 channels = ["conda-forge"]
-dependencies = { glab = "*" }
-exposed = { glab = "glab" }
+dependencies = {glab = "*"}
+exposed = {glab = "glab"}
 
 [envs.go-shfmt]
 channels = ["conda-forge"]
-dependencies = { go-shfmt = "*" }
-exposed = { gosh = "gosh", shfmt = "shfmt" }
-
-[envs.lsd-rust]
-channels = ["conda-forge"]
-dependencies = { lsd-rust = "*" }
-exposed = { lsd = "lsd" }
-
-[envs.nvim]
-channels = ["conda-forge"]
-dependencies = { nvim = "*" }
-exposed = { nvim = "nvim" }
-
-[envs.ripgrep]
-channels = ["conda-forge"]
-dependencies = { ripgrep = "*" }
-exposed = { rg = "rg" }
-
-[envs.rsync]
-channels = ["conda-forge"]
-dependencies = { rsync = "*" }
-exposed = { rsync = "rsync", rsync-ssl = "rsync-ssl" }
-
-[envs.trash-cli]
-channels = ["conda-forge"]
-dependencies = { trash-cli = "*" }
-exposed = { trash = "trash", trash-empty = "trash-empty", trash-list = "trash-list", trash-put = "trash-put", trash-restore = "trash-restore", trash-rm = "trash-rm" }
-
-[envs.unzip]
-channels = ["conda-forge"]
-dependencies = { unzip = "*" }
-exposed = { funzip = "funzip", unzip = "unzip", unzipsfx = "unzipsfx", zipgrep = "zipgrep", zipinfo = "zipinfo" }
-
-[envs.uutils-coreutils]
-channels = ["conda-forge"]
-dependencies = { uutils-coreutils = "*" }
-exposed = { ".uutils-coreutils-post-link" = ".uutils-coreutils-post-link", ".uutils-coreutils-pre-unlink" = ".uutils-coreutils-pre-unlink", "[" = "[", arch = "arch", base32 = "base32", base64 = "base64", basename = "basename", basenc = "basenc", cat = "cat", chgrp = "chgrp", chmod = "chmod", chown = "chown", chroot = "chroot", cksum = "cksum", comm = "comm", coreutils = "coreutils", cp = "cp", csplit = "csplit", cut = "cut", date = "date", dd = "dd", df = "df", dir = "dir", dircolors = "dircolors", dirname = "dirname", du = "du", echo = "echo", env = "env", expand = "expand", expr = "expr", factor = "factor", false = "false", fmt = "fmt", fold = "fold", groups = "groups", hashsum = "hashsum", head = "head", hostid = "hostid", hostname = "hostname", id = "id", install = "install", join = "join", kill = "kill", link = "link", ln = "ln", logname = "logname", ls = "ls", mkdir = "mkdir", mkfifo = "mkfifo", mknod = "mknod", mktemp = "mktemp", more = "more", mv = "mv", nice = "nice", nl = "nl", nohup = "nohup", nproc = "nproc", numfmt = "numfmt", od = "od", paste = "paste", pathchk = "pathchk", pinky = "pinky", pr = "pr", printenv = "printenv", printf = "printf", ptx = "ptx", pwd = "pwd", readlink = "readlink", realpath = "realpath", rm = "rm", rmdir = "rmdir", seq = "seq", shred = "shred", shuf = "shuf", sleep = "sleep", sort = "sort", split = "split", stat = "stat", stdbuf = "stdbuf", sum = "sum", sync = "sync", tac = "tac", tail = "tail", tee = "tee", test = "test", timeout = "timeout", touch = "touch", tr = "tr", true = "true", truncate = "truncate", tsort = "tsort", tty = "tty", uname = "uname", unexpand = "unexpand", uniq = "uniq", unlink = "unlink", uptime = "uptime", users = "users", vdir = "vdir", wc = "wc", who = "who", whoami = "whoami", yes = "yes" }
-
-[envs.wget]
-channels = ["conda-forge"]
-dependencies = { wget = "*" }
-exposed = { wget = "wget" }
-
-[envs.xclip]
-channels = ["conda-forge"]
-dependencies = { xclip = "*" }
-exposed = { xclip = "xclip", xclip-copyfile = "xclip-copyfile", xclip-cutfile = "xclip-cutfile", xclip-pastefile = "xclip-pastefile" }
-
-[envs.zellij]
-channels = ["conda-forge"]
-dependencies = { zellij = "*" }
-exposed = { zellij = "zellij" }
-
-[envs.zoxide]
-channels = ["conda-forge"]
-dependencies = { zoxide = "*" }
-exposed = { zoxide = "zoxide" }
+dependencies = {go-shfmt = "*"}
+exposed = {gosh = "gosh", shfmt = "shfmt"}
 
 [envs.helix]
 channels = ["conda-forge"]
-dependencies = { helix = "*" }
-exposed = { hx = "hx" }
+dependencies = {helix = "*"}
+exposed = {hx = "hx"}
+
+[envs.lsd-rust]
+channels = ["conda-forge"]
+dependencies = {lsd-rust = "*"}
+exposed = {lsd = "lsd"}
+
+[envs.ripgrep]
+channels = ["conda-forge"]
+dependencies = {ripgrep = "*"}
+exposed = {rg = "rg"}
+
+[envs.rsync]
+channels = ["conda-forge"]
+dependencies = {rsync = "*"}
+exposed = {rsync = "rsync", rsync-ssl = "rsync-ssl"}
+
+[envs.trash-cli]
+channels = ["conda-forge"]
+dependencies = {trash-cli = "*"}
+exposed = {trash = "trash", trash-empty = "trash-empty", trash-list = "trash-list", trash-put = "trash-put", trash-restore = "trash-restore", trash-rm = "trash-rm"}
+
+[envs.unzip]
+channels = ["conda-forge"]
+dependencies = {unzip = "*"}
+exposed = {funzip = "funzip", unzip = "unzip", unzipsfx = "unzipsfx", zipgrep = "zipgrep", zipinfo = "zipinfo"}
+
+[envs.uutils-coreutils]
+channels = ["conda-forge"]
+dependencies = {uutils-coreutils = "*"}
+exposed = {".uutils-coreutils-post-link" = ".uutils-coreutils-post-link", ".uutils-coreutils-pre-unlink" = ".uutils-coreutils-pre-unlink", "[" = "[", arch = "arch", base32 = "base32", base64 = "base64", basename = "basename", basenc = "basenc", cat = "cat", chgrp = "chgrp", chmod = "chmod", chown = "chown", chroot = "chroot", cksum = "cksum", comm = "comm", coreutils = "coreutils", cp = "cp", csplit = "csplit", cut = "cut", date = "date", dd = "dd", df = "df", dir = "dir", dircolors = "dircolors", dirname = "dirname", du = "du", echo = "echo", env = "env", expand = "expand", expr = "expr", factor = "factor", false = "false", fmt = "fmt", fold = "fold", groups = "groups", hashsum = "hashsum", head = "head", hostid = "hostid", hostname = "hostname", id = "id", install = "install", join = "join", kill = "kill", link = "link", ln = "ln", logname = "logname", ls = "ls", mkdir = "mkdir", mkfifo = "mkfifo", mknod = "mknod", mktemp = "mktemp", more = "more", mv = "mv", nice = "nice", nl = "nl", nohup = "nohup", nproc = "nproc", numfmt = "numfmt", od = "od", paste = "paste", pathchk = "pathchk", pinky = "pinky", pr = "pr", printenv = "printenv", printf = "printf", ptx = "ptx", pwd = "pwd", readlink = "readlink", realpath = "realpath", rm = "rm", rmdir = "rmdir", seq = "seq", shred = "shred", shuf = "shuf", sleep = "sleep", sort = "sort", split = "split", stat = "stat", stdbuf = "stdbuf", sum = "sum", sync = "sync", tac = "tac", tail = "tail", tee = "tee", test = "test", timeout = "timeout", touch = "touch", tr = "tr", true = "true", truncate = "truncate", tsort = "tsort", tty = "tty", uname = "uname", unexpand = "unexpand", uniq = "uniq", unlink = "unlink", uptime = "uptime", users = "users", vdir = "vdir", wc = "wc", who = "who", whoami = "whoami", yes = "yes"}
+
+[envs.wget]
+channels = ["conda-forge"]
+dependencies = {wget = "*"}
+exposed = {wget = "wget"}
+
+[envs.xclip]
+channels = ["conda-forge"]
+dependencies = {xclip = "*"}
+exposed = {xclip = "xclip", xclip-copyfile = "xclip-copyfile", xclip-cutfile = "xclip-cutfile", xclip-pastefile = "xclip-pastefile"}
+
+[envs.zellij]
+channels = ["conda-forge"]
+dependencies = {zellij = "*"}
+exposed = {zellij = "zellij"}
+
+[envs.zoxide]
+channels = ["conda-forge"]
+dependencies = {zoxide = "*"}
+exposed = {zoxide = "zoxide"}
