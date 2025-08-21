@@ -2,6 +2,21 @@ import argparse
 import os
 from dataclasses import dataclass
 
+from installer import (
+    bash,
+    diff_so_fancy,
+    font,
+    git,
+    iterm2,
+    neovim,
+    pixi,
+    pwsh,
+    vim,
+    wsl,
+    zed,
+    zellij,
+    zsh,
+)
 from installer.base import Installer
 
 
