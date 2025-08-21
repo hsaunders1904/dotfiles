@@ -1,5 +1,5 @@
 [font]
-normal = { family = "Ubuntu Mono Nerd Font", style = "Mono" }
+normal = { family = "Ubuntu Mono Nerd Font Mono" }
 
 [colors.primary]
 background = "#171421"
