@@ -56,6 +56,12 @@ class Args:
     """Whether to write or preview what changes are to be made."""
 
 
+@dataclass
+class Repo:
+    root: Path
+    is_worktree: bool = False
+
+
 def main(argv: list[str]) -> int:
     """Git ignore files and directories."""
     args = parse_args(argv)
@@ -117,9 +123,11 @@ def ignore_paths_local(paths: list[Path], comment: str) -> None:
     """Write the given paths to the .git/info/exclude file."""
     if not paths:
         return
-    repo_root = discover_shared_git_repo(paths)
-    ignore_lines = build_ignore_file_lines(paths, repo_root, comment)
-    exclude_file = repo_root / ".git" / "info" / "exclude"
+    repo = discover_shared_git_repo(paths)
+    if repo.is_worktree:
+        raise ValueError("cannot add to local ignores as you're in a worktree")
+    ignore_lines = build_ignore_file_lines(paths, repo.root, comment)
+    exclude_file = repo.root / ".git" / "info" / "exclude"
     append_lines_to_file(exclude_file, ignore_lines, parent_mkdir=True)
 
 
@@ -129,9 +137,13 @@ def ignore_paths_file(paths: list[Path], comment: str) -> None:
         return
     excludes = defaultdict(lambda: [f"# {comment}"] if comment else [])
     for path in paths:
-        exclude_file = path.parent / ".gitignore"
-        name = path.name + "/" if path.is_dir() else path.name
-        excludes[exclude_file].append(name)
+        if path.is_dir():
+            exclude_file = path / ".gitignore"
+            ignore_name = "*"
+        else:
+            exclude_file = path.parent / ".gitignore"
+            ignore_name = path.name
+        excludes[exclude_file].append(ignore_name)
     for exclude_file, ignore_lines in excludes.items():
         append_lines_to_file(exclude_file, ignore_lines)
 
@@ -140,9 +152,9 @@ def ignore_paths_root(paths: list[Path], comment: str) -> None:
     """Write the given paths to the root .gitignore file."""
     if not paths:
         return
-    repo_root = discover_shared_git_repo(paths)
-    ignore_lines = build_ignore_file_lines(paths, repo_root, comment)
-    exclude_file = repo_root / ".gitignore"
+    repo = discover_shared_git_repo(paths)
+    ignore_lines = build_ignore_file_lines(paths, repo.root, comment)
+    exclude_file = repo.root / ".gitignore"
     append_lines_to_file(exclude_file, ignore_lines)
 
 
@@ -160,7 +172,7 @@ def build_ignore_file_lines(
     return ignore_lines
 
 
-def discover_shared_git_repo(paths: list[Path]) -> Path:
+def discover_shared_git_repo(paths: list[Path]) -> Repo:
     """
     Find the root of the Git repository shared by the given paths.
 
@@ -169,13 +181,17 @@ def discover_shared_git_repo(paths: list[Path]) -> Path:
     """
     common_root = Path(os.path.commonpath((p.absolute() for p in paths)))
     if common_root == common_root.anchor:
-        raise ValueError(f"paths '{paths[1:-1]}' do not share a common directory")
+        raise ValueError(f"paths '{str(paths)[1:-1]}' do not share a common directory")
     candidate_git_dir = common_root
-    while candidate_git_dir != common_root.anchor:
-        if (candidate_git_dir / ".git").is_dir():
-            return candidate_git_dir
+    while not candidate_git_dir.samefile(common_root.anchor):
+        if (candidate_git_dir / ".git").exists():
+            return Repo(
+                candidate_git_dir, is_worktree=(candidate_git_dir / ".git").is_file()
+            )
         candidate_git_dir = candidate_git_dir.parent
-    raise ValueError(f"paths '{paths[1:-1]}' are not within any git repository")
+    raise ValueError(
+        f"paths '{', '.join(map(str, paths))}' are not within any git repository"
+    )
 
 
 def append_lines_to_file(path: Path, lines: list[str], parent_mkdir: bool = False):
