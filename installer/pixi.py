@@ -16,12 +16,9 @@ class PixiInstaller(Installer):
 
         manifest = Path.home() / ".pixi" / "manifests" / "pixi-global.toml"
         manifest.parent.mkdir(exist_ok=True)
-        dotfile_manifest = (
-            self.dotfiles_home() / ".pixi" / "manifests" / "pixi-global.toml"
-        )
-        self.make_symlink(dotfile_manifest, manifest, force=True)
+        ok = self.update_global_manifest()
 
-        ok = self.run_command([str(pixi_exe), "global", "sync"])
+        ok &= self.run_command([str(pixi_exe), "global", "sync"])
         os.environ["PATH"] = ":".join(
             [str(pixi_exe.parent), *os.environ.get("PATH", "").split(":")]
         )
@@ -42,6 +39,12 @@ class PixiInstaller(Installer):
         ):
             return False
         return True
+
+    def update_global_manifest(self) -> bool:
+        local = self.dotfiles_home() / ".pixi" / "manifests" / "pixi-global.toml"
+        host = Path.home() / ".pixi" / "manifests" / "pixi-global.toml"
+        import_str = local.read_text().rstrip("\n")
+        return self.update_dotfile(host, import_str, "#")
 
 
 def file_are_equal(a: Path, b: Path):
