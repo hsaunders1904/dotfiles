@@ -44,3 +44,20 @@ vim.api.nvim_set_keymap(
     "gc",
     { noremap = false, silent = true }
 )
+
+-- Send all deletes to 'd' register, so system clipboard is not clobbered
+vim.opt.clipboard = ""
+vim.keymap.set({ 'n', 'x' }, 'd', '"dd', { noremap = true })
+vim.keymap.set({ 'n', 'x' }, 'c', '"dc', { noremap = true })
+vim.keymap.set('n', 'D', '"dD', { noremap = true })
+vim.keymap.set('n', 'C', '"dC', { noremap = true })
+vim.keymap.set('n', 'x', '"dx', { noremap = true })
+vim.keymap.set('x', 'x', '"dx', { noremap = true })
+-- Make `y` yank to system clipboard if no register given
+vim.keymap.set({ 'n', 'x' }, 'y', function()
+    if vim.v.register == '"' then
+        return '"+y'
+    else
+        return 'y'
+    end
+end, { expr = true, noremap = true })
