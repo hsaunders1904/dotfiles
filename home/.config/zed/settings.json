@@ -7,84 +7,90 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
-    "agent": {
-        "enabled": false
+  "agent": {
+    "enabled": false
+  },
+  "buffer_font_family": "SauceCodePro Nerd Font Mono",
+  "buffer_font_size": 12,
+  "features": {
+    "edit_prediction_provider": "none"
+  },
+  "file_scan_exclusions": [
+    "**/.git",
+    "**/.svn",
+    "**/.hg",
+    "**/.jj",
+    "**/CVS",
+    "**/.DS_Store",
+    "**/Thumbs.db",
+    "**/.classpath",
+    "**/.settings",
+    "**/__pycache__",
+    ".mypy_cache",
+    ".pytest_cache",
+    ".cache",
+    ".ruff_cache",
+    ".ropeproject"
+  ],
+  "icon_theme": "Material Icon Theme",
+  "languages": {
+    "C++": {
+      "format_on_save": "on",
+      "formatter": "language_server",
+      "language_servers": ["clangd"],
+      "tab_size": 2
     },
-    "buffer_font_family": "SauceCodePro Nerd Font Mono",
-    "buffer_font_size": 12,
-    "features": {
-        "edit_prediction_provider": "none"
+    "Markdown": {
+      "wrap_guides": [80]
     },
-    "file_scan_exclusions": [
-        "**/.git",
-        "**/.svn",
-        "**/.hg",
-        "**/.jj",
-        "**/CVS",
-        "**/.DS_Store",
-        "**/Thumbs.db",
-        "**/.classpath",
-        "**/.settings",
-        "**/__pycache__",
-        ".mypy_cache",
-        ".pytest_cache",
-        ".cache",
-        ".ruff_cache",
-        ".ropeproject"
-    ],
-    "icon_theme": "Material Icon Theme",
-    "languages": {
-        "C++": {
-            "format_on_save": "on",
-            "formatter": "language_server",
-            "language_servers": ["clangd"],
-            "tab_size": 2
+    "Python": {
+      "format_on_save": "on",
+      "formatter": [
+        {
+          "language_server": {
+            "name": "ruff"
+          }
         },
-        "Markdown": {
-            "wrap_guides": [80]
-        },
-        "Python": {
-            "format_on_save": "on",
-            "formatter": [
-                {
-                    "language_server": {
-                        "name": "ruff"
-                    }
-                },
-                {
-                    "code_actions": {
-                        "source.organizeImports.ruff": true
-                    }
-                }
-            ],
-            "language_servers": ["pyright", "ruff", "!ty", "!pyrefly"],
-            "wrap_guides": [72, 89]
+        {
+          "code_actions": {
+            "source.organizeImports.ruff": true
+          }
         }
+      ],
+      "language_servers": ["pyright", "ruff", "!ty", "!pyrefly"],
+      "wrap_guides": [72, 89]
     },
-    "lsp": {
-        "ruff": {
-            "binary": {
-                "arguments": ["server"],
-                "path": "ruff"
-            },
-            "initialization_options": {
-                "settings": {
-                    "lineLength": 89,
-                    "lint": {
-                        "extendSelect": ["I"]
-                    }
-                }
-            }
+    "reST": {
+      "wrap_guides": [80]
+    }
+  },
+  "lsp": {
+    "ruff": {
+      "binary": {
+        "arguments": ["server"],
+        "path": "ruff"
+      },
+      "initialization_options": {
+        "settings": {
+          "lineLength": 89,
+          "lint": {
+            "extendSelect": ["I"]
+          }
         }
-    },
-    "telemetry": {
-        "metrics": false
-    },
-    "theme": {
-        "dark": "Ultimate Dark Neo",
-        "light": "One Light",
-        "mode": "dark"
-    },
-    "ui_font_family": "LiterationMono Nerd Font",
-    "ui_font_size": 14
+      }
+    }
+  },
+  "preferred_line_length": 80,
+  "show_wrap_guides": true,
+  "telemetry": {
+    "metrics": false
+  },
+  "theme": {
+    "dark": "Ultimate Dark Neo",
+    "light": "One Light",
+    "mode": "dark"
+  },
+  "ui_font_family": "LiterationMono Nerd Font",
+  "ui_font_size": 14,
+  "wrap_guides": [80]
 }
