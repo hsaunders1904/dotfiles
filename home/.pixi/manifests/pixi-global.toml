@@ -94,3 +94,8 @@ exposed = { zellij = "zellij" }
 channels = ["conda-forge"]
 dependencies = { zoxide = "*" }
 exposed = { zoxide = "zoxide" }
+
+[envs.helix]
+channels = ["conda-forge"]
+dependencies = { helix = "*" }
+exposed = { hx = "hx" }
