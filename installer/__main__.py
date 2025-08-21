@@ -29,7 +29,10 @@ class Args:
 
 def main(argv: list[str]) -> int:
     args = parse_args(argv)
-    dry_run = os.environ.get("DOTFILES_DRY_RUN", str(args.dry_run)) not in ["0", "False"]
+    dry_run = os.environ.get("DOTFILES_DRY_RUN", str(args.dry_run)) not in [
+        "0",
+        "False",
+    ]
     if install(args.pick, args.skip, dry_run):
         return 0
     return 1
