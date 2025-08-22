@@ -7,6 +7,7 @@ from installer import (
     diff_so_fancy,
     font,
     git,
+    helix,
     iterm2,
     neovim,
     pixi,
