@@ -27,4 +27,4 @@ class GitInstaller(Installer):
 
     def get_config_option_values(self, option: str) -> list[str]:
         args = ["git", "config", "--global", "--get-all", option]
-        return self.run_command_get_output(args).strip().split("\n")
+        return self.run_command_get_output(args, log=False).strip().split("\n")
