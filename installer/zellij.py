@@ -8,6 +8,7 @@ class ZellijInstaller(Installer):
         rel_config = Path(".config") / "zellij" / "config.kdl"
         host_config = Path.home() / rel_config
         dotfiles_config = self.dotfiles_home() / rel_config
+        host_config.parent.mkdir(parents=True, exist_ok=True)
         return self.make_symlink(dotfiles_config, host_config, force=True)
 
     def should_install(self) -> bool:

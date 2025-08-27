@@ -28,6 +28,24 @@ class Args:
     dry_run: bool
 
 
+INSTALLER_CLASSES = [
+    pixi.PixiInstaller,
+    bash.BashInstaller,
+    diff_so_fancy.DiffSoFancyInstaller,
+    font.FontInstaller,
+    git.GitInstaller,
+    helix.HelixInstaller,
+    iterm2.Iterm2Installer,
+    neovim.NeovimInstaller,
+    pwsh.PwshInstaller,
+    vim.VimInstaller,
+    wsl.WslInstaller,
+    zed.ZedInstaller,
+    zellij.ZellijInstaller,
+    zsh.ZshInstaller,
+]
+
+
 def main(argv: list[str]) -> int:
     args = parse_args(argv)
     dry_run = os.environ.get("DOTFILES_DRY_RUN", str(args.dry_run)) not in [
@@ -71,11 +89,8 @@ def parse_args(argv: list[str]) -> Args:
 
 
 def install(pick: list[str], skip: list[str], dry_run: bool) -> bool:
-    # TODO: this won't work because we need to be able to control the
-    #  order things are installed. pixi must be first, for example.
-    installers = [cls() for cls in Installer.__subclasses__()]
     has_error = False
-    for installer in installers:
+    for installer in [I() for I in INSTALLER_CLASSES]:
         installer.dry_run = dry_run
         name = type(installer).__name__.removesuffix("Installer")
         if (

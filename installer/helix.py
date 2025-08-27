@@ -10,7 +10,7 @@ class HelixInstaller(Installer):
         local_dir = self.dotfiles_home() / ".config" / "helix"
         if (conf_dir := self.config_dir()) is None:
             return False
-        conf_dir.mkdir(exist_ok=True)
+        conf_dir.mkdir(parents=True, exist_ok=True)
         ok = True
         for file in ["config.toml", "languages.toml"]:
             content = (local_dir / file).read_text().rstrip("\n")
