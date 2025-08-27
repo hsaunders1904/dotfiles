@@ -30,7 +30,7 @@ class ZshInstaller(Installer):
     def install_oh_my_zsh(self):
         installer_path = self.external_dir() / "ohmyzsh_install.sh"
         self.download_file(self.OMZ_URL, installer_path, force=True)
-        install_cmd = ["sh", installer_path, "--unattended", "--keep-zshrc"]
+        install_cmd = ["sh", str(installer_path), "--unattended", "--keep-zshrc"]
         return self.run_command(install_cmd)
 
     def pull_plugins(self) -> bool:
