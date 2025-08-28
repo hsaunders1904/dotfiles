@@ -41,6 +41,7 @@
     ac         = !"git add $(git diff --name-only --cached)"
     ai         = !"${DOTFILES_DIR}/scripts/git_add_interactive"
     alias      = config --get-regexp ^alias\\.
+    ap         = add --patch
     au         = add --update
     b          = branch
     ba         = branch --all
