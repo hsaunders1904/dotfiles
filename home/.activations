@@ -30,6 +30,10 @@ if command -v gh >/dev/null; then
     eval "$(gh completion -s "${selected_shell}")"
 fi
 
+if command -v just >/dev/null; then
+    eval "$(just --completions "${selected_shell}")"
+fi
+
 if command -v pixi >/dev/null; then
     eval "$(pixi completion --shell "${selected_shell}")"
 fi
