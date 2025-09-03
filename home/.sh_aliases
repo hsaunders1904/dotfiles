@@ -62,6 +62,14 @@ if command -v fzf >/dev/null && command -v fd >/dev/null; then
     alias cf='cd_with_fzf'
 fi
 
+if command -v just >/dev/null; then
+    alias j=just
+fi
+
+if command -v zoxide >/dev/null; then
+    alias zi='cd "$(zoxide query --interactive)"'
+fi
+
 if ! command -v bat >/dev/null && command -v batcat >/dev/null; then
     alias bat=batcat
 fi
