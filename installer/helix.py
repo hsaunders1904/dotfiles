@@ -16,6 +16,12 @@ class HelixInstaller(Installer):
             content = (local_dir / file).read_text().rstrip("\n")
             host_file = conf_dir / file
             ok &= self.update_dotfile(host_file, content, "#")
+
+        # Themes
+        themes_dir = self.config_dir() / "themes"
+        themes_dir.mkdir(exist_ok=True)
+        for theme_file in (local_dir / "themes").glob("*.toml"):
+            ok &= self.make_symlink(theme_file, themes_dir / theme_file.name)
         return ok
 
     def should_install(self) -> bool:

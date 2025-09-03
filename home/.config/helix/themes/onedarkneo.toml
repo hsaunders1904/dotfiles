@@ -1,0 +1,77 @@
+# Based on the "Ultimate Dark Neo" Zed theme:
+# https://github.com/rubjo/ultimate-dark-neo-zed/
+
+inherits = "zed_onedark"
+
+"attribute" = { fg = "magenta", modifiers = ["italic"] }
+"comment" = { fg = "light-gray", modifiers = ["italic"] }
+"constant" = { fg = "magenta", modifiers = ["italic"] }
+"constant.numeric" = { fg = "yellow" }
+"constructor" = { fg = "cyan" }
+"embedded" = { fg = "foreground" }
+"enum" = { fg = "foreground" }
+
+"function" = { fg = "cyan" }
+"function.method" = { fg = "cyan" }
+
+"keyword" = { fg = "magenta", modifiers = ["italic"] }
+"label" = { fg = "foreground" }
+"markup.link.url" = { fg = "muted", modifiers = ["underlined"] }
+"numeric" = { fg = "white" }
+"operator" = { fg = "orange" }
+"preproc" = { fg = "foreground" }
+"property" = { fg = "muted" }
+"punctuation" = { fg = "white" }
+
+"string" = { fg = "green" }
+"string.escape" = { fg = "magenta" }
+"string.regex" = { fg = "green" }
+
+"type" = { fg = "yellow" }
+
+"ui.background" = { bg = "background" }
+"ui.cursor" = { fg = "cursor", modifiers = ["reversed"] }
+"ui.cursor.match" = { fg = "blue", modifiers = ["underlined"] }
+"ui.debug" = { fg = "red" }
+"ui.gutter" = { bg = "background" }
+"ui.help" = { fg = "foreground", bg = "background_alt" }
+"ui.highlight" = { bg = "gray" }
+"ui.menu" = { fg = "foreground", bg = "background_alt" }
+"ui.menu.selected" = { fg = "background", bg = "blue" }
+"ui.popup" = { bg = "background_alt" }
+"ui.selection" = { fg = "#f5f6f820", primary = { bg = "#6f757f3d" } }
+"ui.selection.primary" = { bg = "#6f757f3d" }
+"ui.statusline" = { fg = "foreground", bg = "background_alt" }
+"ui.statusline.inactive" = { fg = "light-gray", bg = "background" }
+"ui.statusline.insert" = { fg = "black", bg = "green" }
+"ui.statusline.normal" = { fg = "black", bg = "blue" }
+"ui.statusline.select" = { fg = "black", bg = "magenta" }
+"ui.virtual" = { fg = "light-gray" }
+"ui.virtual.indent-guide" = { fg = "#3d485175" }
+"ui.virtual.whitespace" = { fg = "light-gray" }
+
+"variable" = { fg = "muted" }
+"variable.builtin" = { fg = "muted", modifiers = ["italic"] }
+"variable.special" = { fg = "white" }
+"variable.other.member" = { fg = "muted" }
+
+[palette]
+background = "#292c30"
+background_alt = "#33363a"
+foreground = "#f5f6f8"
+border = "#3d4851"
+cursor = "#f5f6f8aa"
+
+blue = "#7faad5"
+cyan = "#7ec2c2"
+gray = "#3d4851"
+green = "#9eca99"
+light-gray = "#8f97a8"
+magenta = "#c396c3"
+muted = "#d8dde5"
+muted-cyan = "#b2d0d0"
+orange = "#f19776"
+purple = "#b48ead"
+red = "#bf616a"
+white = "#ffffff"
+yellow = "#ecc285"
