@@ -62,6 +62,9 @@
     },
     "reST": {
       "wrap_guides": [80]
+    },
+    "Rust": {
+      "format_on_save": "on"
     }
   },
   "lsp": {
