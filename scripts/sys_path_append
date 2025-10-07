@@ -26,14 +26,10 @@ def main():
 
     # Process new paths
     for path_str in args.paths:
-        # Resolve to absolute path and convert to string
         resolved_path = str(Path(path_str).resolve())
-
-        # Skip if path doesn't exist
         if not Path(resolved_path).exists():
             continue
 
-        # Add if not already in PATH
         if resolved_path not in path_list:
             if args.prepend:
                 path_list.insert(0, resolved_path)

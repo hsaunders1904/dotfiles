@@ -24,7 +24,7 @@ cd_and_ls() {
     builtin cd "${new_dir}" && ls
 }
 
-if [ -n "$(command -v fzf)" ] && [ -n "$(command -v fd)" ]; then
+if command -v fzf >/dev/null && command -v fd >/dev/null; then
     cd_with_fzf() {
         # Use fd to list directories and choose one to cd into using fzf
         root_dir="${1-$(pwd)}"
@@ -65,7 +65,7 @@ mkdir_and_cd() {
     cd "$1" || return
 }
 
-if [ -n "$(command -v fzf)" ]; then
+if command -v fzf >/dev/null; then
     psi() {
         # Interactively choose a process ID
         ps -aux | fzf | tr -s ' ' | cut -d' ' -f2

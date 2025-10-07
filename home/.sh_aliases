@@ -44,11 +44,11 @@ if command -v lsd >/dev/null; then
 fi
 
 if command -v apt >/dev/null; then
-    alias apt='sudo apt'
+    alias sapt='sudo apt'
 fi
 
 if command -v apt-get >/dev/null; then
-    alias apt-get='sudo apt-get'
+    alias sapt-get='sudo apt-get'
 fi
 
 if command -v fdfind >/dev/null; then
@@ -56,10 +56,8 @@ if command -v fdfind >/dev/null; then
 fi
 
 if command -v fzf >/dev/null && command -v fd >/dev/null; then
-    alias fzfcd='cd_with_fzf'
-    alias fzfp="fzf --preview='bat --color=always {}'"
-    alias cdfzf='cd_with_fzf'
     alias cf='cd_with_fzf'
+    alias fzfp="fzf --preview='bat --color=always {}'"
 fi
 
 if command -v just >/dev/null; then
