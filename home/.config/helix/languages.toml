@@ -1,4 +1,15 @@
+[language-server.harper-ls]
+command = "harper-ls"
+args = ["--stdio"]
+
+[language-server.harper-ls.config.harper-ls]
+dialect = "British"
+
 [[language]]
 name = "python"
 formatter = { command = "ruff", args = ["format", "--line-length", "80", "-"] }
 auto-format = true
+
+[[language]]
+name = "markdown"
+language-servers = ["marksman", "markdown-oxide", "harper-ls"]

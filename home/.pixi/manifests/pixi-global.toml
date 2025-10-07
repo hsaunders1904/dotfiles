@@ -40,6 +40,11 @@ channels = ["conda-forge"]
 dependencies = {go-shfmt = "*"}
 exposed = {gosh = "gosh", shfmt = "shfmt"}
 
+[envs.harper]
+channels = ["conda-forge"]
+dependencies = { harper = "*" }
+exposed = { harper-cli = "harper-cli", harper-ls = "harper-ls" }
+
 [envs.helix]
 channels = ["conda-forge"]
 dependencies = {helix = "*"}
