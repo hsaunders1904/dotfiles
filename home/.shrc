@@ -15,6 +15,16 @@ add_to_path_if_valid "${DOTFILES_DIR}/home/.local/bin"
 add_to_path_if_valid "${HOME}/.pixi/bin"
 export PATH
 
+# Set default editor by order of preference.
+for editor in hx nvim vim vi nano; do
+    editor_path=$(command -v ${editor}) || editor_path=
+    if [ -n "${editor_path}" ]; then
+        EDITOR="${editor_path}"
+        export EDITOR
+        break
+    fi
+done
+
 # Get 'less' showing UTF-8 characters
 export LESSCHARSET=utf-8
 
