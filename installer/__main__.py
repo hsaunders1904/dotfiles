@@ -29,20 +29,20 @@ class Args:
 
 
 INSTALLER_CLASSES = [
-    pixi.PixiInstaller,
-    bash.BashInstaller,
-    diff_so_fancy.DiffSoFancyInstaller,
-    font.FontInstaller,
-    git.GitInstaller,
-    helix.HelixInstaller,
-    iterm2.Iterm2Installer,
-    neovim.NeovimInstaller,
-    pwsh.PwshInstaller,
-    vim.VimInstaller,
-    wsl.WslInstaller,
-    zed.ZedInstaller,
-    zellij.ZellijInstaller,
-    zsh.ZshInstaller,
+    pixi.PixiInstaller(),
+    bash.BashInstaller(),
+    diff_so_fancy.DiffSoFancyInstaller(),
+    font.FontInstaller(),
+    git.GitInstaller(),
+    helix.HelixInstaller(),
+    iterm2.Iterm2Installer(),
+    neovim.NeovimInstaller(),
+    pwsh.PwshInstaller(),
+    vim.VimInstaller(),
+    wsl.WslInstaller(),
+    zed.ZedInstaller(),
+    zellij.ZellijInstaller(),
+    zsh.ZshInstaller(),
 ]
 
 
@@ -90,9 +90,9 @@ def parse_args(argv: list[str]) -> Args:
 
 def install(pick: list[str], skip: list[str], dry_run: bool) -> bool:
     has_error = False
-    for installer in [I() for I in INSTALLER_CLASSES]:
+    for installer in INSTALLER_CLASSES:
         installer.dry_run = dry_run
-        name = type(installer).__name__.removesuffix("Installer")
+        name = installer.name()
         if (
             (pick and name.lower() not in pick)
             or (skip and name.lower() in skip)

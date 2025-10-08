@@ -30,6 +30,9 @@ class Installer(abc.ABC):
     def should_install(self) -> bool:
         return True
 
+    def name(self) -> str:
+        return type(self).__name__.removesuffix("Installer")
+
     def repo_root(self) -> Path:
         return Path(__file__).parent.parent
 
@@ -70,7 +73,10 @@ class Installer(abc.ABC):
         result = subprocess.run(args, capture_output=True, text=True, **kwargs)
 
         level = logging.WARNING if result.returncode != 0 else logging.DEBUG
-        for name, content in [("STDOUT", result.stdout), ("STDERR", result.stderr)]:
+        for name, content in [
+            ("STDOUT", result.stdout),
+            ("STDERR", result.stderr),
+        ]:
             if content:
                 logger.log(level, "RUN %s:\n%s", name, content)
 
@@ -151,7 +157,10 @@ def _read_file_if_exists(file_path: Path) -> str | None:
 
 
 def _update_dotfile_region(
-    string: str, new_content: str, comment_char: str, region_delimiters: tuple[str, str]
+    string: str,
+    new_content: str,
+    comment_char: str,
+    region_delimiters: tuple[str, str],
 ):
     region_start, region_end = region_delimiters
     region_re = (
