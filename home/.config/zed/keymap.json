@@ -7,6 +7,7 @@
 // from the command palette.
 [
   {
+    "context": "Workspace",
     "bindings": {
       "ctrl-k j": "workspace::ActivatePaneLeft",
       "ctrl-k l": "workspace::ActivatePaneRight",
@@ -20,29 +21,40 @@
       "cmd-k shift-j": "workspace::SwapPaneLeft",
       "cmd-k shift-l": "workspace::SwapPaneRight",
       "cmd-shift-n": "file_finder::Toggle"
-    },
-    "context": "Workspace"
+    }
   },
   {
+    "context": "Editor",
     "bindings": {
       "ctrl-alt-left": "pane::GoBack",
       "ctrl-alt-right": "pane::GoForward",
       "ctrl-d": "editor::DuplicateLineDown",
       "ctrl-k o": "editor::SwitchSourceHeader",
-      "ctrl-k shift-p": "editor::CopyRelativePath",
+      "ctrl-k shift-p": "workspace::CopyRelativePath",
       "ctrl-r": "search::ToggleReplace",
       "ctrl-shift-backspace": "editor::DeleteLine",
+      "ctrl-\\": [
+        "workspace::MoveItemToPaneInDirection",
+        {
+          "direction": "right"
+        }
+      ],
 
       // OSX equivalents
       "cmd-alt-left": "pane::GoBack",
       "cmd-alt-right": "pane::GoForward",
       "cmd-d": "editor::DuplicateLineDown",
       "cmd-k o": "editor::SwitchSourceHeader",
-      "cmd-k shift-p": "editor::CopyRelativePath",
+      "cmd-k shift-p": "workspace::CopyRelativePath",
       "cmd-r": "search::ToggleReplace",
       "cmd-shift-backspace": "editor::DeleteLine",
-      "cmd-y": "editor::Redo"
-    },
-    "context": "Editor"
+      "cmd-y": "editor::Redo",
+      "cmd-\\": [
+        "workspace::MoveItemToPaneInDirection",
+        {
+          "direction": "right"
+        }
+      ]
+    }
   }
 ]
