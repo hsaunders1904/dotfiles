@@ -13,12 +13,17 @@ select = "underline"
 [editor.file-picker]
 hidden = false
 
-[keys.normal]
-"A-down" = ["extend_to_line_bounds", "delete_selection", "paste_after"]
-"A-j" = ["extend_to_line_bounds", "delete_selection", "paste_after"]
-"A-up" = ["extend_to_line_bounds", "delete_selection", "move_line_up", "paste_before"]
-"A-k" = ["extend_to_line_bounds", "delete_selection", "move_line_up", "paste_before"]
-"C-l" = ":open ~/.config/helix/languages.toml"
+[keys.normal.space]
+"q" = ":q"
 
 [keys.normal.G]
 "b" = ":sh git blame -L %{cursor_line},%{cursor_line} %{buffer_name}"
+
+[keys.normal.L]
+"down" = ["extend_to_line_bounds", "delete_selection", "paste_after"]
+"j" = ["extend_to_line_bounds", "delete_selection", "paste_after"]
+"up" = ["extend_to_line_bounds", "delete_selection", "move_line_up", "paste_before"]
+"k" = ["extend_to_line_bounds", "delete_selection", "move_line_up", "paste_before"]
+
+[keys.normal.P]
+"l" = ":open ~/.config/helix/languages.toml"
