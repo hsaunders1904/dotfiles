@@ -14,13 +14,21 @@
       "ctrl-k shift-j": "workspace::SwapPaneLeft",
       "ctrl-k shift-l": "workspace::SwapPaneRight",
       "ctrl-shift-n": "file_finder::Toggle",
+      "ctrl-shift-r": [
+        "task::Spawn",
+        { "task_name": "fulltext_search", "reveal_target": "center" }
+      ],
 
       // OSX equivalents
       "cmd-k j": "workspace::ActivatePaneLeft",
       "cmd-k l": "workspace::ActivatePaneRight",
       "cmd-k shift-j": "workspace::SwapPaneLeft",
       "cmd-k shift-l": "workspace::SwapPaneRight",
-      "cmd-shift-n": "file_finder::Toggle"
+      "cmd-shift-n": "file_finder::Toggle",
+      "cmd-shift-r": [
+        "task::Spawn",
+        { "task_name": "fulltext_search", "reveal_target": "center" }
+      ]
     }
   },
   {

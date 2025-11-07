@@ -70,6 +70,11 @@ channels = ["conda-forge"]
 dependencies = {trash-cli = "*"}
 exposed = {trash = "trash", trash-empty = "trash-empty", trash-list = "trash-list", trash-put = "trash-put", trash-restore = "trash-restore", trash-rm = "trash-rm"}
 
+[envs.television]
+channels = ["conda-forge"]
+dependencies = { television = "*" }
+exposed = { tv = "tv" }
+
 [envs.unzip]
 channels = ["conda-forge"]
 dependencies = {unzip = "*"}
