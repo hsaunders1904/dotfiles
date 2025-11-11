@@ -94,12 +94,14 @@
     dumn       = !"git diff --name-only upstream/$(git main)..."
     f          = fetch
     fa         = fetch --all -p
-    fo         = fetch origin -p
+    fo         = fetch origin
     fom        = !"git fetch origin $(git main)"
+    fop        = !"git fetch origin -p"
     fp         = fetch -p
     ft         = fetch origin --tags
-    fu         = fetch upstream -p
+    fu         = fetch upstream
     fum        = !"git fetch upstream $(git main)"
+    fup        = fetch upstream -p
     g          = gui
     gr         = grep
     graph      = log --pretty --decorate --graph --color
