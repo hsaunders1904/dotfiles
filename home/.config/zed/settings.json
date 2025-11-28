@@ -91,6 +91,11 @@
     "light": "One Light",
     "mode": "dark"
   },
+  "theme_overrides": {
+    "Ultimate Dark Neo": {
+      "search.match_background": "#707d74"
+    }
+  },
   "ui_font_family": "LiterationMono Nerd Font",
   "ui_font_size": 14,
   "wrap_guides": [80]
