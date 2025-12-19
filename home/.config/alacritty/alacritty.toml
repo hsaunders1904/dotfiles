@@ -1,5 +1,6 @@
 [font]
 normal = { family = "Ubuntu Mono Nerd Font Mono" }
+size = 12.5
 
 [colors.primary]
-background = "#171421"
+background = "#282c34"
