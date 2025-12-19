@@ -188,4 +188,5 @@
     sw         = switch
     swc        = switch --create
     test-pr    = !"${DOTFILES_DIR}/scripts/git_checkout_pr"
+    untracked  = ls-files --others --exclude-standard
     wip        = !"git add -A && git rm $(git ls-files --deleted) 2>/dev/null; git commit --no-verify --no-gpg-sign -m '--wip-- [skip ci]'"
