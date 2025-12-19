@@ -10,6 +10,11 @@ channels = ["conda-forge"]
 dependencies = {btop = "*"}
 exposed = {btop = "btop"}
 
+[envs.direnv]
+channels = ["conda-forge"]
+dependencies = { direnv = "*" }
+exposed = { direnv = "direnv" }
+
 [envs.fd-find]
 channels = ["conda-forge"]
 dependencies = {fd-find = "*"}
