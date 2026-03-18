@@ -7,14 +7,14 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "edit_predictions": {
+    "provider": "none",
+  },
   "agent": {
-    "enabled": false
+    "enabled": false,
   },
   "buffer_font_family": "SauceCodePro Nerd Font Mono",
   "buffer_font_size": 12,
-  "features": {
-    "edit_prediction_provider": "none"
-  },
   "file_scan_exclusions": [
     "**/.git",
     "**/.svn",
@@ -30,7 +30,7 @@
     ".pytest_cache",
     ".cache",
     ".ruff_cache",
-    ".ropeproject"
+    ".ropeproject",
   ],
   "icon_theme": "Material Icon Theme",
   "languages": {
@@ -38,65 +38,70 @@
       "format_on_save": "on",
       "formatter": "language_server",
       "language_servers": ["clangd"],
-      "tab_size": 2
+      "tab_size": 2,
     },
     "Markdown": {
-      "wrap_guides": [80]
+      "wrap_guides": [80],
     },
     "Python": {
       "format_on_save": "on",
       "formatter": [
         {
           "language_server": {
-            "name": "ruff"
-          }
+            "name": "ruff",
+          },
         },
         {
-          "code_action": "source.organizeImports.ruff"
-        }
+          "code_action": "source.organizeImports.ruff",
+        },
       ],
       "language_servers": ["pyright", "ruff", "!ty", "!pyrefly"],
-      "wrap_guides": [72, 89]
+      "wrap_guides": [72, 89],
     },
     "reST": {
-      "wrap_guides": [80]
+      "wrap_guides": [80],
     },
     "Rust": {
-      "format_on_save": "on"
-    }
+      "format_on_save": "on",
+    },
   },
   "lsp": {
     "ruff": {
       "binary": {
         "arguments": ["server"],
-        "path": "ruff"
+        "path": "ruff",
       },
       "initialization_options": {
         "settings": {
           "lineLength": 89,
           "lint": {
-            "extendSelect": ["I"]
-          }
-        }
-      }
-    }
+            "extendSelect": ["I"],
+          },
+        },
+      },
+    },
   },
   "preferred_line_length": 80,
   "show_wrap_guides": true,
   "telemetry": {
-    "metrics": false
+    "metrics": false,
   },
   "theme": {
     "dark": "Ultimate Dark Neo",
     "light": "One Light",
-    "mode": "dark"
+    "mode": "dark",
   },
   "theme_overrides": {
     "Ultimate Dark Neo": {
-      "search.match_background": "#707d74"
-    }
+      "search.match_background": "#707d74",
+      "syntax": {
+        "hint": {
+          "color": "#969696",
+        },
+      },
+    },
   },
   "ui_font_family": "LiterationMono Nerd Font",
   "ui_font_size": 14,
-  "wrap_guides": [80]
+  "wrap_guides": [80],
 }

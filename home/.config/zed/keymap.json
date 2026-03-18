@@ -9,8 +9,8 @@
   {
     "context": "Workspace",
     "bindings": {
-      "ctrl-k j": "workspace::ActivatePaneLeft",
-      "ctrl-k l": "workspace::ActivatePaneRight",
+      "alt-left": "workspace::ActivatePaneLeft",
+      "alt-right": "workspace::ActivatePaneRight",
       "ctrl-k shift-j": "workspace::SwapPaneLeft",
       "ctrl-k shift-l": "workspace::SwapPaneRight",
       "ctrl-shift-n": "file_finder::Toggle",
