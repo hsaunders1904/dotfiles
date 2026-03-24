@@ -55,7 +55,7 @@
           "code_action": "source.organizeImports.ruff",
         },
       ],
-      "language_servers": ["pyright", "ruff", "!ty", "!pyrefly"],
+      "language_servers": ["ruff", "ty"],
       "wrap_guides": [72, 89],
     },
     "reST": {
@@ -78,6 +78,12 @@
             "extendSelect": ["I"],
           },
         },
+      },
+    },
+    "ty": {
+      "binary": {
+        "arguments": ["server"],
+        "path": "ty",
       },
     },
   },
