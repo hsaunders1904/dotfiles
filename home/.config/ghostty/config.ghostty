@@ -1,0 +1,5 @@
+confirm-close-surface = false
+bell-features = no-audio,no-border,no-system
+
+# Disable font ligatures
+font-feature = -calt, -liga, -dlig
