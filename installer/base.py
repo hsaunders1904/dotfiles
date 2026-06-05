@@ -9,6 +9,7 @@ import shutil
 import subprocess
 from datetime import datetime
 from pathlib import Path
+from sys import platform
 from urllib import request
 
 from installer.logging import make_logger
@@ -117,7 +118,30 @@ class Installer(abc.ABC):
             return True
 
         logger.info("SYMLINK: '%s' -> '%s'", origin, link)
-        return self.run_command(["ln", "-s", str(origin), str(link)], log=False)
+        if platform.startswith("win"):
+            cmd = [
+                "powershell.exe",
+                "-NoProfile",
+                "New-Item",
+                "-Path",
+                str(link),
+                "-ItemType",
+                "SymbolicLink",
+                "-Value",
+                str(origin),
+            ]
+            if not (ok := self.run_command(cmd, log=False)) and force:
+                self.logger().info("Symlink creation failed, falling back to copy")
+                try:
+                    shutil.copyfile(origin, link)
+                    return True
+                except OSError:
+                    self.logger().exception("")
+                    return False
+            return ok
+        else:
+            cmd = ["ln", "-s", str(origin), str(link)]
+        return self.run_command(cmd, log=False)
 
     def git_clone(self, url: str, path: Path) -> bool:
         logger.info("GIT: cloning '%s' into '%s'", url, path)

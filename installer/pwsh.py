@@ -9,6 +9,7 @@ class PwshInstaller(Installer):
 
     def install(self) -> bool:
         ok = self.install_modules()
+        ok = True
         ok &= self.update_profile()
         return ok
 

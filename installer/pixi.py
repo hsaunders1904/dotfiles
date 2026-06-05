@@ -3,16 +3,26 @@ import shutil
 from datetime import datetime
 from hashlib import sha1
 from pathlib import Path
+from sys import platform
 
 from installer.base import Installer
 
 
 class PixiInstaller(Installer):
     def install(self) -> bool:
-        pixi_exe = Path.home() / ".pixi" / "bin" / "pixi"
+        pixi_exe = (
+            Path.home()
+            / ".pixi"
+            / "bin"
+            / ("pixi" + (".exe" if platform.startswith("win") else ""))
+        )
         if not pixi_exe.is_file():
-            if not self.linux_install():
-                return False
+            if os.name == "nt":
+                if not self.windows_install():
+                    return False
+            else:
+                if not self.linux_install():
+                    return False
 
         manifest = Path.home() / ".pixi" / "manifests" / "pixi-global.toml"
         manifest.parent.mkdir(exist_ok=True)
@@ -25,6 +35,21 @@ class PixiInstaller(Installer):
         return ok
 
     def should_install(self) -> bool:
+        return True
+
+    def windows_install(self) -> bool:
+        installer_path = Path.home() / "AppData" / "Local" / "Temp" / "pixi_install.ps1"
+        if not self.download_file(
+            "https://pixi.sh/install.ps1", installer_path, force=True
+        ):
+            return False
+
+        if (pwsh := shutil.which("pwsh.exe")) is None:
+            return False
+        if not self.run_command(
+            [pwsh, "-ExecutionPolicy", "ByPass", str(installer_path)]
+        ):
+            return False
         return True
 
     def linux_install(self) -> bool:
