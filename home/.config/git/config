@@ -129,6 +129,7 @@
     ma         = merge --abort
     main       = !"bash ${DOTFILES_DIR}/scripts/git_main"
     mc         = merge --continue
+    mrl        = !"${DOTFILES_DIR}/scripts/git_list_pr"
     no-assume-changed-all = !"git update-index --no-assume-unchanged $(git ls-files $(git rev-parse --show-toplevel))"
     patch      = !"git --no-pager diff --no-color"
     pl         = pull
@@ -174,6 +175,7 @@
     sh         = show
     si         = !"f() { git bi "$@" | xargs git switch; }; f"
     sm         = !"git switch $(git main)"
+    smri       = !"git switch $(git mrl)"
     sha        = rev-parse HEAD
     shn        = show --name-only
     shp        = show --patch

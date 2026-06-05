@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+if ! mr_json=$(glab mr list --output json); then
+    echo "git_list_pr: error: failed to fetch merge requests" >&2
+    exit 1
+fi
+
+if [ "$(echo "$mr_json" | jq 'length')" -eq 0 ]; then
+    echo "git_list_pr: error: no open merge requests"
+    exit 2
+fi
+
+selection=$(
+    echo "$mr_json" |
+        jq -r '.[] | "!\(.iid)\t\(.title)\t\(.source_branch)"' |
+        column -t -s $'\t' |
+        fzf --delimiter=$'\t'
+)
+
+[ -z "$selection" ] && exit 0
+
+branch=$(echo "$selection" | awk '{print $NF}')
+echo "$branch"
