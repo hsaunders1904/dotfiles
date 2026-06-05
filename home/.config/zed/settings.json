@@ -7,123 +7,123 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
-  "diff_view_style": "unified",
-  "cli_default_open_behavior": "new_window",
-  "project_panel": {
-    "dock": "left"
-  },
-  "outline_panel": {
-    "dock": "left"
-  },
-  "collaboration_panel": {
-    "dock": "left"
-  },
-  "git_panel": {
-    "dock": "left"
-  },
-  "edit_predictions": {
-    "provider": "none",
-  },
-  "agent": {
-    "dock": "right",
-    "enabled": false,
-  },
-  "buffer_font_family": "SauceCodePro Nerd Font Mono",
-  "buffer_font_size": 12,
-  "file_scan_exclusions": [
-    "**/.git",
-    "**/.svn",
-    "**/.hg",
-    "**/.jj",
-    "**/CVS",
-    "**/.DS_Store",
-    "**/Thumbs.db",
-    "**/.classpath",
-    "**/.settings",
-    "**/__pycache__",
-    ".mypy_cache",
-    ".pytest_cache",
-    ".cache",
-    ".ruff_cache",
-    ".ropeproject",
-  ],
-  "icon_theme": "Material Icon Theme",
-  "languages": {
-    "C++": {
-      "format_on_save": "on",
-      "formatter": "language_server",
-      "language_servers": ["clangd"],
-      "tab_size": 2,
+    "agent": {
+        "dock": "right",
+        "enabled": false,
     },
-    "Markdown": {
-      "wrap_guides": [80],
+    "buffer_font_family": "SauceCodePro Nerd Font Mono",
+    "buffer_font_size": 12,
+    "cli_default_open_behavior": "new_window",
+    "collaboration_panel": {
+        "dock": "left",
     },
-    "Python": {
-      "format_on_save": "on",
-      "formatter": [
-        {
-          "language_server": {
-            "name": "ruff",
-          },
+    "diff_view_style": "unified",
+    "edit_predictions": {
+        "provider": "none",
+    },
+    "file_scan_exclusions": [
+        "**/.git",
+        "**/.svn",
+        "**/.hg",
+        "**/.jj",
+        "**/CVS",
+        "**/.DS_Store",
+        "**/Thumbs.db",
+        "**/.classpath",
+        "**/.settings",
+        "**/__pycache__",
+        ".mypy_cache",
+        ".pytest_cache",
+        ".cache",
+        ".ruff_cache",
+        ".ropeproject",
+    ],
+    "git_panel": {
+        "dock": "left",
+    },
+    "icon_theme": "Material Icon Theme",
+    "languages": {
+        "C++": {
+            "format_on_save": "on",
+            "formatter": "language_server",
+            "language_servers": ["clangd"],
+            "tab_size": 2,
         },
-        {
-          "code_action": "source.organizeImports.ruff",
+        "Markdown": {
+            "wrap_guides": [80],
         },
-      ],
-      "language_servers": ["ruff", "ty"],
-      "wrap_guides": [72, 89],
-    },
-    "reST": {
-      "wrap_guides": [80],
-    },
-    "Rust": {
-      "format_on_save": "on",
-    },
-  },
-  "load_direnv": "shell_hook",
-  "lsp": {
-    "ruff": {
-      "binary": {
-        "arguments": ["server"],
-        "path": "ruff",
-      },
-      "initialization_options": {
-        "settings": {
-          "lineLength": 89,
-          "lint": {
-            "extendSelect": ["I"],
-          },
+        "Python": {
+            "format_on_save": "on",
+            "formatter": [
+                {
+                    "language_server": {
+                        "name": "ruff",
+                    },
+                },
+                {
+                    "code_action": "source.organizeImports.ruff",
+                },
+            ],
+            "language_servers": ["ruff", "ty"],
+            "wrap_guides": [72, 89],
         },
-      },
-    },
-    "ty": {
-      "binary": {
-        "arguments": ["server"],
-        "path": "ty",
-      },
-    },
-  },
-  "preferred_line_length": 80,
-  "show_wrap_guides": true,
-  "telemetry": {
-    "metrics": false,
-  },
-  "theme": {
-    "dark": "Ultimate Dark Neo",
-    "light": "One Light",
-    "mode": "dark",
-  },
-  "theme_overrides": {
-    "Ultimate Dark Neo": {
-      "search.match_background": "#707d74",
-      "syntax": {
-        "hint": {
-          "color": "#969696",
+        "Rust": {
+            "format_on_save": "on",
         },
-      },
+        "reST": {
+            "wrap_guides": [80],
+        },
     },
-  },
-  "ui_font_family": "LiterationMono Nerd Font",
-  "ui_font_size": 14,
-  "wrap_guides": [80],
+    "load_direnv": "shell_hook",
+    "lsp": {
+        "ruff": {
+            "binary": {
+                "arguments": ["server"],
+                "path": "ruff",
+            },
+            "initialization_options": {
+                "settings": {
+                    "lineLength": 89,
+                    "lint": {
+                        "extendSelect": ["I"],
+                    },
+                },
+            },
+        },
+        "ty": {
+            "binary": {
+                "arguments": ["server"],
+                "path": "ty",
+            },
+        },
+    },
+    "outline_panel": {
+        "dock": "left",
+    },
+    "preferred_line_length": 80,
+    "project_panel": {
+        "dock": "left",
+    },
+    "show_wrap_guides": true,
+    "telemetry": {
+        "metrics": false,
+    },
+    "theme": {
+        "dark": "Ultimate Dark Neo",
+        "light": "One Light",
+        "mode": "dark",
+    },
+    "theme_overrides": {
+        "Ultimate Dark Neo": {
+            "search.match_background": "#707d74",
+            "syntax": {
+                "hint": {
+                    "color": "#969696",
+                },
+            },
+        },
+    },
+    "ui_font_family": "LiterationMono Nerd Font",
+    "ui_font_size": 14,
+    "wrap_guides": [80],
 }
