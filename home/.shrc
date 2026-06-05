@@ -48,6 +48,14 @@ if command -v zellij >/dev/null; then
     export ZELLIJ_CONFIG_DIR="${DOTFILES_DIR}/home/.config/zellij"
 fi
 
+_git_fzf_path="${DOTFILES_DIR}/external/fzf-git/fzf-git.sh"
+if [ -f "${_git_fzf_path}" ] &&
+    command -v git >/dev/null &&
+    command -v fzf >/dev/null; then
+    . "${_git_fzf_path}"
+fi
+unset _git_fzf_path
+
 # Alias definitions (must come before functions)
 _aliases_path="${DOTFILES_DIR}/home/.sh_aliases"
 if [ -f "${_aliases_path}" ]; then

@@ -6,6 +6,7 @@ from installer import (
     bash,
     diff_so_fancy,
     font,
+    fzf_git,
     ghostty,
     git,
     helix,
@@ -45,6 +46,7 @@ INSTALLER_CLASSES = [
     zed.ZedInstaller(),
     zellij.ZellijInstaller(),
     zsh.ZshInstaller(),
+    fzf_git.FzfGitInstaller(),
 ]
 
 
