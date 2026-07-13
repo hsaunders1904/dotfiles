@@ -105,6 +105,9 @@
     g          = gui
     gr         = grep
     graph      = log --pretty --decorate --graph --color
+    hf         = history fixup
+    hr         = history reword
+    hs         = history split
     ignore     = !"f() { cd -- \"${GIT_PREFIX:-.}\" && python \"${DOTFILES_DIR}/scripts/git_ignore\" $@; }; f"
     issue      = !"f() { $(git repo-cli) issue view "$(git rev-parse --abbrev-ref HEAD | awk -F/ '{print $NF}' | sed -rn 's/([0-9]+)_.*/\\1/p')" $*; }; f"
     l          = log --oneline -n 15
