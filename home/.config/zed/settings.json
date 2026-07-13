@@ -87,7 +87,6 @@
             },
             "initialization_options": {
                 "settings": {
-                    "lineLength": 89,
                     "lint": {
                         "extendSelect": ["I"],
                     },
