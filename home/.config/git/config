@@ -13,6 +13,12 @@
     defaultBranch = main
 [interactive]
     diffFilter = "${DOTFILES_DIR}/external/diff-so-fancy/diff-so-fancy --patch"
+[commit]
+	gpgsign = true
+[gpg]
+	format = ssh
+[tag]
+	gpgsign = true
 [color]
     ui = true
     [diff-highlight]
