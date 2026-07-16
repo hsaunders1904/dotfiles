@@ -119,6 +119,7 @@
     lg         = log
     lgd        = log --pretty=format:'%C(yellow)%h  %Cblue%ad  %Cgreen%<(7)%aN  %Creset%s' --date=short
     lgday      = !"f() { git lg --after=\"$1 00:00\" --before=\"$1 23:59\"}; }; f"
+    list-merged = !"f() { _default=$(git main); remote=origin/${1:-${_default}}; git branch --merged ${remote}; }; f"
     ll         = log --oneline -n 30
     lld        = lgd -n 30
     llday      = !"f() { git ll --after=\"$1 00:00\" --before=\"$1 23:59\"}; }; f"
