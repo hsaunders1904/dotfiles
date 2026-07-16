@@ -164,6 +164,8 @@
     rev        = revert
     reva       = revert --abort
     revc       = revert --continue
+    rmt        = remote
+    rmtv       = remote -v
     rl         = reflog
     rs         = reset
     rs1        = reset "HEAD@{1}"
