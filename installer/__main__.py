@@ -5,6 +5,7 @@ from dataclasses import dataclass
 from installer import (
     bash,
     diff_so_fancy,
+    editorconfig,
     font,
     fzf_git,
     ghostty,
@@ -47,6 +48,7 @@ INSTALLER_CLASSES = [
     zellij.ZellijInstaller(),
     zsh.ZshInstaller(),
     fzf_git.FzfGitInstaller(),
+    editorconfig.EditorConfigInstaller(),
 ]
 
 
