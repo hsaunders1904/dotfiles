@@ -80,7 +80,7 @@ def main(argv: list[str]) -> int:
 def parse_args(argv: list[str]) -> Args:
     """Parse command line arguments."""
     parser = argparse.ArgumentParser(
-        prog="git_ignore",
+        prog="git-ignore",
         description=__doc__,
         formatter_class=argparse.RawTextHelpFormatter,
     )
