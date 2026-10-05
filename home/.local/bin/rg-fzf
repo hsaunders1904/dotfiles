@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+RG_EXTRA=$(printf ' %q' "$@")
+
+RG_PREFIX="rg --column --line-number --no-heading --color=always --smart-case"
+
+FZF_DEFAULT_COMMAND="${RG_PREFIX} ''${RG_EXTRA}" \
+    fzf --ansi --disabled \
+    --query "" \
+    --bind "change:reload:${RG_PREFIX} {q}${RG_EXTRA} || true" \
+    --delimiter : \
+    --preview 'bat --color=always --highlight-line {2} {1}' \
+    --preview-window 'up,60%,border-bottom,+{2}+3/3,~3'
