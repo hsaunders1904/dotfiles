@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+set -e
+
+if [ -z "$1" ]; then
+    echo 'git_rebase_on_pr: must give PR number' && exit 1
+else
+    pr_num="$1"
+fi
+if [ -z "$2" ]; then
+    remote="origin"
+else
+    remote="$2"
+fi
+remote_url="$(git remote get-url "${remote}")"
+
+is_github=0
+if [[ "${remote_url}" == git@github* ]]; then
+    is_github=1
+elif [ -n "$(command -v glab)" ] && glab repo view "${remote_url}" &>/dev/null; then
+    :
+else
+    echo >&2 "git_rebase_on_pr: unsupported remote host: '${remote_url}'"
+    exit 1
+fi
+
+if ((is_github)); then
+    git fetch "${remote}" "pull/${pr_num}/head"
+else
+    git fetch "${remote}" "merge-requests/${pr_num}/head"
+fi
+git rebase FETCH_HEAD
